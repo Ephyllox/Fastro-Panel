@@ -10,7 +10,7 @@ const sessions: Session[] = [];
 export default class AuthManager {
     static checkLogin(name, input) {
         if (Logins[name]?.password === input) {
-            const token = Utils.random(128);
+            const token = Utils.random(256);
 
             const date = new Date();
             date.setTime(+date + 54e6);
