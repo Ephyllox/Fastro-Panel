@@ -4,7 +4,7 @@
   "description": "Fastro Panel",
   "main": "server.js",
   "author": {
-    "name": ""
+    "name": "Alexi Marsalve"
   },
   "scripts": {
     "build": "tsc --build",

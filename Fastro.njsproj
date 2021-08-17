@@ -108,6 +108,9 @@
     <TypeScriptCompile Include="types\http\cookie-options.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="types\http\page-route.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="types\index.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>

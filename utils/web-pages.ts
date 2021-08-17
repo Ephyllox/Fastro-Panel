@@ -1,14 +1,22 @@
-export default {
+import { PageRoute } from "../types";
+
+const PageRoutes: { [name: string]: PageRoute } = {
     "/login": {
-        Page: "login",
-        RedirectIfAuthorized: "panel",
+        directory: "login.html",
+        redirectIfAuthorized: "panel",
     },
     "/panel": {
-        Page: "panel",
-        RequiresLogin: true,
+        directory: "panel.html",
+        requiresLogin: true,
     },
     "/updates": {
-        Page: "updates",
-        RequiresLogin: true,
+        directory: "updates.html",
+        requiresLogin: true,
+    },
+    "404": {
+        directory: "not-found.html",
+        systemRouted: true,
     },
 };
+
+export default PageRoutes;

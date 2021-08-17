@@ -19,7 +19,8 @@ HTTP.createServer(async function (req, res) {
 
     function readFile(name) {
         return new Promise<string>((resolve, reject) => {
-            FS.readFile(`./pages/${name}.html`, "utf8", function (error, data) {
+            FS.readFile(`./pages/${name}`, "utf8", function (error, data) {
+                context.contentType(ContentType.HTML);
                 !error ? resolve(data) : reject();
             });
         });
@@ -54,25 +55,21 @@ HTTP.createServer(async function (req, res) {
                 context.end(global[path] ?? final);
             });
         }
-        else if (!page) {
-            context.contentType(ContentType.HTML);
-            context.end(await readFile("not-found"));
+        else if (!page || page.systemRouted) {
+            context.end(await readFile(Pages["404"].directory));
         }
-        else if (page && !page.RequiresLogin) {
+        else if (page && !page.requiresLogin) {
             if (!context.session.isValid()) {
-                context.contentType(ContentType.HTML);
-                context.end(await readFile(page.Page));
+                context.end(await readFile(page.directory));
             }
             else {
-                context.redirect(page.RedirectIfAuthorized);
+                context.redirect(page.redirectIfAuthorized);
             }
         }
-        else if (page.RequiresLogin && context.session.isValid()) {
-            context.contentType(ContentType.HTML);
-
-            context.end(await readFile(page.Page));
+        else if (page.requiresLogin && context.session.isValid()) {
+            context.end(await readFile(page.directory));
         }
-        else if (page.RequiresLogin && !context.session.isValid()) {
+        else if (page.requiresLogin && !context.session.isValid()) {
             context.redirect("login");
         }
     }
