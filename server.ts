@@ -1,11 +1,10 @@
-import * as FS from "fs";
 import * as HTTP from "http";
 import * as Obfuscator from "javascript-obfuscator";
 import { randomUUID } from "crypto";
-import AuthManager from "./classes/auth/manager";
+import AuthManager from "./classes/auth/AuthManager";
 import { RequestContext } from "./classes";
-import Utils from "./utils/library";
-import Pages from "./utils/web-pages";
+import Utils from "./utils/Toolbox";
+import Pages from "./utils/routes/PageRoutes";
 import { ContentType } from "./enums";
 
 process.on("uncaughtException", function (error) {
@@ -17,15 +16,6 @@ HTTP.createServer(async function (req, res) {
         AuthManager.getSession(Utils.getCookies(req)["__|SITE::SECURITY"]),
     );
 
-    function readFile(name) {
-        return new Promise<string>((resolve, reject) => {
-            FS.readFile(`./pages/${name}`, "utf8", function (error, data) {
-                context.contentType(ContentType.HTML);
-                !error ? resolve(data) : reject();
-            });
-        });
-    }
-
     if (context.req.method === "GET") {
         const page = Pages[context.req.url];
 
@@ -34,7 +24,7 @@ HTTP.createServer(async function (req, res) {
         }
         else if (context.req.url.includes("/content/")) {
             const path = `./wwwroot/${context.req.url.replace("/content/", "")}`;
-            let contentType = ContentType.PLAIN;
+            let contentType: ContentType;
 
             Object.keys(ContentType).forEach(item => {
                 if (path.endsWith(`.${item.toLowerCase()}`)) {
@@ -42,32 +32,34 @@ HTTP.createServer(async function (req, res) {
                 }
             });
 
-            FS.readFile(path, async function (error, data) {
-                if (error) return context.end(`Static resource invalid.\nRequest ID: ${context.requestId}`);
-                let final = data.toString();
+            try {
+                let data = await Utils.readFile(path);
 
                 if (contentType === ContentType.JS && !global[path]) {
-                    final = Obfuscator.obfuscate(final, Obfuscator.getOptionsByPreset("medium-obfuscation")).getObfuscatedCode()
-                    global[path] = final;
+                    data = Obfuscator.obfuscate(data, Obfuscator.getOptionsByPreset("default")).getObfuscatedCode()
+                    global[path] = data;
                 }
 
                 context.contentType(contentType);
-                context.end(global[path] ?? final);
-            });
+                context.end(global[path] ?? data);
+            }
+            catch {
+                context.end(`Static resource invalid.\nRequest ID: ${context.requestId}`);
+            }
         }
         else if (!page || page.systemRouted) {
-            context.end(await readFile(Pages["404"].directory));
+            context.end(await Utils.readFile(Pages["404"].directory));
         }
         else if (page && !page.requiresLogin) {
             if (!context.session.isValid()) {
-                context.end(await readFile(page.directory));
+                context.end(await Utils.readFile(page.directory));
             }
             else {
                 context.redirect(page.redirectIfAuthorized);
             }
         }
         else if (page.requiresLogin && context.session.isValid()) {
-            context.end(await readFile(page.directory));
+            context.end(await Utils.readFile(page.directory));
         }
         else if (page.requiresLogin && !context.session.isValid()) {
             context.redirect("login");

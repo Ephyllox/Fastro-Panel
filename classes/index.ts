@@ -1,4 +1,5 @@
-export { default as Session } from "./auth/session";
-export { default as User } from "./auth/user";
+export { default as Session } from "./auth/SessionObject";
+export { default as User } from "./auth/UserObject";
 
-export { default as RequestContext } from "./http/request-context";
+export { default as CookieBuilder } from "./http/CookieBuilder";
+export { default as RequestContext } from "./http/RequestContext";

@@ -1,1 +1,1 @@
-export { default as RequestActions } from "./http/request-actions";
+export { default as RequestActions } from "./http/IRequestActions";

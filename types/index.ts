@@ -1,5 +1,4 @@
-export { UserLogin } from "./auth/user-login";
-export { UserPerms } from "./auth/user-perms";
+export { UserLogin, UserPerms } from "./auth/UserData";
 
-export { CookieOptions } from "./http/cookie-options";
-export { PageRoute } from "./http/page-route";
+export { CookieOptions } from "./http/CookieOptions";
+export { PageRoute } from "./http/PageRouteData";

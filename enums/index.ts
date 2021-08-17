@@ -1,4 +1,4 @@
-export { UserRole } from "./auth/user-role";
-export { ContentType } from "./http/content-type";
+export { UserRole } from "./auth/UserRoles";
+export { ContentType } from "./http/ContentTypes";
 
-export { CookieFlags } from "./http/cookie-flags";
+export { CookieFlags } from "./http/CookieFlags";
