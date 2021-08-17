@@ -15,6 +15,6 @@
     "typescript": "latest"
   },
   "dependencies": {
-    "javascript-obfuscator": "latest"
+    "javascript-obfuscator": "2.19.0"
   }
 }
