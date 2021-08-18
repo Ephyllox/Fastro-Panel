@@ -1,5 +1,3 @@
-import { CookieFlags } from "../../enums";
-
 export type CookieOptions = {
     name: string;
 
@@ -10,4 +8,9 @@ export type CookieOptions = {
     expires?: Date;
 
     flags?: CookieFlags[];
+};
+
+export enum CookieFlags {
+    HTTPONLY,
+    SECURE,
 };

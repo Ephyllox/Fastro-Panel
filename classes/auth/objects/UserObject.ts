@@ -1,4 +1,4 @@
-import { UserLogin, UserPerms } from "../../types";
+import { UserLogin, UserPerms } from "../../../types";
 
 export default class User {
     constructor(name: string, data: UserLogin) {

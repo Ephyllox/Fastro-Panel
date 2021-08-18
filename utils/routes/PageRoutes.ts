@@ -1,6 +1,6 @@
-import { PageRoute } from "../../types";
+import { PageRouteData } from "../../types";
 
-const PageRoutes: { [name: string]: PageRoute } = {
+const PageRoutes: { [name: string]: PageRouteData } = {
     "/login": {
         directory: "./pages/login.html",
         redirectIfAuthorized: "panel",

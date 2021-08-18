@@ -1,1 +1,1 @@
-export { default as RequestActions } from "./http/IRequestActions";
+export { default as RequestResponder } from "./http/IRequestResponder";

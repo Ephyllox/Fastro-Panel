@@ -1,4 +1,4 @@
-export type PageRoute = {
+export type PageRouteData = {
     directory: string;
 
     requiresLogin?: boolean;

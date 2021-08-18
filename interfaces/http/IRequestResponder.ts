@@ -1,8 +1,7 @@
-import { ContentType } from "../../enums";
 import { RequestContext } from "../../classes";
-import { CookieOptions } from "../../types";
+import { CookieOptions, ContentType } from "../../types";
 
-export default interface RequestActions {
+export default interface RequestResponder {
     json(json: object);
 
     status(status: number): RequestContext;

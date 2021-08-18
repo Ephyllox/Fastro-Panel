@@ -4,7 +4,7 @@ import * as Obfuscator from "javascript-obfuscator";
 import { randomUUID } from "crypto";
 
 import { AuthManager, RequestContext } from "./classes";
-import { ContentType } from "./enums";
+import { ContentType } from "./types";
 
 import Utils from "./utils/Toolbox";
 import Pages from "./utils/routes/PageRoutes";

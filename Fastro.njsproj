@@ -33,13 +33,11 @@
   <ItemGroup>
     <Content Include="wwwroot\css\home\pages\landing.css" />
     <Content Include="wwwroot\css\home\pages\updates.css" />
+    <Content Include="wwwroot\js\auth\login.js" />
     <Content Include="wwwroot\js\errors\404.js" />
     <Content Include="wwwroot\js\home\pages\landing.js" />
     <Content Include="wwwroot\js\home\pages\main.js" />
-    <Content Include="wwwroot\js\auth\login.js" />
     <None Include="server.ts" />
-    <Content Include="interfaces\index.ts" />
-    <Content Include="classes\index.ts" />
     <Content Include="pages\login.html" />
     <Content Include="pages\not-found.html" />
     <Content Include="pages\panel.html" />
@@ -48,80 +46,57 @@
     <Content Include="package.json" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="enums\auth\" />
-    <Folder Include="enums\http\" />
-    <Folder Include="interfaces\http\" />
     <Folder Include="classes\" />
     <Folder Include="classes\auth\" />
+    <Folder Include="classes\auth\objects\" />
     <Folder Include="classes\http\" />
+    <Folder Include="classes\http\route\" />
+    <Folder Include="httpserver\middleware\" />
+    <Folder Include="httpserver\routes\" />
     <Folder Include="interfaces\" />
-    <Folder Include="enums\" />
-    <Folder Include="utils\security\" />
-    <Folder Include="utils\routes\" />
-    <Folder Include="wwwroot\" />
+    <Folder Include="interfaces\http\" />
+    <Folder Include="httpserver\" />
+    <Folder Include="pages\" />
     <Folder Include="types\" />
     <Folder Include="types\auth\" />
     <Folder Include="types\http\" />
+    <Folder Include="types\http\route\" />
     <Folder Include="utils\" />
-    <Folder Include="pages\" />
+    <Folder Include="utils\routes\" />
+    <Folder Include="utils\security\" />
+    <Folder Include="wwwroot\" />
+    <Folder Include="wwwroot\css\" />
     <Folder Include="wwwroot\css\home\" />
     <Folder Include="wwwroot\css\home\pages\" />
     <Folder Include="wwwroot\js\" />
-    <Folder Include="wwwroot\css\" />
-    <Folder Include="wwwroot\js\home\pages\" />
-    <Folder Include="wwwroot\js\home\" />
     <Folder Include="wwwroot\js\auth\" />
     <Folder Include="wwwroot\js\errors\" />
+    <Folder Include="wwwroot\js\home\" />
+    <Folder Include="wwwroot\js\home\pages\" />
   </ItemGroup>
   <ItemGroup>
-    <TypeScriptCompile Include="classes\auth\AuthManager.ts">
-      <SubType>Code</SubType>
-    </TypeScriptCompile>
-    <TypeScriptCompile Include="enums\auth\UserRoles.ts">
-      <SubType>Code</SubType>
-    </TypeScriptCompile>
-    <TypeScriptCompile Include="enums\http\ContentTypes.ts">
-      <SubType>Code</SubType>
-    </TypeScriptCompile>
-    <TypeScriptCompile Include="enums\http\CookieFlags.ts">
-      <SubType>Code</SubType>
-    </TypeScriptCompile>
-    <TypeScriptCompile Include="enums\index.ts">
-      <SubType>Code</SubType>
-    </TypeScriptCompile>
-    <TypeScriptCompile Include="interfaces\http\IRequestActions.ts">
-      <SubType>Code</SubType>
-    </TypeScriptCompile>
-    <TypeScriptCompile Include="classes\auth\SessionObject.ts">
-      <SubType>Code</SubType>
-    </TypeScriptCompile>
-    <TypeScriptCompile Include="classes\auth\UserObject.ts">
-      <SubType>Code</SubType>
-    </TypeScriptCompile>
-    <TypeScriptCompile Include="classes\http\CookieBuilder.ts">
-      <SubType>Code</SubType>
-    </TypeScriptCompile>
-    <TypeScriptCompile Include="classes\http\RequestContext.ts">
-      <SubType>Code</SubType>
-    </TypeScriptCompile>
+    <TypeScriptCompile Include="classes\auth\AuthManager.ts" />
+    <TypeScriptCompile Include="classes\auth\objects\SessionObject.ts" />
+    <TypeScriptCompile Include="classes\auth\objects\UserObject.ts" />
+    <TypeScriptCompile Include="classes\http\CookieBuilder.ts" />
+    <TypeScriptCompile Include="classes\http\RequestContext.ts" />
+    <TypeScriptCompile Include="classes\http\route\InterfaceRoute.ts" />
+    <TypeScriptCompile Include="classes\http\route\DirectoryRoute.ts" />
+    <TypeScriptCompile Include="classes\index.ts" />
+    <TypeScriptCompile Include="httpserver\DynamicServer.ts" />
+    <TypeScriptCompile Include="httpserver\StaticServer.ts" />
+    <TypeScriptCompile Include="interfaces\http\IRequestResponder.ts" />
+    <TypeScriptCompile Include="interfaces\index.ts" />
     <TypeScriptCompile Include="types\auth\UserData.ts" />
-    <TypeScriptCompile Include="types\http\CookieOptions.ts">
-      <SubType>Code</SubType>
-    </TypeScriptCompile>
-    <TypeScriptCompile Include="types\http\PageRouteData.ts">
-      <SubType>Code</SubType>
-    </TypeScriptCompile>
-    <TypeScriptCompile Include="types\index.ts">
-      <SubType>Code</SubType>
-    </TypeScriptCompile>
+    <TypeScriptCompile Include="types\http\ContentType.ts" />
+    <TypeScriptCompile Include="types\http\CookieOptions.ts" />
+    <TypeScriptCompile Include="types\http\route\APIRouteData.ts" />
+    <TypeScriptCompile Include="types\http\route\PageRouteData.ts" />
+    <TypeScriptCompile Include="types\index.ts" />
     <TypeScriptCompile Include="utils\Configuration.ts" />
-    <TypeScriptCompile Include="utils\Toolbox.ts">
-      <SubType>Code</SubType>
-    </TypeScriptCompile>
+    <TypeScriptCompile Include="utils\routes\PageRoutes.ts" />
     <TypeScriptCompile Include="utils\security\UserLogins.ts" />
-    <TypeScriptCompile Include="utils\routes\PageRoutes.ts">
-      <SubType>Code</SubType>
-    </TypeScriptCompile>
+    <TypeScriptCompile Include="utils\Toolbox.ts" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\Node.js Tools\Microsoft.NodejsToolsV2.targets" />
   <ProjectExtensions>

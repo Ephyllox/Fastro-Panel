@@ -1,8 +1,7 @@
 import { randomUUID } from "crypto";
 
-import { CookieFlags } from "../../enums";
-import { User, Session } from "..";
-import { CookieOptions } from "../../types";
+import { User, Session } from "../";
+import { CookieOptions, CookieFlags } from "../../types";
 
 import Logins from "../../utils/security/UserLogins";
 import Utils from "../../utils/Toolbox";

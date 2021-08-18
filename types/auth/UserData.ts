@@ -1,5 +1,3 @@
-import { UserRole } from "../../enums";
-
 export type UserLogin = {
     id: number;
 
@@ -12,4 +10,9 @@ export type UserPerms = {
     roles: UserRole[];
 
     disabled?: boolean;
+};
+
+export enum UserRole {
+    USER,
+    ADMIN,
 };

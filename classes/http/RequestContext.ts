@@ -1,13 +1,12 @@
 import * as HTTP from "http";
 
-import { ContentType } from "../../enums";
-import { RequestActions } from "../../interfaces";
-import { CookieOptions } from "../../types";
+import { RequestResponder } from "../../interfaces";
+import { CookieOptions, ContentType } from "../../types";
 
-import Session from "../auth/SessionObject";
+import Session from "../auth/objects/SessionObject";
 import CookieBuilder from "./CookieBuilder";
 
-export default class RequestContext implements RequestActions {
+export default class RequestContext implements RequestResponder {
     constructor({ req, res }, reqId: string, session: Session) {
         this.session = session;
         this.requestId = reqId;

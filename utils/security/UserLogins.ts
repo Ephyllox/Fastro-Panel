@@ -1,5 +1,4 @@
-import { UserRole } from "../../enums";
-import { UserLogin } from "../../types";
+import { UserLogin, UserRole } from "../../types";
 
 const Logins: { [name: string]: UserLogin } = {
     "admin": {

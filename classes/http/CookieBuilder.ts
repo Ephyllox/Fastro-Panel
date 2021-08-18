@@ -1,5 +1,4 @@
-import { CookieFlags } from "../../enums";
-import { CookieOptions } from "../../types";
+import { CookieOptions, CookieFlags } from "../../types";
 
 export default class CookieBuilder {
     constructor(options: CookieOptions) {
