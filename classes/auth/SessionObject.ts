@@ -1,4 +1,5 @@
 import { UserRole } from "../../enums";
+
 import User from "./UserObject";
 
 export default class Session {

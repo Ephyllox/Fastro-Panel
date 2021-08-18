@@ -1,7 +1,9 @@
 import * as HTTP from "http";
+
 import { ContentType } from "../../enums";
 import { RequestActions } from "../../interfaces";
 import { CookieOptions } from "../../types";
+
 import Session from "../auth/SessionObject";
 import CookieBuilder from "./CookieBuilder";
 

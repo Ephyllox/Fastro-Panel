@@ -1,11 +1,13 @@
 import * as HTTP from "http";
 import * as Obfuscator from "javascript-obfuscator";
+
 import { randomUUID } from "crypto";
-import AuthManager from "./classes/auth/AuthManager";
-import { RequestContext } from "./classes";
+
+import { AuthManager, RequestContext } from "./classes";
+import { ContentType } from "./enums";
+
 import Utils from "./utils/Toolbox";
 import Pages from "./utils/routes/PageRoutes";
-import { ContentType } from "./enums";
 
 process.on("uncaughtException", function (error) {
     console.log(`System error: ${error}.`);
