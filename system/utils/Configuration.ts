@@ -15,7 +15,7 @@ export default {
         DefaultUsers: {
             "admin": {
                 id: 1,
-                password: "asdasd",
+                password: "admin",
                 perms: {
                     roles: [
                         UserRole.SUPER,
