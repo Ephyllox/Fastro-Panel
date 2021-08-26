@@ -5,6 +5,9 @@
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
     <Name>Fastro</Name>
     <RootNamespace>Fastro</RootNamespace>
+    <SaveNodeJsSettingsInProjectFile>True</SaveNodeJsSettingsInProjectFile>
+    <LaunchUrl>
+    </LaunchUrl>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -12,7 +15,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>b09a2711-6d9d-483e-bfde-5f09befa2684</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>server.ts</StartupFile>
+    <StartupFile>startup.ts</StartupFile>
     <StartWebBrowser>True</StartWebBrowser>
     <SearchPath>
     </SearchPath>
@@ -22,7 +25,7 @@
     <ProjectTypeGuids>{3AF33F2E-1136-4D97-BBB7-1795711AC8B8};{349c5851-65df-11da-9384-00065b846f21};{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}</ProjectTypeGuids>
     <NodejsPort>1337</NodejsPort>
     <EnableTypeScript>true</EnableTypeScript>
-    <StartWebBrowser>true</StartWebBrowser>
+    <StartWebBrowser>True</StartWebBrowser>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -31,72 +34,85 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="wwwroot\css\home\pages\landing.css" />
-    <Content Include="wwwroot\css\home\pages\updates.css" />
-    <Content Include="wwwroot\js\auth\login.js" />
-    <Content Include="wwwroot\js\errors\404.js" />
-    <Content Include="wwwroot\js\home\pages\landing.js" />
-    <Content Include="wwwroot\js\home\pages\main.js" />
+    <Content Include="system\pages\errors\server-error.html" />
+    <Content Include="system\wwwroot\css\home\pages\landing.css" />
+    <Content Include="system\wwwroot\css\home\pages\updates.css" />
+    <Content Include="system\wwwroot\js\auth\login.js" />
+    <Content Include="system\wwwroot\js\errors\404.js" />
+    <Content Include="system\wwwroot\js\home\pages\landing.js" />
+    <Content Include="system\wwwroot\js\home\pages\main.js" />
     <None Include="server.ts" />
-    <Content Include="pages\login.html" />
-    <Content Include="pages\not-found.html" />
-    <Content Include="pages\panel.html" />
-    <Content Include="pages\updates.html" />
+    <Content Include="system\pages\login.html" />
+    <Content Include="system\pages\errors\not-found.html" />
+    <Content Include="system\pages\panel.html" />
+    <Content Include="system\pages\updates.html" />
     <Content Include="tsconfig.json" />
     <Content Include="package.json" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="classes\" />
-    <Folder Include="classes\auth\" />
-    <Folder Include="classes\auth\objects\" />
-    <Folder Include="classes\http\" />
-    <Folder Include="classes\http\route\" />
-    <Folder Include="httpserver\middleware\" />
-    <Folder Include="httpserver\routes\" />
-    <Folder Include="interfaces\" />
-    <Folder Include="interfaces\http\" />
-    <Folder Include="httpserver\" />
-    <Folder Include="pages\" />
-    <Folder Include="types\" />
-    <Folder Include="types\auth\" />
-    <Folder Include="types\http\" />
-    <Folder Include="types\http\route\" />
-    <Folder Include="utils\" />
-    <Folder Include="utils\routes\" />
-    <Folder Include="utils\security\" />
-    <Folder Include="wwwroot\" />
-    <Folder Include="wwwroot\css\" />
-    <Folder Include="wwwroot\css\home\" />
-    <Folder Include="wwwroot\css\home\pages\" />
-    <Folder Include="wwwroot\js\" />
-    <Folder Include="wwwroot\js\auth\" />
-    <Folder Include="wwwroot\js\errors\" />
-    <Folder Include="wwwroot\js\home\" />
-    <Folder Include="wwwroot\js\home\pages\" />
+    <Folder Include="system\classes\" />
+    <Folder Include="system\classes\auth\" />
+    <Folder Include="system\classes\auth\objects\" />
+    <Folder Include="system\classes\http\" />
+    <Folder Include="system\classes\http\result\" />
+    <Folder Include="system\classes\http\route\" />
+    <Folder Include="system\httpserver\routes\" />
+    <Folder Include="system\httpserver\routes\api\" />
+    <Folder Include="system\httpserver\routes\dir\" />
+    <Folder Include="system\interfaces\" />
+    <Folder Include="system\interfaces\http\" />
+    <Folder Include="system\httpserver\" />
+    <Folder Include="system\" />
+    <Folder Include="system\pages\" />
+    <Folder Include="system\pages\errors\" />
+    <Folder Include="system\types\" />
+    <Folder Include="system\types\auth\" />
+    <Folder Include="system\types\http\" />
+    <Folder Include="system\types\http\route\" />
+    <Folder Include="system\utils\" />
+    <Folder Include="system\wwwroot\" />
+    <Folder Include="system\wwwroot\css\" />
+    <Folder Include="system\wwwroot\css\home\" />
+    <Folder Include="system\wwwroot\css\home\pages\" />
+    <Folder Include="system\wwwroot\js\" />
+    <Folder Include="system\wwwroot\js\auth\" />
+    <Folder Include="system\wwwroot\js\errors\" />
+    <Folder Include="system\wwwroot\js\home\" />
+    <Folder Include="system\wwwroot\js\home\pages\" />
   </ItemGroup>
   <ItemGroup>
-    <TypeScriptCompile Include="classes\auth\AuthManager.ts" />
-    <TypeScriptCompile Include="classes\auth\objects\SessionObject.ts" />
-    <TypeScriptCompile Include="classes\auth\objects\UserObject.ts" />
-    <TypeScriptCompile Include="classes\http\CookieBuilder.ts" />
-    <TypeScriptCompile Include="classes\http\RequestContext.ts" />
-    <TypeScriptCompile Include="classes\http\route\InterfaceRoute.ts" />
-    <TypeScriptCompile Include="classes\http\route\DirectoryRoute.ts" />
-    <TypeScriptCompile Include="classes\index.ts" />
-    <TypeScriptCompile Include="httpserver\DynamicServer.ts" />
-    <TypeScriptCompile Include="httpserver\StaticServer.ts" />
-    <TypeScriptCompile Include="interfaces\http\IRequestResponder.ts" />
-    <TypeScriptCompile Include="interfaces\index.ts" />
-    <TypeScriptCompile Include="types\auth\UserData.ts" />
-    <TypeScriptCompile Include="types\http\ContentType.ts" />
-    <TypeScriptCompile Include="types\http\CookieOptions.ts" />
-    <TypeScriptCompile Include="types\http\route\APIRouteData.ts" />
-    <TypeScriptCompile Include="types\http\route\PageRouteData.ts" />
-    <TypeScriptCompile Include="types\index.ts" />
-    <TypeScriptCompile Include="utils\Configuration.ts" />
-    <TypeScriptCompile Include="utils\routes\PageRoutes.ts" />
-    <TypeScriptCompile Include="utils\security\UserLogins.ts" />
-    <TypeScriptCompile Include="utils\Toolbox.ts" />
+    <TypeScriptCompile Include="startup.ts" />
+    <TypeScriptCompile Include="system\classes\auth\AuthManager.ts" />
+    <TypeScriptCompile Include="system\classes\auth\objects\SessionObject.ts" />
+    <TypeScriptCompile Include="system\classes\auth\objects\UserObject.ts" />
+    <TypeScriptCompile Include="system\classes\http\CookieBuilder.ts" />
+    <TypeScriptCompile Include="system\classes\http\RequestContext.ts" />
+    <TypeScriptCompile Include="system\classes\http\result\UnauthorizedResult.ts" />
+    <TypeScriptCompile Include="system\classes\http\result\BadRequestResult.ts" />
+    <TypeScriptCompile Include="system\classes\http\result\RedirectResult.ts" />
+    <TypeScriptCompile Include="system\classes\http\route\InterfaceRoute.ts" />
+    <TypeScriptCompile Include="system\classes\http\route\DirectoryRoute.ts" />
+    <TypeScriptCompile Include="system\classes\index.ts" />
+    <TypeScriptCompile Include="system\httpserver\index.ts" />
+    <TypeScriptCompile Include="system\httpserver\routes\api\Auth.ts" />
+    <TypeScriptCompile Include="system\httpserver\routes\api\User.ts" />
+    <TypeScriptCompile Include="system\httpserver\routes\dir\Login.ts" />
+    <TypeScriptCompile Include="system\httpserver\routes\dir\PanelUpdates.ts" />
+    <TypeScriptCompile Include="system\httpserver\routes\dir\PanelHome.ts" />
+    <TypeScriptCompile Include="system\interfaces\http\IRequestResponder.ts" />
+    <TypeScriptCompile Include="system\interfaces\http\IRequestHandler.ts" />
+    <TypeScriptCompile Include="system\interfaces\http\IRequestResult.ts" />
+    <TypeScriptCompile Include="system\interfaces\index.ts" />
+    <TypeScriptCompile Include="system\types\auth\UserData.ts" />
+    <TypeScriptCompile Include="system\types\http\ContentType.ts" />
+    <TypeScriptCompile Include="system\types\http\CookieOptions.ts" />
+    <TypeScriptCompile Include="system\classes\http\result\OkResult.ts" />
+    <TypeScriptCompile Include="system\classes\http\result\ViewResult.ts" />
+    <TypeScriptCompile Include="system\types\http\route\APIRouteData.ts" />
+    <TypeScriptCompile Include="system\types\http\route\PageRouteData.ts" />
+    <TypeScriptCompile Include="system\types\index.ts" />
+    <TypeScriptCompile Include="system\utils\Configuration.ts" />
+    <TypeScriptCompile Include="system\utils\Toolbox.ts" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\Node.js Tools\Microsoft.NodejsToolsV2.targets" />
   <ProjectExtensions>

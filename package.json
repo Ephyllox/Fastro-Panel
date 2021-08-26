@@ -16,6 +16,8 @@
   },
   "dependencies": {
     "javascript-obfuscator": "2.19.0",
-    "mustache": "^4.2.0"
+    "mustache": "4.2.0",
+    "secure-json-parse": "2.4.0",
+    "xss": "1.0.9"
   }
 }
