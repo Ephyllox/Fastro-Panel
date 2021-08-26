@@ -2,7 +2,7 @@
   "name": "fastro",
   "version": "1.0.0",
   "description": "Fastro Panel",
-  "main": "server.js",
+  "main": "startup.js",
   "author": {
     "name": "Alexi Marsalve"
   },
