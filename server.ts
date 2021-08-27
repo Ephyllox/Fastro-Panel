@@ -36,14 +36,14 @@ export default class HTTPServer {
                 AuthManager.getSession(Utils.getCookies(req)["__|SITE::SECURITY"]),
             );
 
-            _.applyCustomHeaders(context);
-            if (Conf.Security.AddSecurityHeaders) _.applySecurityHeaders(context);
+            if (_.methods[context.req.method]) {
+                if (Conf.Security.AddSecurityHeaders) _.applySecurityHeaders(context);
+                _.applyCustomHeaders(context);
 
-            if (context.req.url === "/" && Conf.Router.EnableDefaultRedirect) {
-                context.redirect(Conf.Router.DefaultRoute);
-            }
-            else if (!context.req.url.startsWith(Conf.Static.RequestDirectory) || !Conf.Static.EnableStaticFileServer) {
-                if (_.methods[context.req.method]) {
+                if (context.req.url === "/" && Conf.Router.EnableDefaultRedirect) {
+                    context.redirect(Conf.Router.DefaultRoute);
+                }
+                else if (!context.req.url.startsWith(Conf.Static.RequestDirectory) || !Conf.Static.EnableStaticFileServer) {
                     const route = Routes.find(item => (item instanceof InterfaceRoute && item.endpoint === context.req.url)
                         || (item instanceof DirectoryRoute && item.directory === context.req.url));
 
@@ -82,35 +82,35 @@ export default class HTTPServer {
                     }
                 }
                 else {
-                    context.status(405).end();
+                    if (context.req.method !== "GET") return context.status(405).end();
+
+                    const path = Conf.Static.PhysicalDirectory + context.req.url.replace(Conf.Static.RequestDirectory, "");
+                    let contentType: ContentType;
+
+                    Object.keys(ContentType).forEach(item => {
+                        if (path.endsWith(`.${item.toLowerCase()}`)) {
+                            contentType = ContentType[item];
+                        }
+                    });
+
+                    try {
+                        let data = await Utils.readFile(path);
+
+                        if (Conf.Static.EnableRuntimeObfuscation && contentType === ContentType.JS && !global[path]) {
+                            data = Obfuscator.obfuscate(data, Obfuscator.getOptionsByPreset("default")).getObfuscatedCode();
+                            global[path] = data;
+                        }
+
+                        context.contentType(contentType);
+                        context.end(global[path] ?? data);
+                    }
+                    catch {
+                        _.shrdTemplate(context, "pages/errors/server-error.html");
+                    }
                 }
             }
             else {
-                if (context.req.method !== "GET") return context.status(405).end();
-
-                const path = Conf.Static.PhysicalDirectory + context.req.url.replace(Conf.Static.RequestDirectory, "");
-                let contentType: ContentType;
-
-                Object.keys(ContentType).forEach(item => {
-                    if (path.endsWith(`.${item.toLowerCase()}`)) {
-                        contentType = ContentType[item];
-                    }
-                });
-
-                try {
-                    let data = await Utils.readFile(path);
-
-                    if (Conf.Static.EnableRuntimeObfuscation && contentType === ContentType.JS && !global[path]) {
-                        data = Obfuscator.obfuscate(data, Obfuscator.getOptionsByPreset("default")).getObfuscatedCode();
-                        global[path] = data;
-                    }
-
-                    context.contentType(contentType);
-                    context.end(global[path] ?? data);
-                }
-                catch {
-                    _.shrdTemplate(context, "pages/errors/server-error.html");
-                }
+                context.status(405).end();
             }
         }).listen(process.env.PORT || 1337);
     }
