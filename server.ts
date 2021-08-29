@@ -36,17 +36,18 @@ export default class HTTPServer {
                 AuthManager.getSession(Utils.getCookies(req)[Conf.Session.CookieName]),
             );
 
-            //console.log(`Request to '~${context.req.url}': [Trace=${context.requestId}], [Identity=${context.session.user?.id}].`);
+            //console.log(`Request to '~${url}': [Trace=${context.requestId}], [Identity=${context.session.user?.id}].`);
+            const url = context.req.url.split("?")[0];
 
             if (_.methods[context.req.method]) {
                 if (Conf.Security.AddSecurityHeaders) _.applySecurityHeaders(context);
                 _.applyCustomHeaders(context);
 
-                if (context.req.url === "/" && Conf.Router.EnableDefaultRedirect) {
+                if (url === "/" && Conf.Router.EnableDefaultRedirect) {
                     context.redirect(Conf.Router.DefaultRoute);
                 }
-                else if (!context.req.url.startsWith(Conf.Static.RequestDirectory) || !Conf.Static.EnableStaticFileServer) {
-                    const route = Routes.find(item => item.path === context.req.url);
+                else if (!url.startsWith(Conf.Static.RequestDirectory) || !Conf.Static.EnableStaticFileServer) {
+                    const route = Routes.find(item => item.path === url);
 
                     if (route) {
                         if (route instanceof DirectoryRoute && context.req.method !== "GET") {
@@ -85,7 +86,7 @@ export default class HTTPServer {
                 else {
                     if (context.req.method !== "GET") return context.status(405).end();
 
-                    const path = Conf.Static.PhysicalDirectory + context.req.url.replace(Conf.Static.RequestDirectory, "");
+                    const path = Conf.Static.PhysicalDirectory + url.replace(Conf.Static.RequestDirectory, "");
                     let contentType: ContentType;
 
                     Object.keys(ContentType).forEach(item => {
@@ -102,6 +103,7 @@ export default class HTTPServer {
                             global[path] = data;
                         }
 
+                        context.header("Cache-Control", "private, max-age=86400;");
                         context.contentType(contentType);
                         context.end(global[path] ?? data);
                     }
@@ -136,6 +138,7 @@ export default class HTTPServer {
     private applyCustomTemplate(content: string) {
         return Mustache.render(content, {
             copyright: `Copyright &copy; ${new Date().getFullYear()} - Indev Corp!`,
+            cabu: global["cabu"] ?? ((global["cabu"] = Math.random()) && global["cabu"]),
         }, null, {
             escape: (str) => str,
         });
