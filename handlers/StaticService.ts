@@ -33,7 +33,7 @@ export default class StaticService {
                 global[path] = (await Terser.minify(data)).code; //eslint-disable-line
             }
 
-            context.header("Cache-Control", "private, max-age=86400;");
+            if (Conf.Static.EnableClientCaching) context.header("Cache-Control", "private, max-age=86400;");
             context.contentType(contentType);
             context.end(global[path] ?? data);
         }
