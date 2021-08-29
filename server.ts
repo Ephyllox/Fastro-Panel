@@ -118,6 +118,8 @@ export default class HTTPServer {
                 context.status(405).end();
             }
         }).listen(process.env.PORT || 1337);
+
+        if (!global["CABU-PERSIST"]) global["CABU-PERSIST"] = Math.random();
     }
 
     private applyCustomHeaders(context: RequestContext) {
@@ -138,7 +140,7 @@ export default class HTTPServer {
     private applyCustomTemplate(content: string) {
         return Mustache.render(content, {
             copyright: `Copyright &copy; ${new Date().getFullYear()} - Indev Corp!`,
-            cabu: global["cabu"] ?? ((global["cabu"] = Math.random()) && global["cabu"]),
+            cabu: global["CABU-PERSIST"],
         }, null, {
             escape: (str) => str,
         });
