@@ -1,4 +1,4 @@
-export type PageRouteData = {
+export type DirectoryRouteData = {
     path: string;
 
     directory: string;

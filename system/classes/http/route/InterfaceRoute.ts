@@ -1,13 +1,12 @@
 import { IRequestHandler, IRequestResult } from "../../../interfaces";
-import { APIRouteData } from "../../../types";
+import { InterfaceRouteData } from "../../../types";
 
+import Conf from "../../../utils/Configuration";
 import RequestContext from "../RequestContext";
 import Route from "./Route";
 
-import Conf from "../../../utils/Configuration";
-
-export default class InterfaceRoute extends Route implements APIRouteData, IRequestHandler {
-    constructor(options: APIRouteData) {
+export default class InterfaceRoute extends Route implements InterfaceRouteData, IRequestHandler {
+    constructor(options: InterfaceRouteData) {
         super({
             path: Conf.Router.APIDirectory + options.path,
             requiresLogin: options.requiresLogin,

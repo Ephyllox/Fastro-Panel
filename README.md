@@ -25,7 +25,7 @@ npm run build
 ```
 > Wait for completion, then...
 ```css
-node startup.js
+npm run start
 ```
 _Ensure that you've also got **TypeScript** installed._
 

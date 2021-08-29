@@ -1,12 +1,11 @@
 import * as HTTP from "http";
 
-import { IRequestResponder } from "../../interfaces";
 import { CookieOptions, ContentType } from "../../types";
 
 import Session from "../auth/objects/SessionObject";
 import CookieBuilder from "./CookieBuilder";
 
-export default class RequestContext implements IRequestResponder {
+export default class RequestContext {
     constructor({ req, res }, reqId: string, session: Session) {
         this.session = session;
         this.requestId = reqId;

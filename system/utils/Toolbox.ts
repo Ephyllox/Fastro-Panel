@@ -1,21 +1,23 @@
 import * as FS from "fs";
 import * as Crypto from "crypto";
 
-export default {
-    sha256: function (input) {
+export default abstract class Toolbox {
+    static sha256(input) {
         return Crypto.createHash("sha256").update(input).digest("hex");
-    },
-    random: function (len) {
-        let result = "";
-        const characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%()_+-/~\\", charactersLength = characters.length;
+    }
 
-        for (let i = 0; i < len; i++) {
+    static random(length, special = true) {
+        let result = "";
+        const characters = `abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789${special ? "!@#$%()_+-/~\\" : ""}`, charactersLength = characters.length;
+
+        for (let i = 0; i < length; i++) {
             result += characters.charAt(Math.floor(Math.random() * charactersLength));
         }
 
         return result;
-    },
-    getCookies: function (request) {
+    }
+
+    static getCookies(request) {
         const cookies = {};
         if (!request.headers.cookie) return cookies;
 
@@ -25,12 +27,13 @@ export default {
         });
 
         return cookies;
-    },
-    readFile: function (path) {
+    }
+
+    static readFile(path) {
         return new Promise<string>((resolve, reject) => {
             FS.readFile(`system/${path}`, "utf8", function (error, data) {
                 !error ? resolve(data.toString()) : reject();
             });
         });
-    },
+    }
 };

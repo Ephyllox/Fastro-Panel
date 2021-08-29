@@ -1,6 +1,6 @@
-import { IRequestResult } from "../../../interfaces";
+import { IRequestResult } from "../../../../interfaces";
 
-import RequestContext from "../RequestContext";
+import RequestContext from "../../RequestContext";
 
 export class StatusResult implements IRequestResult {
     constructor(status: number, content = "") {

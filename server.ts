@@ -1,6 +1,5 @@
 import * as HTTP from "http";
-import * as Obfuscator from "javascript-obfuscator";
-import * as Mustache from "mustache";
+import * as EJS from "ejs";
 
 import { randomUUID } from "crypto";
 
@@ -8,16 +7,21 @@ import { ContentType } from "./system/types";
 import { RequestContext, AuthManager, DirectoryRoute, InterfaceRoute } from "./system/classes";
 import { Routes } from "./system/httpserver";
 
+import StaticService from "./handlers/StaticService";
+import DynamicService from "./handlers/DynamicService";
+
 import Conf from "./system/utils/Configuration";
 import Utils from "./system/utils/Toolbox";
 
 export default class HTTPServer {
     constructor() {
-        this.preload();
-        this.listen();
+        this.init();
     }
 
-    private preload() {
+    private staticHandler: StaticService;
+    private dynamicHandler: DynamicService;
+
+    private init() {
         for (const route of Routes) {
             if (route instanceof InterfaceRoute) {
                 this.methods[route.method] = true;
@@ -26,12 +30,17 @@ export default class HTTPServer {
                 this.methods["GET"] = true;
             }
         }
+
+        this.staticHandler = new StaticService(this);
+        this.dynamicHandler = new DynamicService(this);
+
+        this.listen();
     }
 
     private listen() {
         const _ = this;
 
-        HTTP.createServer(async function (req, res) {
+        HTTP.createServer(function (req, res) {
             const context = new RequestContext({ req: req, res: res }, randomUUID(),
                 AuthManager.getSession(Utils.getCookies(req)[Conf.Session.CookieName]),
             );
@@ -47,70 +56,11 @@ export default class HTTPServer {
                     context.redirect(Conf.Router.DefaultRoute);
                 }
                 else if (!url.startsWith(Conf.Static.RequestDirectory) || !Conf.Static.EnableStaticFileServer) {
-                    const route = Routes.find(item => item.path === url);
-
-                    if (route) {
-                        if (route instanceof DirectoryRoute && context.req.method !== "GET") {
-                            return context.status(405).end();
-                        }
-                        else if (route instanceof InterfaceRoute && context.req.method !== route.method) {
-                            return context.status(405).end();
-                        }
-
-                        if (context.session?.isValid() || !route.requiresLogin) {
-                            if (route instanceof DirectoryRoute) {
-                                context.contentType(ContentType.HTML);
-
-                                if (context.session?.isValid() && route.redirectIfAuthorized) {
-                                    return context.redirect(route.redirectIfAuthorized);
-                                }
-                            }
-
-                            try {
-                                const action = await route.onRequest(context), result = await action.execute(context);
-                                context.end(result ? _.applyCustomTemplate(result) : "");
-                            }
-                            catch {
-                                console.log(`Dynamic resource exception from: ${context.requestId}.`);
-                                _.finalShrdTemplate(context, "pages/errors/server-error.html");
-                            }
-                        }
-                        else if (!context.session?.isValid()) {
-                            context.redirect(Conf.Router.DefaultRoute);
-                        }
-                    }
-                    else {
-                        _.finalShrdTemplate(context, "pages/errors/not-found.html");
-                    }
+                    _.dynamicHandler.process(context, url);
                 }
                 else {
                     if (context.req.method !== "GET") return context.status(405).end();
-
-                    const path = Conf.Static.PhysicalDirectory + url.replace(Conf.Static.RequestDirectory, "");
-                    let contentType: ContentType;
-
-                    Object.keys(ContentType).forEach(item => {
-                        if (path.endsWith(`.${item.toLowerCase()}`)) {
-                            contentType = ContentType[item];
-                        }
-                    });
-
-                    try {
-                        let data = await Utils.readFile(path);
-
-                        if (Conf.Static.EnableRuntimeObfuscation && contentType === ContentType.JS && !global[path]) {
-                            data = Obfuscator.obfuscate(data, Obfuscator.getOptionsByPreset("default")).getObfuscatedCode();
-                            global[path] = data;
-                        }
-
-                        context.header("Cache-Control", "private, max-age=86400;");
-                        context.contentType(contentType);
-                        context.end(global[path] ?? data);
-                    }
-                    catch {
-                        console.log(`Static resource exception from: ${context.requestId}.`);
-                        _.finalShrdTemplate(context, "pages/errors/server-error.html");
-                    }
+                    _.staticHandler.process(context, url);
                 }
             }
             else {
@@ -120,6 +70,24 @@ export default class HTTPServer {
         }).listen(process.env.PORT || 1337);
 
         if (!global["CABU-PERSIST"]) global["CABU-PERSIST"] = Math.random();
+    }
+
+    renderSharedTemplate(content: string) {
+        return EJS.render(content, {
+            copyright: `${new Date().getFullYear()} - Universe`,
+            cabu: global["CABU-PERSIST"],
+        });
+    }
+
+    async renderActionFailure(context: RequestContext, path: string) {
+        const data = await Utils.readFile(path);
+        context.contentType(ContentType.HTML);
+
+        context.end(
+            EJS.render(data, {
+                reqId: context.requestId,
+            })
+        );
     }
 
     private applyCustomHeaders(context: RequestContext) {
@@ -135,26 +103,6 @@ export default class HTTPServer {
         context.header("X-Frame-Options", "SAMEORIGIN");
         context.header("X-Permitted-Cross-Domain-Policies", "none");
         context.header("X-XSS-Protection", "0");
-    }
-
-    private applyCustomTemplate(content: string) {
-        return Mustache.render(content, {
-            copyright: `Copyright &copy; ${new Date().getFullYear()} - Indev Corp!`,
-            cabu: global["CABU-PERSIST"],
-        }, null, {
-            escape: (str) => str,
-        });
-    }
-
-    private async finalShrdTemplate(context: RequestContext, path: string) {
-        const data = await Utils.readFile(path);
-        context.contentType(ContentType.HTML);
-
-        context.end(
-            Mustache.render(data, {
-                reqId: context.requestId,
-            })
-        );
     }
 
     private methods = {};

@@ -47,7 +47,7 @@
                 <a class="mdl-navigation__link" href="panel"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">home</i>Home</a>
                 <a class="mdl-navigation__link" style="background-color: darkcyan;" href="updates"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">fact_check</i>Updates</a>
                 <div class="mdl-layout-spacer"></div>
-                <p style="padding-left: 15px;">{{copyright}}</p>
+                <p style="padding-left: 15px;">Copyright &copy; <%= copyright %></p>
             </nav>
         </div>
         <main class="mdl-layout__content mdl-color--grey-100">
@@ -93,6 +93,6 @@
         </main>
     </div>
     <script src="/content/vendors/js/material.js"></script>
-    <script src="/content/js/home/pages/main.js?_={{cabu}}"></script>
+    <script src="/content/js/home/pages/main.js?_=<%= cabu %>"></script>
 </body>
 </html>

@@ -1,21 +1,33 @@
 import { UserLogin, UserRole } from "../types";
 
-export default {
-    Router: {
+export default abstract class Configuration {
+    static Router = {
         EnableDefaultRedirect: true,
         DefaultRoute: "login",
         APIDirectory: "/api/",
-    },
-    Static: {
+    }
+
+    static Static = {
         EnableStaticFileServer: true,
         EnableRuntimeObfuscation: true,
         RequestDirectory: "/content/",
         PhysicalDirectory: "./wwwroot/",
-    },
-    Session: {
+        Integrated: {
+            ErrorFiles: {
+                NotFound: "pages/errors/not-found.html",
+                SvrError: "pages/errors/server-error.html",
+            },
+        },
+    }
+
+    static Session = {
         CookieName: "__|SITE::SECURITY",
-    },
-    Security: {
+        CookieLength: 256,
+        ValidityTime: 54e6,
+        SpecialCharacters: true,
+    }
+
+    static Security = {
         DefaultUsers: {
             "admin": {
                 id: 1,
@@ -28,5 +40,5 @@ export default {
             },
         } as { [name: string]: UserLogin },
         AddSecurityHeaders: true,
-    },
+    }
 };

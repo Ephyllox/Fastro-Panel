@@ -55,11 +55,13 @@
     <Content Include="package.json" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="handlers\" />
     <Folder Include="system\classes\" />
     <Folder Include="system\classes\auth\" />
     <Folder Include="system\classes\auth\objects\" />
     <Folder Include="system\classes\http\" />
     <Folder Include="system\classes\http\result\" />
+    <Folder Include="system\classes\http\result\status\" />
     <Folder Include="system\classes\http\route\" />
     <Folder Include="system\httpserver\routes\" />
     <Folder Include="system\httpserver\routes\api\" />
@@ -91,16 +93,18 @@
     <Folder Include="system\wwwroot\vendors\js\" />
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="handlers\DynamicService.ts" />
+    <TypeScriptCompile Include="handlers\StaticService.ts" />
     <TypeScriptCompile Include="startup.ts" />
     <TypeScriptCompile Include="system\classes\auth\AuthManager.ts" />
     <TypeScriptCompile Include="system\classes\auth\objects\SessionObject.ts" />
     <TypeScriptCompile Include="system\classes\auth\objects\UserObject.ts" />
     <TypeScriptCompile Include="system\classes\http\CookieBuilder.ts" />
     <TypeScriptCompile Include="system\classes\http\RequestContext.ts" />
-    <TypeScriptCompile Include="system\classes\http\result\2xxResult.ts" />
-    <TypeScriptCompile Include="system\classes\http\result\4xxResult.ts" />
+    <TypeScriptCompile Include="system\classes\http\result\status\2xxResult.ts" />
+    <TypeScriptCompile Include="system\classes\http\result\status\4xxResult.ts" />
     <TypeScriptCompile Include="system\classes\http\result\RedirectResult.ts" />
-    <TypeScriptCompile Include="system\classes\http\result\StatusResult.ts" />
+    <TypeScriptCompile Include="system\classes\http\result\status\StatusResult.ts" />
     <TypeScriptCompile Include="system\classes\http\route\InterfaceRoute.ts" />
     <TypeScriptCompile Include="system\classes\http\route\DirectoryRoute.ts" />
     <TypeScriptCompile Include="system\classes\http\route\Route.ts" />
@@ -109,9 +113,7 @@
     <TypeScriptCompile Include="system\httpserver\routes\api\Auth.ts" />
     <TypeScriptCompile Include="system\httpserver\routes\api\User.ts" />
     <TypeScriptCompile Include="system\httpserver\routes\dir\Login.ts" />
-    <TypeScriptCompile Include="system\httpserver\routes\dir\PanelUpdates.ts" />
-    <TypeScriptCompile Include="system\httpserver\routes\dir\PanelHome.ts" />
-    <TypeScriptCompile Include="system\interfaces\http\IRequestResponder.ts" />
+    <TypeScriptCompile Include="system\httpserver\routes\dir\Panel.ts" />
     <TypeScriptCompile Include="system\interfaces\http\IRequestHandler.ts" />
     <TypeScriptCompile Include="system\interfaces\http\IRequestResult.ts" />
     <TypeScriptCompile Include="system\interfaces\index.ts" />
@@ -119,8 +121,8 @@
     <TypeScriptCompile Include="system\types\http\ContentType.ts" />
     <TypeScriptCompile Include="system\types\http\CookieOptions.ts" />
     <TypeScriptCompile Include="system\classes\http\result\ViewResult.ts" />
-    <TypeScriptCompile Include="system\types\http\route\APIRouteData.ts" />
-    <TypeScriptCompile Include="system\types\http\route\PageRouteData.ts" />
+    <TypeScriptCompile Include="system\types\http\route\InterfaceRouteData.ts" />
+    <TypeScriptCompile Include="system\types\http\route\DirectoryRouteData.ts" />
     <TypeScriptCompile Include="system\types\http\route\RouteData.ts" />
     <TypeScriptCompile Include="system\types\index.ts" />
     <TypeScriptCompile Include="system\utils\Configuration.ts" />

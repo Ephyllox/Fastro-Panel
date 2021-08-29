@@ -1,4 +1,4 @@
-export type APIRouteData = {
+export type InterfaceRouteData = {
     path: string;
 
     method: string;
