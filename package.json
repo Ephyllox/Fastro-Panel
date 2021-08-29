@@ -2,11 +2,12 @@
   "name": "fastro",
   "version": "1.0.0",
   "description": "Fastro Panel",
-  "main": "server.js",
+  "main": "startup.js",
   "author": {
     "name": "Ephyllox"
   },
   "scripts": {
+    "start": "node startup.js",
     "build": "tsc --build",
     "clean": "tsc --build --clean"
   },

@@ -15,7 +15,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>b09a2711-6d9d-483e-bfde-5f09befa2684</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>server.ts</StartupFile>
+    <StartupFile>startup.ts</StartupFile>
     <StartWebBrowser>True</StartWebBrowser>
     <SearchPath>
     </SearchPath>
@@ -41,7 +41,7 @@
     <Content Include="system\wwwroot\js\errors\404.js" />
     <Content Include="system\wwwroot\js\home\pages\landing.js" />
     <Content Include="system\wwwroot\js\home\pages\main.js" />
-    <None Include="httpserver.ts" />
+    <None Include="server.ts" />
     <Content Include="system\pages\login.html" />
     <Content Include="system\pages\errors\not-found.html" />
     <Content Include="system\pages\panel.html" />
@@ -91,7 +91,7 @@
     <Folder Include="system\wwwroot\vendors\js\" />
   </ItemGroup>
   <ItemGroup>
-    <TypeScriptCompile Include="server.ts" />
+    <TypeScriptCompile Include="startup.ts" />
     <TypeScriptCompile Include="system\classes\auth\AuthManager.ts" />
     <TypeScriptCompile Include="system\classes\auth\objects\SessionObject.ts" />
     <TypeScriptCompile Include="system\classes\auth\objects\UserObject.ts" />
