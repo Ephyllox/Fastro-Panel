@@ -10,11 +10,13 @@ const sessions: Session[] = [];
 
 export default class AuthManager {
     static checkLogin(name, input) {
-        if (Conf.Security.DefaultUsers[name]?.password === input) {
-            const token = Utils.random(256);
+        const user = Conf.Security.DefaultUsers[name] ?? null;
+
+        if (user !== null && user.password === input) {
+            const token = Utils.random(Conf.Session.CookieLength, Conf.Session.SpecialCharacters);
 
             const date = new Date();
-            date.setTime(+date + 54e6);
+            date.setTime(+date + Conf.Session.ValidityTime);
 
             const user = new User(name, Conf.Security.DefaultUsers[name]);
             sessions[Utils.sha256(token)] = new Session(randomUUID(), user, date);
