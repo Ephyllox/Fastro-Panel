@@ -8,7 +8,7 @@ import HTTPServer from "../server";
 import Conf from "../system/utils/Configuration";
 import Utils from "../system/utils/Toolbox";
 
-export default class StaticResourceHandler {
+export default class StaticService {
     constructor(base: HTTPServer) {
         this.base = base;
     }

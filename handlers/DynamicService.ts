@@ -5,7 +5,7 @@ import { Routes } from "../system/httpserver";
 import HTTPServer from "../server";
 import Conf from "../system/utils/Configuration";
 
-export default class DynamicResourceHandler {
+export default class DynamicService {
     constructor(base: HTTPServer) {
         this.base = base;
     }

@@ -38,7 +38,7 @@ export default class HTTPServer {
     }
 
     private listen() {
-        const _ = this;
+        const _ = this; //eslint-disable-line
 
         HTTP.createServer(function (req, res) {
             const context = new RequestContext({ req: req, res: res }, randomUUID(),
