@@ -1,4 +1,4 @@
-import { CookieOptions, CookieFlags } from "../../types";
+import { CookieOptions, CookieFlags, CookieSitePolicy } from "../../types";
 
 export default class CookieBuilder {
     constructor(options: CookieOptions) {
@@ -6,6 +6,7 @@ export default class CookieBuilder {
         this.value = options.value;
         this.expires = options.expires;
         this.path = options.path;
+        this.samesite = options.samesite;
         this.flags = options.flags;
     }
 
@@ -16,6 +17,8 @@ export default class CookieBuilder {
     path: string;
 
     expires?: Date;
+
+    samesite?: CookieSitePolicy;
 
     flags?: CookieFlags[];
 
@@ -31,6 +34,7 @@ export default class CookieBuilder {
             )}`;
         }
 
+        if (this.samesite !== undefined) built += `samesite=${CookieSitePolicy[this.samesite].toLowerCase()};`;
         return built;
     }
 };

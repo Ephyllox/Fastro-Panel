@@ -1,7 +1,7 @@
 import { RequestContext } from "../../classes";
 import { CookieOptions, ContentType } from "../../types";
 
-export default interface IRequestResponder {
+export default interface RequestResponder {
     json(json: object);
 
     status(status: number): RequestContext;

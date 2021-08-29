@@ -1,6 +1,10 @@
 import * as FS from "fs";
+import * as Crypto from "crypto";
 
 export default {
+    sha256: function (input) {
+        return Crypto.createHash("sha256").update(input).digest("hex");
+    },
     random: function (len) {
         let result = "";
         const characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%()_+-/~\\", charactersLength = characters.length;

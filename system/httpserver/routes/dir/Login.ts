@@ -4,12 +4,13 @@ import { IRequestResult } from "../../../interfaces";
 export default class LoginDir extends DirectoryRoute {
     constructor() {
         super({
-            directory: "/login",
-            redirectIfAuthorized: "panel",
+            path: "/login",
+            directory: "pages/login.html",
+            redirectIfAuthorized: "/panel",
         });
     }
 
     async onRequest(context: RequestContext): Promise<IRequestResult> {
-        return new ViewResult("pages/login.html");
+        return new ViewResult(this.directory);
     }
 };

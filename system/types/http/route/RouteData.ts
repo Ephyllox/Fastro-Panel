@@ -1,7 +1,5 @@
-export type APIRouteData = {
+export type RouteData = {
     path: string;
-
-    method: string;
 
     requiresLogin?: boolean;
 };

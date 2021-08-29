@@ -14,15 +14,8 @@ $("#login").submit(function () {
             },
             error: function (err) {
                 $("#sendlogin").removeAttr("disabled");
-
-                if (err.status === 400) {
-                    $("#error").html("Error - you must enter valid credentials.");
-                }
-                else if (err.status === 401) {
-                    $("#error").html("Error - name or password is incorrect.");
-                }
-
-                $("#error").show();
+                $("#error").html(`Error - ${err.responseText}`);
+                $("#error").hide().fadeIn();
             },
             success: function () {
                 window.location.reload();

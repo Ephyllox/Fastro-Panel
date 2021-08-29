@@ -1,7 +1,7 @@
 import { randomUUID } from "crypto";
 
 import { User, Session } from "../";
-import { CookieOptions, CookieFlags } from "../../types";
+import { CookieOptions, CookieFlags, CookieSitePolicy } from "../../types";
 
 import Conf from "../../utils/Configuration";
 import Utils from "../../utils/Toolbox";
@@ -17,13 +17,14 @@ export default class AuthManager {
             date.setTime(+date + 54e6);
 
             const user = new User(name, Conf.Security.DefaultUsers[name]);
-            sessions[token] = new Session(randomUUID(), user, date);
+            sessions[Utils.sha256(token)] = new Session(randomUUID(), user, date);
 
             return {
-                name: "__|SITE::SECURITY",
+                name: Conf.Session.CookieName,
                 value: token,
                 path: "/",
                 expires: date,
+                samesite: CookieSitePolicy.STRICT,
                 flags: [
                     CookieFlags.HTTPONLY,
                 ],
@@ -35,6 +36,11 @@ export default class AuthManager {
     }
 
     static getSession(input): Session {
-        return sessions[input] || new Session(null, null, null);
+        try {
+            return sessions[Utils.sha256(input)] || new Session();
+        }
+        catch {
+            return new Session();
+        }
     }
 };

@@ -3,7 +3,7 @@ import { UserRole } from "../../../types";
 import User from "./UserObject";
 
 export default class Session {
-    constructor(id: string, user: User, expiry: Date) {
+    constructor(id?: string, user?: User, expiry?: Date) {
         this.id = id;
         this.user = user;
         this.expiry = expiry;

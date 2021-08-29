@@ -4,9 +4,10 @@
   "description": "Fastro Panel",
   "main": "startup.js",
   "author": {
-    "name": "Alexi Marsalve"
+    "name": "Ephyllox"
   },
   "scripts": {
+    "start": "node startup.js",
     "build": "tsc --build",
     "clean": "tsc --build --clean"
   },

@@ -4,7 +4,7 @@ import { IRequestResult } from "../../../interfaces";
 export default class UserAPI extends InterfaceRoute {
     constructor() {
         super({
-            endpoint: "identity",
+            path: "identity",
             method: "POST",
             requiresLogin: true,
         });

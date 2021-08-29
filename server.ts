@@ -33,8 +33,10 @@ export default class HTTPServer {
 
         HTTP.createServer(async function (req, res) {
             const context = new RequestContext({ req: req, res: res }, randomUUID(),
-                AuthManager.getSession(Utils.getCookies(req)["__|SITE::SECURITY"]),
+                AuthManager.getSession(Utils.getCookies(req)[Conf.Session.CookieName]),
             );
+
+            //console.log(`Request to '~${context.req.url}': [Trace=${context.requestId}], [Identity=${context.session.user?.id}].`);
 
             if (_.methods[context.req.method]) {
                 if (Conf.Security.AddSecurityHeaders) _.applySecurityHeaders(context);
@@ -44,8 +46,7 @@ export default class HTTPServer {
                     context.redirect(Conf.Router.DefaultRoute);
                 }
                 else if (!context.req.url.startsWith(Conf.Static.RequestDirectory) || !Conf.Static.EnableStaticFileServer) {
-                    const route = Routes.find(item => (item instanceof InterfaceRoute && item.endpoint === context.req.url)
-                        || (item instanceof DirectoryRoute && item.directory === context.req.url));
+                    const route = Routes.find(item => item.path === context.req.url);
 
                     if (route) {
                         if (route instanceof DirectoryRoute && context.req.method !== "GET") {
@@ -66,11 +67,11 @@ export default class HTTPServer {
 
                             try {
                                 const action = await route.onRequest(context), result = await action.execute(context);
-                                context.end(result ?? "");
+                                context.end(result ? _.applyCustomTemplate(result) : "");
                             }
-                            catch (e) {
-                                _.shrdTemplate(context, "pages/errors/server-error.html");
-                                console.log(e);
+                            catch {
+                                console.log(`Dynamic resource exception from: ${context.requestId}.`);
+                                _.finalShrdTemplate(context, "pages/errors/server-error.html");
                             }
                         }
                         else if (!context.session?.isValid()) {
@@ -78,7 +79,7 @@ export default class HTTPServer {
                         }
                     }
                     else {
-                        _.shrdTemplate(context, "pages/errors/not-found.html");
+                        _.finalShrdTemplate(context, "pages/errors/not-found.html");
                     }
                 }
                 else {
@@ -105,11 +106,13 @@ export default class HTTPServer {
                         context.end(global[path] ?? data);
                     }
                     catch {
-                        _.shrdTemplate(context, "pages/errors/server-error.html");
+                        console.log(`Static resource exception from: ${context.requestId}.`);
+                        _.finalShrdTemplate(context, "pages/errors/server-error.html");
                     }
                 }
             }
             else {
+                console.log(`Forbidden method requested from: ${context.requestId}.`);
                 context.status(405).end();
             }
         }).listen(process.env.PORT || 1337);
@@ -130,7 +133,15 @@ export default class HTTPServer {
         context.header("X-XSS-Protection", "0");
     }
 
-    private async shrdTemplate(context: RequestContext, path: string) {
+    private applyCustomTemplate(content: string) {
+        return Mustache.render(content, {
+            copyright: `Copyright &copy; ${new Date().getFullYear()} - Indev Corp!`,
+        }, null, {
+            escape: (str) => str,
+        });
+    }
+
+    private async finalShrdTemplate(context: RequestContext, path: string) {
         const data = await Utils.readFile(path);
         context.contentType(ContentType.HTML);
 

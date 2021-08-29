@@ -2,11 +2,10 @@ export { default as AuthManager } from "./auth/AuthManager";
 export { default as Session } from "./auth/objects/SessionObject";
 export { default as User } from "./auth/objects/UserObject";
 
-export { default as OkResult } from "./http/result/OkResult";
+export { OkResult } from "./http/result/2xxResult";
+export { BadRequestResult, UnauthorizedResult } from "./http/result/4xxResult";
 export { default as ViewResult } from "./http/result/ViewResult";
 export { default as RedirectResult } from "./http/result/RedirectResult";
-export { default as BadRequestResult } from "./http/result/BadRequestResult";
-export { default as UnauthorizedResult } from "./http/result/UnauthorizedResult";
 
 export { default as InterfaceRoute } from "./http/route/InterfaceRoute";
 export { default as DirectoryRoute } from "./http/route/DirectoryRoute";

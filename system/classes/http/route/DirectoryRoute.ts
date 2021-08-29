@@ -2,17 +2,20 @@ import { IRequestHandler, IRequestResult } from "../../../interfaces";
 import { PageRouteData } from "../../../types";
 
 import RequestContext from "../RequestContext";
+import Route from "./Route";
 
-export default class DirectoryRoute implements PageRouteData, IRequestHandler {
+export default class DirectoryRoute extends Route implements PageRouteData, IRequestHandler {
     constructor(options: PageRouteData) {
+        super({
+            path: options.path,
+            requiresLogin: options.requiresLogin,
+        });
+
         this.directory = options.directory;
-        this.requiresLogin = options.requiresLogin;
         this.redirectIfAuthorized = options.redirectIfAuthorized;
     }
 
     directory: string;
-
-    requiresLogin?: boolean;
 
     redirectIfAuthorized?: string;
 

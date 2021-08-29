@@ -4,7 +4,7 @@ import { IRequestResult } from "../../../interfaces";
 export class LoginAPI extends InterfaceRoute {
     constructor() {
         super({
-            endpoint: "validate-login",
+            path: "validate-login",
             method: "POST",
         });
     }
@@ -17,11 +17,11 @@ export class LoginAPI extends InterfaceRoute {
                 context.cookie(validation);
             }
             else {
-                return new UnauthorizedResult();
+                return new UnauthorizedResult("Incorrect credentials submitted.");
             }
         }
         else {
-            return new BadRequestResult();
+            return new BadRequestResult("You must enter valid credentials.");
         }
 
         return new OkResult();
@@ -31,7 +31,7 @@ export class LoginAPI extends InterfaceRoute {
 export class LogoutAPI extends InterfaceRoute {
     constructor() {
         super({
-            endpoint: "logout",
+            path: "logout",
             method: "POST",
             requiresLogin: true,
         });

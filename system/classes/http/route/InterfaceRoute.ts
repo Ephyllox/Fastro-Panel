@@ -2,19 +2,21 @@ import { IRequestHandler, IRequestResult } from "../../../interfaces";
 import { APIRouteData } from "../../../types";
 
 import RequestContext from "../RequestContext";
+import Route from "./Route";
 
-export default class InterfaceRoute implements APIRouteData, IRequestHandler {
+import Conf from "../../../utils/Configuration";
+
+export default class InterfaceRoute extends Route implements APIRouteData, IRequestHandler {
     constructor(options: APIRouteData) {
+        super({
+            path: Conf.Router.APIDirectory + options.path,
+            requiresLogin: options.requiresLogin,
+        });
+
         this.method = options.method;
-        this.endpoint = `/api/${options.endpoint}`;
-        this.requiresLogin = options.requiresLogin;
     }
 
     method: string;
-
-    endpoint: string;
-
-    requiresLogin?: boolean;
 
     async onRequest(context: RequestContext): Promise<IRequestResult> {
         return;
