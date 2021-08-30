@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Fastro Panel",
   "main": "startup.js",
-  "license": "GPL-3",
+  "license": "GPL-3.0",
   "repository": {
     "url": "https://github.com/Ephyllox/Fastro-Panel"
   },
