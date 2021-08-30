@@ -4,8 +4,8 @@ import { ContentType } from "../system/types";
 import { Routes } from "../system/httpserver";
 
 import HTTPServer from "../server";
-import Conf from "../system/utils/Configuration";
 import InputHandler from "../system/classes/http/route/input/InputHandler";
+import Conf from "../system/utils/Configuration";
 
 export default class DynamicService implements IServiceHandler {
     constructor(base: HTTPServer) {

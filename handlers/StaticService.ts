@@ -29,8 +29,11 @@ export default class StaticService implements IServiceHandler {
         try {
             let data = await Utils.readFile(path);
 
-            if (Conf.Static.EnableRuntimeObfuscation && contentType === ContentType.JS && !global[path]) {
-                data = Obfuscator.obfuscate(data, Obfuscator.getOptionsByPreset("default")).getObfuscatedCode();
+            if (contentType === ContentType.JS && !global[path]) {
+                if (Conf.Static.EnableRuntimeObfuscation) {
+                    data = Obfuscator.obfuscate(data, Obfuscator.getOptionsByPreset("default")).getObfuscatedCode();
+                }
+
                 global[path] = (await Terser.minify(data)).code; //eslint-disable-line
             }
 
