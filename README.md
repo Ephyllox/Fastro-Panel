@@ -30,4 +30,4 @@ npm run start
 _Ensure that you've also got **TypeScript** installed._
 
 ### License
-_Free software - no license._
+_Read LICENSE for details._
