@@ -1,4 +1,4 @@
-import { InterfaceRoute, DirectoryRoute } from "../classes";
+import { Route } from "../classes";
 
 //API Imports
 import { LoginAPI, LogoutAPI } from "./routes/api/Auth";
@@ -7,7 +7,7 @@ import UserAPI from "./routes/api/User";
 import LoginDir from "./routes/dir/Login";
 import { PanelHomeDir, PanelUpdatesDir } from "./routes/dir/Panel";
 
-export const Routes: (InterfaceRoute | DirectoryRoute)[] = [
+export const Routes: Route[] = [
     //APIs
     new LoginAPI(),
     new LogoutAPI(),

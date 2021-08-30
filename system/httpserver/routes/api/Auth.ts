@@ -6,12 +6,13 @@ export class LoginAPI extends InterfaceRoute {
         super({
             path: "validate-login",
             method: "POST",
+            body: true,
         });
     }
 
     async onRequest(context: RequestContext): Promise<IRequestResult> {
-        if (context.req.headers["username"]) {
-            const validation = AuthManager.checkLogin(context.req.headers["username"], context.req.headers["password"]);
+        if (context.input.body["username"]) {
+            const validation = AuthManager.checkLogin(context.input.body["username"], context.input.body["password"]);
 
             if (validation) {
                 context.cookie(validation);
@@ -19,12 +20,12 @@ export class LoginAPI extends InterfaceRoute {
             else {
                 return new UnauthorizedResult("Incorrect credentials submitted.");
             }
+
+            return new OkResult();
         }
         else {
-            return new BadRequestResult("You must enter valid credentials.");
+            return new BadRequestResult("You must provide valid credentials.");
         }
-
-        return new OkResult();
     }
 };
 

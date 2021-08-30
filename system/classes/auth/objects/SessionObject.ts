@@ -31,7 +31,7 @@ export default class Session {
             UserId: this.user.id,
             SessionId: this.id,
             Permissions: this.user.perms?.roles.map(
-                item => UserRole[item].toString()
+                item => UserRole[item] as string
             ),
         });
     }

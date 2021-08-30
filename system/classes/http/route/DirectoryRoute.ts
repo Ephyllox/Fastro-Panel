@@ -1,14 +1,14 @@
-import { IRequestHandler, IRequestResult } from "../../../interfaces";
 import { DirectoryRouteData } from "../../../types";
 
-import RequestContext from "../RequestContext";
 import Route from "./Route";
 
-export default class DirectoryRoute extends Route implements DirectoryRouteData, IRequestHandler {
+export default class DirectoryRoute extends Route implements DirectoryRouteData {
     constructor(options: DirectoryRouteData) {
         super({
             path: options.path,
             requiresLogin: options.requiresLogin,
+            body: options.body,
+            query: options.query,
         });
 
         this.directory = options.directory;
@@ -18,8 +18,4 @@ export default class DirectoryRoute extends Route implements DirectoryRouteData,
     directory: string;
 
     redirectIfAuthorized?: string;
-
-    async onRequest(context: RequestContext): Promise<IRequestResult> {
-        return;
-    }
 };

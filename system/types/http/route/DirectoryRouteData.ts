@@ -1,3 +1,5 @@
+import { QueryOptions } from "./input/InputOptions";
+
 export type DirectoryRouteData = {
     path: string;
 
@@ -6,4 +8,8 @@ export type DirectoryRouteData = {
     requiresLogin?: boolean;
 
     redirectIfAuthorized?: string;
+
+    query?: QueryOptions[];
+
+    body?: boolean;
 };

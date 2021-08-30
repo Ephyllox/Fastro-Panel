@@ -11,6 +11,7 @@ export { default as RedirectResult } from "./http/result/RedirectResult";
 
 export { default as InterfaceRoute } from "./http/route/InterfaceRoute";
 export { default as DirectoryRoute } from "./http/route/DirectoryRoute";
+export { default as Route } from "./http/route/Route";
 
 export { default as CookieBuilder } from "./http/CookieBuilder";
 export { default as RequestContext } from "./http/RequestContext";

@@ -5,21 +5,17 @@ $("#login").submit(function () {
     if (username && password && !$("#sendlogin").attr("disabled")) {
         $("#sendlogin").attr("disabled", "disabled");
 
-        $.ajax({
-            url: "/api/validate-login",
-            type: "post",
-            headers: {
-                "Username": username,
-                "Password": password,
-            },
-            error: function (err) {
-                $("#sendlogin").removeAttr("disabled");
-                $("#error").html(`Error - ${err.responseText}`);
-                $("#error").hide().fadeIn();
-            },
-            success: function () {
-                window.location.reload();
-            },
+        $.post("/api/validate-login",
+            JSON.stringify({
+                username: username,
+                password: password,
+            })
+        ).done(function () {
+            window.location.reload();
+        }).fail(function (err) {
+            $("#sendlogin").removeAttr("disabled");
+            $("#error").html(`Error - ${err.responseText}`);
+            $("#error").hide().fadeIn();
         });
     }
 

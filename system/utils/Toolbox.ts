@@ -32,7 +32,7 @@ export default abstract class Toolbox {
     static readFile(path) {
         return new Promise<string>((resolve, reject) => {
             FS.readFile(`system/${path}`, "utf8", function (error, data) {
-                !error ? resolve(data.toString()) : reject();
+                !error ? resolve(data as string) : reject();
             });
         });
     }

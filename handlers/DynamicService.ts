@@ -1,16 +1,18 @@
 import { DirectoryRoute, InterfaceRoute, RequestContext } from "../system/classes";
+import { IServiceHandler } from "../system/interfaces";
 import { ContentType } from "../system/types";
 import { Routes } from "../system/httpserver";
 
 import HTTPServer from "../server";
 import Conf from "../system/utils/Configuration";
+import InputHandler from "../system/classes/http/route/input/InputHandler";
 
-export default class DynamicService {
+export default class DynamicService implements IServiceHandler {
     constructor(base: HTTPServer) {
         this.base = base;
     }
 
-    private base: HTTPServer;
+    base: HTTPServer;
 
     async process(context: RequestContext, url: string) {
         const route = Routes.find(item => item.path === url);
@@ -32,16 +34,25 @@ export default class DynamicService {
                     }
                 }
 
-                try {
-                    const action = await route.onRequest(context), result = await action.execute(context);
-                    context.end(result ? this.base.renderSharedTemplate(result) : "");
+                if (await InputHandler.handle(context, route)) {
+                    try {
+                        const action = await route.onRequest(context), result = await action.execute(context);
+                        context.end(result ? this.base.renderSharedTemplate(result) : "");
+                    }
+                    catch {
+                        console.log(`Directory/Interface resource exception from: ${context.requestId}.`);
+                        this.base.renderActionFailure(context, Conf.Static.Integrated.ErrorFiles.SvrError);
+                    }
                 }
-                catch {
-                    console.log(`Directory/Interface resource exception from: ${context.requestId}.`);
-                    this.base.renderActionFailure(context, Conf.Static.Integrated.ErrorFiles.SvrError);
+                else {
+                    context.status(400).end("Invalid data submitted.");
                 }
             }
             else if (!context.session?.isValid()) {
+                if (route instanceof InterfaceRoute) {
+                    return context.status(401).end();
+                }
+
                 context.redirect(Conf.Router.DefaultRoute);
             }
         }

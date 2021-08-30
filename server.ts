@@ -3,8 +3,9 @@ import * as EJS from "ejs";
 
 import { randomUUID } from "crypto";
 
-import { ContentType } from "./system/types";
 import { RequestContext, AuthManager, DirectoryRoute, InterfaceRoute } from "./system/classes";
+import { IServiceHandler } from "./system/interfaces";
+import { ContentType } from "./system/types";
 import { Routes } from "./system/httpserver";
 
 import StaticService from "./handlers/StaticService";
@@ -18,8 +19,8 @@ export default class HTTPServer {
         this.init();
     }
 
-    private staticHandler: StaticService;
-    private dynamicHandler: DynamicService;
+    private staticHandler: IServiceHandler;
+    private dynamicHandler: IServiceHandler;
 
     private init() {
         for (const route of Routes) {
@@ -95,7 +96,7 @@ export default class HTTPServer {
     }
 
     private applySecurityHeaders(context: RequestContext) {
-        context.header("Content-Security-Policy", "block-all-mixed-content; upgrade-insecure-requests;");
+        context.header("Content-Security-Policy", "block-all-mixed-content;");
         context.header("Referrer-Policy", "no-referrer");
         context.header("Strict-Transport-Security", "max-age: 15552000; includeSubDomains; preload;");
         context.header("X-Content-Type-Options", "nosniff");

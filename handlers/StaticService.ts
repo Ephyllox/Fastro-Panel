@@ -2,18 +2,19 @@ import * as Obfuscator from "javascript-obfuscator";
 import * as Terser from "terser";
 
 import { RequestContext } from "../system/classes";
+import { IServiceHandler } from "../system/interfaces";
 import { ContentType } from "../system/types";
 
 import HTTPServer from "../server";
 import Conf from "../system/utils/Configuration";
 import Utils from "../system/utils/Toolbox";
 
-export default class StaticService {
+export default class StaticService implements IServiceHandler {
     constructor(base: HTTPServer) {
         this.base = base;
     }
 
-    private base: HTTPServer;
+    base: HTTPServer;
 
     async process(context: RequestContext, url: string) {
         const path = Conf.Static.PhysicalDirectory + url.replace(Conf.Static.RequestDirectory, "");

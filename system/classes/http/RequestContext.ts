@@ -1,6 +1,6 @@
 import * as HTTP from "http";
 
-import { CookieOptions, ContentType } from "../../types";
+import { CookieOptions, ContentType, InputTypes } from "../../types";
 
 import Session from "../auth/objects/SessionObject";
 import CookieBuilder from "./CookieBuilder";
@@ -16,6 +16,8 @@ export default class RequestContext {
     public requestId: string;
 
     public session: Session;
+
+    public input: InputTypes;
 
     public req: HTTP.IncomingMessage;
 
