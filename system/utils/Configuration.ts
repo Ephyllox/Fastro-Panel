@@ -9,7 +9,7 @@ export default abstract class Configuration {
 
     static Static = {
         EnableStaticFileServer: true,
-        EnableRuntimeObfuscation: true,
+        EnableRuntimeObfuscation: false,
         EnableClientCaching: true,
         RequestDirectory: "/content/",
         PhysicalDirectory: "./wwwroot/",
@@ -25,7 +25,7 @@ export default abstract class Configuration {
         CookieName: "__|SITE::SECURITY",
         CookieLength: 256,
         ValidityTime: 54e6,
-        SpecialCharacters: true,
+        SpecialCharacters: false,
     }
 
     static Security = {
