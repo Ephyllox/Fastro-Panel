@@ -3,13 +3,13 @@ import * as EJS from "ejs";
 
 import { randomUUID } from "crypto";
 
-import { RequestContext, AuthManager, DirectoryRoute, InterfaceRoute } from "./system/classes";
-import { IServiceHandler } from "./system/interfaces";
-import { ContentType } from "./system/types";
-import { Routes } from "./system/httpserver";
+import { RequestContext, AuthManager, DirectoryRoute, InterfaceRoute } from "./system/http-service/_classes";
+import { IHttpServiceHandler } from "./system/http-service/_interfaces";
+import { ContentType } from "./system/http-service/_types";
+import { Routes } from "./system/http-service/data/routes";
 
-import StaticService from "./handlers/StaticService";
-import DynamicService from "./handlers/DynamicService";
+import StaticService from "./handlers/http-service/StaticService";
+import DynamicService from "./handlers/http-service/DynamicService";
 
 import Conf from "./system/utils/Configuration";
 import Utils from "./system/utils/Toolbox";
@@ -19,8 +19,8 @@ export default class HTTPServer {
         this.init();
     }
 
-    private staticHandler: IServiceHandler;
-    private dynamicHandler: IServiceHandler;
+    private staticHandler: IHttpServiceHandler;
+    private dynamicHandler: IHttpServiceHandler;
 
     private init() {
         for (const route of Routes) {
@@ -81,7 +81,7 @@ export default class HTTPServer {
     }
 
     async renderActionFailure(context: RequestContext, path: string) {
-        const data = await Utils.readFile(path);
+        const data = await Utils.readFile(Conf.Static.Integrated.FileDirectory + path);
         context.contentType(ContentType.HTML);
 
         context.end(

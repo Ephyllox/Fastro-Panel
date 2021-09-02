@@ -1,4 +1,4 @@
-import { UserLogin, UserRole } from "../types";
+import { UserLogin, UserRole } from "../http-service/_types";
 
 export default abstract class Configuration {
     static Router = {
@@ -14,6 +14,7 @@ export default abstract class Configuration {
         RequestDirectory: "/content/",
         PhysicalDirectory: "./wwwroot/",
         Integrated: {
+            FileDirectory: "http-service/data/",
             ErrorFiles: {
                 NotFound: "pages/errors/not-found.html",
                 SvrError: "pages/errors/server-error.html",

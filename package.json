@@ -28,6 +28,7 @@
     "javascript-obfuscator": "^2.19.0",
     "secure-json-parse": "^2.4.0",
     "terser": "^5.7.2",
+    "ws": "^8.2.1",
     "xss": "^1.0.9"
   }
 }
