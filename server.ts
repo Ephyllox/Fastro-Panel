@@ -53,7 +53,6 @@ export default class HTTPServer {
                 AuthManager.getSession(Utils.getCookies(req)[Conf.Session.CookieName]),
             );
 
-            //console.log(`Request to '~${url}': [Trace=${context.requestId}], [Identity=${context.session.user?.id}].`);
             const url = context.req.url.split("?")[0];
 
             if (_.methods[context.req.method]) {
