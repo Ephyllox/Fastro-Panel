@@ -22,6 +22,10 @@ export default abstract class Configuration {
         },
     }
 
+    static Websocket = {
+        EnableWebsocket: true,
+    }
+
     static Session = {
         CookieName: "__|SITE::SECURITY",
         CookieLength: 256,

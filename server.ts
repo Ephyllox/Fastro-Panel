@@ -16,13 +16,14 @@ import Utils from "./system/utils/Toolbox";
 
 export default class HTTPServer {
     constructor() {
-        this.init();
+        if (Conf.Websocket.EnableWebsocket) this.initWS();
+        this.initHTTP();
     }
 
     private staticHandler: IHttpServiceHandler;
     private dynamicHandler: IHttpServiceHandler;
 
-    private init() {
+    private initHTTP() {
         for (const route of Routes) {
             if (route instanceof InterfaceRoute) {
                 this.methods[route.method] = true;
@@ -35,10 +36,16 @@ export default class HTTPServer {
         this.staticHandler = new StaticService(this);
         this.dynamicHandler = new DynamicService(this);
 
-        this.listen();
+        this.listenHTTP();
     }
 
-    private listen() {
+    private initWS() {
+
+
+        this.listenWS();
+    }
+
+    private listenHTTP() {
         const _ = this; //eslint-disable-line
 
         HTTP.createServer(function (req, res) {
@@ -71,6 +78,10 @@ export default class HTTPServer {
         }).listen(process.env.PORT || 1337);
 
         if (!global["CABU-PERSIST"]) global["CABU-PERSIST"] = Math.random();
+    }
+
+    private listenWS() {
+
     }
 
     renderSharedTemplate(content: string) {

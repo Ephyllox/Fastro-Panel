@@ -69,6 +69,7 @@
     <Folder Include="system\http-service\_classes\auth\" />
     <Folder Include="system\http-service\_classes\auth\objects\" />
     <Folder Include="system\http-service\_classes\http\" />
+    <Folder Include="system\http-service\_classes\http\models\" />
     <Folder Include="system\http-service\_classes\http\result\" />
     <Folder Include="system\http-service\_classes\http\result\status\" />
     <Folder Include="system\http-service\_classes\http\route\" />
@@ -83,6 +84,10 @@
     <Folder Include="system\http-service\_types\http\route\input\" />
     <Folder Include="system\ws-service\" />
     <Folder Include="system\utils\" />
+    <Folder Include="system\ws-service\data\" />
+    <Folder Include="system\ws-service\_types\" />
+    <Folder Include="system\ws-service\_interfaces\" />
+    <Folder Include="system\ws-service\_classes\" />
     <Folder Include="system\wwwroot\" />
     <Folder Include="system\wwwroot\css\" />
     <Folder Include="system\wwwroot\css\home\" />
