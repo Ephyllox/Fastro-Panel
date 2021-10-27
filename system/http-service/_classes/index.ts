@@ -6,6 +6,7 @@ export { default as User } from "./auth/objects/UserObject";
 export { OkResult } from "./http/result/status/2xxResult";
 export { BadRequestResult, UnauthorizedResult } from "./http/result/status/4xxResult";
 
+export { default as JsonResult } from "./http/result/JsonResult";
 export { default as ViewResult } from "./http/result/ViewResult";
 export { default as RedirectResult } from "./http/result/RedirectResult";
 

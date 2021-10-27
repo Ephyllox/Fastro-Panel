@@ -25,14 +25,14 @@ export default class Session {
         this.invalid = true;
     }
 
-    public toJSON() {
-        return JSON.stringify({
+    public parse() {
+        return {
             Name: this.user.name,
             UserId: this.user.id,
             SessionId: this.id,
             Permissions: this.user.perms?.roles.map(
                 item => UserRole[item] as string
             ),
-        });
+        };
     }
 };

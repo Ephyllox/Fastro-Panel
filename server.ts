@@ -1,5 +1,6 @@
 import * as HTTP from "http";
 import * as EJS from "ejs";
+import * as WS from "ws";
 
 import { randomUUID } from "crypto";
 
@@ -17,6 +18,7 @@ import Utils from "./system/utils/Toolbox";
 export default class HTTPServer {
     constructor() {
         if (Conf.Websocket.EnableWebsocket) this.initWS();
+
         this.initHTTP();
     }
 
@@ -40,7 +42,7 @@ export default class HTTPServer {
     }
 
     private initWS() {
-
+        
 
         this.listenWS();
     }
@@ -67,16 +69,18 @@ export default class HTTPServer {
                 }
                 else {
                     if (context.req.method !== "GET") return context.status(405).end();
+
                     _.staticHandler.process(context, url);
                 }
             }
             else {
                 console.log(`Forbidden method requested from: ${context.requestId}.`);
+
                 context.status(405).end();
             }
         }).listen(process.env.PORT || 1337);
 
-        if (!global["CABU-PERSIST"]) global["CABU-PERSIST"] = Math.random();
+        if (!global["CABU-PERSIST"]) global["CABU-PERSIST"] = Utils.nonce();
     }
 
     private listenWS() {
@@ -92,6 +96,7 @@ export default class HTTPServer {
 
     async renderActionFailure(context: RequestContext, path: string) {
         const data = await Utils.readFile(Conf.Static.Integrated.FileDirectory + path);
+
         context.contentType(ContentType.HTML);
 
         context.end(

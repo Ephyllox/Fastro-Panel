@@ -1,4 +1,4 @@
-import { InterfaceRoute, OkResult, RequestContext } from "../../../../http-service/_classes";
+import { InterfaceRoute, JsonResult, RequestContext } from "../../../../http-service/_classes";
 import { IRequestResult } from "../../../../http-service/_interfaces";
 
 export default class UserAPI extends InterfaceRoute {
@@ -11,6 +11,6 @@ export default class UserAPI extends InterfaceRoute {
     }
 
     async onRequest(context: RequestContext): Promise<IRequestResult> {
-        return new OkResult(context.session.toJSON());
+        return new JsonResult(context.session.parse());
     }
 };

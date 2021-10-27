@@ -9,7 +9,6 @@ export default abstract class Configuration {
 
     static Static = {
         EnableStaticFileServer: true,
-        EnableRuntimeObfuscation: false,
         EnableClientCaching: true,
         RequestDirectory: "/content/",
         PhysicalDirectory: "./wwwroot/",

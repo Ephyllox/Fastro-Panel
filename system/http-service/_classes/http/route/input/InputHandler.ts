@@ -1,5 +1,4 @@
 import * as URL from "url";
-import * as BodyReader from "body-reader";
 
 import RequestContext from "../../RequestContext";
 import Route from "../Route";
@@ -22,15 +21,33 @@ export default abstract class InputHandler {
 
             if (route.body) {
                 const body: object = await new Promise((resolve, reject) => {
-                    BodyReader.Json.read(context.req, function (result) {
-                        result.match({
-                            Ok(body) {
-                                resolve(body);
-                            },
-                            Err() {
-                                reject();
-                            },
-                        });
+                    const rx = context.req, length = parseInt(rx.headers["content-length"] ?? "0");
+                    const buf: Buffer[] = [];
+
+                    if (length === 0) {
+                        return resolve({});
+                    }
+
+                    rx.on("data", function (chunk) {
+                        const bodyChunk = Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk);
+                        buf.push(bodyChunk);
+                    });
+
+                    rx.on("end", function () {
+                        const concatenated = Buffer.concat(buf).toString("utf-8");
+
+                        try {
+                            resolve(JSON.parse(concatenated));
+                        }
+                        catch {
+                            reject();
+                        }
+                    });
+
+                    rx.on("error", function () {
+                        rx.pause();
+                        rx.unpipe();
+                        reject();
                     });
                 });
 

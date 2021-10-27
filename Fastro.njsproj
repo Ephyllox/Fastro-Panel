@@ -69,7 +69,6 @@
     <Folder Include="system\http-service\_classes\auth\" />
     <Folder Include="system\http-service\_classes\auth\objects\" />
     <Folder Include="system\http-service\_classes\http\" />
-    <Folder Include="system\http-service\_classes\http\models\" />
     <Folder Include="system\http-service\_classes\http\result\" />
     <Folder Include="system\http-service\_classes\http\result\status\" />
     <Folder Include="system\http-service\_classes\http\route\" />
@@ -118,6 +117,9 @@
     <TypeScriptCompile Include="system\http-service\_classes\auth\objects\UserObject.ts" />
     <TypeScriptCompile Include="system\http-service\_classes\http\CookieBuilder.ts" />
     <TypeScriptCompile Include="system\http-service\_classes\http\RequestContext.ts" />
+    <TypeScriptCompile Include="system\http-service\_classes\http\result\JsonResult.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="system\http-service\_classes\http\result\RedirectResult.ts" />
     <TypeScriptCompile Include="system\http-service\_classes\http\result\status\2xxResult.ts" />
     <TypeScriptCompile Include="system\http-service\_classes\http\result\status\4xxResult.ts" />

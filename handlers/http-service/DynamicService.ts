@@ -36,10 +36,12 @@ export default class DynamicService implements IHttpServiceHandler {
                 if (await InputHandler.handle(context, route)) {
                     try {
                         const action = await route.onRequest(context), result = await action.execute(context);
+
                         context.end(result ? this.base.renderSharedTemplate(result) : "");
                     }
                     catch {
                         console.log(`Directory/Interface resource exception from: ${context.requestId}.`);
+
                         this.base.renderActionFailure(context, Conf.Static.Integrated.ErrorFiles.SvrError);
                     }
                 }

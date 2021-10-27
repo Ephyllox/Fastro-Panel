@@ -7,8 +7,8 @@ export default abstract class Toolbox {
     }
 
     static random(length, special = true) {
-        let result = "";
         const characters = `abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789${special ? "!@#$%()_+-/~\\" : ""}`, charactersLength = characters.length;
+        let result = "";
 
         for (let i = 0; i < length; i++) {
             result += characters.charAt(Math.floor(Math.random() * charactersLength));
@@ -17,8 +17,20 @@ export default abstract class Toolbox {
         return result;
     }
 
+    static nonce() {
+        const characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-", charactersLength = characters.length;
+        let result = "";
+
+        for (let i = 0; i < 18; i++) {
+            result += characters.charAt(Math.floor(Math.random() * charactersLength));
+        }
+
+        return result;
+    }
+
     static getCookies(request) {
         const cookies = {};
+
         if (!request.headers.cookie) return cookies;
 
         request.headers.cookie.split(";").forEach(function (cookie) {

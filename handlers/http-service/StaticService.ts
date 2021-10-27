@@ -1,4 +1,3 @@
-import * as Obfuscator from "javascript-obfuscator";
 import * as Terser from "terser";
 
 import { RequestContext } from "../../system/http-service/_classes";
@@ -28,13 +27,9 @@ export default class StaticService implements IHttpServiceHandler {
 
         try {
             if (!global[path]) {
-                let data = await Utils.readFile(path);
+                const data = await Utils.readFile(path);
 
                 if (contentType === ContentType.JS) {
-                    if (Conf.Static.EnableRuntimeObfuscation) {
-                        data = Obfuscator.obfuscate(data, Obfuscator.getOptionsByPreset("default")).getObfuscatedCode();
-                    }
-
                     global[path] = (await Terser.minify(data)).code; //eslint-disable-line
                 }
                 else {
@@ -43,11 +38,14 @@ export default class StaticService implements IHttpServiceHandler {
             }
 
             if (Conf.Static.EnableClientCaching) context.header("Cache-Control", "private, max-age=86400;");
+
             context.contentType(contentType);
+
             context.end(global[path]);
         }
         catch {
             console.log(`Static resource exception from: ${context.requestId}.`);
+
             this.base.renderActionFailure(context, Conf.Static.Integrated.ErrorFiles.SvrError);
         }
     }
