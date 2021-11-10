@@ -1,4 +1,4 @@
-import { UserLogin, UserRole } from "../_types";
+import { UserLogin, UserRole } from "../system/_types";
 
 export default abstract class Configuration {
     static Router = {

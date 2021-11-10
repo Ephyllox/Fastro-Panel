@@ -41,9 +41,9 @@ export default abstract class Toolbox {
         return cookies;
     }
 
-    static readFile(path) {
+    static readFile(path, root = "system") {
         return new Promise<string>((resolve, reject) => {
-            FS.readFile(`system/${path}`, "utf8", function (error, data) {
+            FS.readFile(`${root}/${path}`, "utf8", function (error, data) {
                 !error ? resolve(data as string) : reject();
             });
         });

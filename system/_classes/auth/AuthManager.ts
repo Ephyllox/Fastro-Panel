@@ -3,8 +3,8 @@ import { randomUUID } from "crypto";
 import { User, Session } from "../";
 import { CookieOptions, CookieFlags, CookieSitePolicy } from "../../_types";
 
-import Conf from "../../utils/Configuration";
-import Utils from "../../utils/Toolbox";
+import Conf from "../../../utils/Configuration";
+import Utils from "../../../utils/Toolbox";
 
 const sessions: Session[] = [];
 

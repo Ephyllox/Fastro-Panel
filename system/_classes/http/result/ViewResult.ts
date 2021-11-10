@@ -1,7 +1,7 @@
 import { IRequestResult } from "../../../_interfaces";
 
 import RequestContext from "../RequestContext";
-import Utils from "../../../utils/Toolbox";
+import Utils from "../../../../utils/Toolbox";
 
 export default class ViewResult implements IRequestResult {
     constructor(path: string) {

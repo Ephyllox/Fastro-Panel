@@ -5,8 +5,8 @@ import { IHttpServiceHandler } from "../../system/_interfaces";
 import { ContentType } from "../../system/_types";
 
 import HTTPServer from "../../server";
-import Conf from "../../system/utils/Configuration";
-import Utils from "../../system/utils/Toolbox";
+import Conf from "../../utils/Configuration";
+import Utils from "../../utils/Toolbox";
 
 export default class StaticService implements IHttpServiceHandler {
     constructor(base: HTTPServer) {
@@ -27,7 +27,7 @@ export default class StaticService implements IHttpServiceHandler {
 
         try {
             if (!global[path]) {
-                const data = await Utils.readFile(path);
+                const data = await Utils.readFile(path, ".");
 
                 if (contentType === ContentType.JS) {
                     global[path] = (await Terser.minify(data)).code; //eslint-disable-line

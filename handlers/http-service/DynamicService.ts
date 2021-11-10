@@ -4,7 +4,7 @@ import { ContentType } from "../../system/_types";
 import { Routes } from "../../system/http/routes";
 
 import HTTPServer from "../../server";
-import Conf from "../../system/utils/Configuration";
+import Conf from "../../utils/Configuration";
 
 export default class DynamicService implements IHttpServiceHandler {
     constructor(base: HTTPServer) {

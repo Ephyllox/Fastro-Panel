@@ -13,8 +13,8 @@ import StaticService from "./handlers/http-service/StaticService";
 import DynamicService from "./handlers/http-service/DynamicService";
 import WebsocketService from "./handlers/WebsocketService";
 
-import Conf from "./system/utils/Configuration";
-import Utils from "./system/utils/Toolbox";
+import Conf from "./utils/Configuration";
+import Utils from "./utils/Toolbox";
 
 export default class HTTPServer {
     constructor() {
