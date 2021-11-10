@@ -1,8 +1,8 @@
 import * as Terser from "terser";
 
-import { RequestContext } from "../../system/http-service/_classes";
-import { IHttpServiceHandler } from "../../system/http-service/_interfaces";
-import { ContentType } from "../../system/http-service/_types";
+import { RequestContext } from "../../system/_classes";
+import { IHttpServiceHandler } from "../../system/_interfaces";
+import { ContentType } from "../../system/_types";
 
 import HTTPServer from "../../server";
 import Conf from "../../system/utils/Configuration";

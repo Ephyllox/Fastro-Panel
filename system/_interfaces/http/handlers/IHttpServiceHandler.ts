@@ -1,6 +1,6 @@
 import { RequestContext } from "../../../_classes";
 
-import HTTPServer from "../../../../../server";
+import HTTPServer from "../../../../server";
 
 export default interface IHttpServiceHandler { //eslint-disable-line
     base: HTTPServer;

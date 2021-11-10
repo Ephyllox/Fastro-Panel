@@ -1,7 +1,7 @@
-import { DirectoryRoute, InputHandler, InterfaceRoute, RequestContext } from "../../system/http-service/_classes";
-import { IHttpServiceHandler } from "../../system/http-service/_interfaces";
-import { ContentType } from "../../system/http-service/_types";
-import { Routes } from "../../system/http-service/data/routes";
+import { DirectoryRoute, InputHandler, InterfaceRoute, RequestContext } from "../../system/_classes";
+import { IHttpServiceHandler } from "../../system/_interfaces";
+import { ContentType } from "../../system/_types";
+import { Routes } from "../../system/http/routes";
 
 import HTTPServer from "../../server";
 import Conf from "../../system/utils/Configuration";

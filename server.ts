@@ -4,13 +4,14 @@ import * as WS from "ws";
 
 import { randomUUID } from "crypto";
 
-import { RequestContext, AuthManager, DirectoryRoute, InterfaceRoute } from "./system/http-service/_classes";
-import { IHttpServiceHandler } from "./system/http-service/_interfaces";
-import { ContentType } from "./system/http-service/_types";
-import { Routes } from "./system/http-service/data/routes";
+import { RequestContext, AuthManager, DirectoryRoute, InterfaceRoute, Session } from "./system/_classes";
+import { IHttpServiceHandler } from "./system/_interfaces";
+import { ContentType } from "./system/_types";
+import { Routes } from "./system/http/routes";
 
 import StaticService from "./handlers/http-service/StaticService";
 import DynamicService from "./handlers/http-service/DynamicService";
+import WebsocketService from "./handlers/WebsocketService";
 
 import Conf from "./system/utils/Configuration";
 import Utils from "./system/utils/Toolbox";
@@ -24,6 +25,7 @@ export default class HTTPServer {
 
     private staticHandler: IHttpServiceHandler;
     private dynamicHandler: IHttpServiceHandler;
+    private websocketHandler: WebsocketService;
 
     private initHTTP() {
         for (const route of Routes) {
@@ -42,7 +44,7 @@ export default class HTTPServer {
     }
 
     private initWS() {
-        
+        this.websocketHandler = new WebsocketService(new WS.Server({ noServer: true }));
 
         this.listenWS();
     }
@@ -50,7 +52,7 @@ export default class HTTPServer {
     private listenHTTP() {
         const _ = this; //eslint-disable-line
 
-        HTTP.createServer(function (req, res) {
+        const server = HTTP.createServer(function (req, res) {
             const context = new RequestContext({ req: req, res: res }, randomUUID(),
                 AuthManager.getSession(Utils.getCookies(req)[Conf.Session.CookieName]),
             );
@@ -80,11 +82,33 @@ export default class HTTPServer {
             }
         }).listen(process.env.PORT || 1337);
 
+        if (Conf.Websocket.EnableWebsocket) {
+            server.on("upgrade", function (req, socket, head) {
+                const session = AuthManager.getSession(Utils.getCookies(req)[Conf.Session.CookieName]);
+
+                if (!session.isValid()) return req.destroy();
+
+                _.websocketHandler.server.handleUpgrade(req, socket, head, function (ws) {
+                    _.websocketHandler.server.emit("connection", ws, session);
+                });
+            });
+        }
+
         if (!global["CABU-PERSIST"]) global["CABU-PERSIST"] = Utils.nonce();
     }
 
     private listenWS() {
+        const _ = this; //eslint-disable-line
 
+        this.websocketHandler.server.on("connection", function (ws, session: Session) {
+            _.websocketHandler.socketAttached(ws, session);
+
+            ws.on("message", function (data: string) {
+                _.websocketHandler.incomingMessage(data, session);
+            });
+
+            ws.on("close", _.websocketHandler.socketDetached);
+        });
     }
 
     renderSharedTemplate(content: string) {

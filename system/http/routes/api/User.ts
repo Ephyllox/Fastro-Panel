@@ -1,5 +1,5 @@
-import { InterfaceRoute, JsonResult, RequestContext } from "../../../../http-service/_classes";
-import { IRequestResult } from "../../../../http-service/_interfaces";
+import { InterfaceRoute, JsonResult, RequestContext } from "../../../_classes";
+import { IRequestResult } from "../../../_interfaces";
 
 export default class UserAPI extends InterfaceRoute {
     constructor() {

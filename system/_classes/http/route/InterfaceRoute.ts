@@ -1,6 +1,6 @@
 import { InterfaceRouteData } from "../../../_types";
 
-import Conf from "../../../../utils/Configuration";
+import Conf from "../../../utils/Configuration";
 import Route from "./Route";
 
 export default class InterfaceRoute extends Route implements InterfaceRouteData {

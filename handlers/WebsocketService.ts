@@ -1,21 +1,23 @@
-import HTTPServer from "../server";
+import * as WS from "ws";
+
+import { Session } from "../system/_classes";
 
 export default class WebsocketService {
-    constructor(base: HTTPServer) {
-        this.base = base;
+    constructor(server: WS.Server) {
+        this.server = server;
     }
 
-    private base: HTTPServer;
+    server: WS.Server;
 
-    incomingMessage() {
-
+    incomingMessage(data: string, session: Session) {
+        
     }
 
-    socketAttached() {
-
+    socketAttached(ws, session: Session) {
+        console.log(`WS client attached by user: ${session.user.id}`);
     }
 
-    socketDetached() {
+    socketDetached(ws) {
 
     }
 };
