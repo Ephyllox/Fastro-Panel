@@ -11,7 +11,7 @@ export default abstract class Configuration {
         EnableStaticFileServer: true,
         EnableClientCaching: true,
         RequestDirectory: "/content/",
-        PhysicalDirectory: "./wwwroot/",
+        PhysicalDirectory: "/wwwroot/",
         Integrated: {
             FileDirectory: "http/",
             ErrorFiles: {
