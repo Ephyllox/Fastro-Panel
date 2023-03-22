@@ -12,7 +12,7 @@ export default class AuthManager {
     static checkLogin(name, input) {
         const user = Conf.Security.DefaultUsers[name] ?? null;
 
-        if (user !== null && user.password === input) {
+        if (user !== null && user.passwd === input) {
             const token = Utils.random(Conf.Session.CookieLength, Conf.Session.SpecialCharacters);
 
             const date = new Date();

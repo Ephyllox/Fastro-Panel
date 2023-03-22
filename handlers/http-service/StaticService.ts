@@ -16,7 +16,7 @@ export default class StaticService implements IHttpServiceHandler {
     base: HTTPServer;
 
     async process(context: RequestContext, url: string) {
-        const path = Conf.Static.PhysicalDirectory + url.replace(Conf.Static.RequestDirectory, "");
+        const path = Conf.Static.PhysicalDirectory + url.replace(Conf.Static.VirtualDirectory, "");
         let contentType: ContentType;
 
         Object.keys(ContentType).forEach(item => {

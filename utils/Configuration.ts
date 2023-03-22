@@ -10,7 +10,7 @@ export default abstract class Configuration {
     static Static = {
         EnableStaticFileServer: true,
         EnableClientCaching: true,
-        RequestDirectory: "/content/",
+        VirtualDirectory: "/content/",
         PhysicalDirectory: "/wwwroot/",
         Integrated: {
             FileDirectory: "http/",
@@ -22,7 +22,7 @@ export default abstract class Configuration {
     }
 
     static Websocket = {
-        EnableWebsocket: true,
+        EnableWebsocket: false,
     }
 
     static Session = {
@@ -36,7 +36,7 @@ export default abstract class Configuration {
         DefaultUsers: {
             "admin": {
                 id: 1,
-                password: "adminadmin",
+                passwd: "adminadmin",
                 perms: {
                     roles: [
                         UserRole.SUPER,

@@ -66,7 +66,7 @@ export default class HTTPServer {
                 if (url === "/" && Conf.Router.EnableDefaultRedirect) {
                     context.redirect(Conf.Router.DefaultRoute);
                 }
-                else if (!url.startsWith(Conf.Static.RequestDirectory) || !Conf.Static.EnableStaticFileServer) {
+                else if (!url.startsWith(Conf.Static.VirtualDirectory) || !Conf.Static.EnableStaticFileServer) {
                     _.dynamicHandler.process(context, url);
                 }
                 else {

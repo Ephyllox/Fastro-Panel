@@ -1,7 +1,7 @@
 export type UserLogin = {
     id: number;
 
-    password: string;
+    passwd: string;
 
     perms?: UserPerms;
 };
@@ -14,5 +14,5 @@ export type UserPerms = {
 
 export enum UserRole {
     SUPER,
-    USER,
+    DEFAULT,
 };

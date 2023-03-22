@@ -58,6 +58,8 @@ export default class DynamicService implements IHttpServiceHandler {
             }
         }
         else {
+            if (url.startsWith(Conf.Router.APIDirectory)) return context.text(`Not Found: ${url}`, 404);
+
             this.base.renderActionFailure(context, Conf.Static.Integrated.ErrorFiles.NotFound);
         }
     }

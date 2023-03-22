@@ -13,11 +13,11 @@ export default class WebsocketService {
         
     }
 
-    socketAttached(ws, session: Session) {
-        console.log(`WS client attached by user: ${session.user.id}`);
+    socketAttached(ws: WS.WebSocket, session: Session) {
+        console.log(`WebSocket client attached from user: ${session.user.id}`);
     }
 
-    socketDetached(ws) {
+    socketDetached(ws: WS.WebSocket) {
 
     }
 };

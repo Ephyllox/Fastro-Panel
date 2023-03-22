@@ -23,8 +23,14 @@ export default class RequestContext {
 
     private res: HTTP.ServerResponse;
 
-    json(json: object) {
-        this.res.end(JSON.stringify(json));
+    text(data: string, status?: number) {
+        if (status) this.status(status);
+        this.res.end(data, "utf-8");
+    }
+
+    json(json: object, status?: number) {
+        if (status) this.status(status);
+        this.res.end(JSON.stringify(json), "utf-8");
     }
 
     status(status: number): this {
