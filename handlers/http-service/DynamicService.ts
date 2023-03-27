@@ -42,7 +42,7 @@ export default class DynamicService implements IHttpServiceHandler {
                     catch {
                         console.log(`Directory/Interface resource exception from: ${context.requestId}.`);
 
-                        this.base.renderActionFailure(context, Conf.Static.Integrated.ErrorFiles.SvrError);
+                        this.base.renderActionFailure(context, Conf.Static.Integrated.ErrorFiles.SvrError, 500);
                     }
                 }
                 else {
@@ -54,13 +54,14 @@ export default class DynamicService implements IHttpServiceHandler {
                     return context.status(401).end();
                 }
 
+                //this.base.renderActionFailure(context, Conf.Static.Integrated.ErrorFiles.Unauthorized, 401);
                 context.redirect(Conf.Router.DefaultRoute);
             }
         }
         else {
             if (url.startsWith(Conf.Router.APIDirectory)) return context.text(`Not Found: ${url}`, 404);
 
-            this.base.renderActionFailure(context, Conf.Static.Integrated.ErrorFiles.NotFound);
+            this.base.renderActionFailure(context, Conf.Static.Integrated.ErrorFiles.NotFound, 404);
         }
     }
 };

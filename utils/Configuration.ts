@@ -17,6 +17,7 @@ export default abstract class Configuration {
             ErrorFiles: {
                 NotFound: "pages/errors/not-found.html",
                 SvrError: "pages/errors/server-error.html",
+                Unauthorized: "pages/errors/unauthorized.html",
             },
         },
     }
