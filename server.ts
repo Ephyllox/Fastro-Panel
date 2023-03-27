@@ -1,5 +1,6 @@
 import * as HTTP from "http";
 import * as EJS from "ejs";
+import * as XSS from "xss";
 import * as WS from "ws";
 
 import { randomUUID } from "crypto";
@@ -118,13 +119,14 @@ export default class HTTPServer {
         });
     }
 
-    async renderActionFailure(context: RequestContext, path: string) {
+    async renderActionFailure(context: RequestContext, path: string, status: number = 200) {
         const data = await Utils.readFile(Conf.Static.Integrated.FileDirectory + path);
 
         context.contentType(ContentType.HTML);
+        context.status(status);
 
         context.end(
-            EJS.render(data, {
+            EJS.render(XSS.stripCommentTag(data), {
                 reqId: context.requestId,
             })
         );

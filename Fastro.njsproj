@@ -35,6 +35,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Content Include="system\http\pages\errors\not-found.html" />
+    <Content Include="system\http\pages\errors\unauthorized.html" />
     <Content Include="system\http\pages\errors\server-error.html" />
     <Content Include="system\http\pages\login.html" />
     <Content Include="system\http\pages\panel.html" />
@@ -42,7 +43,7 @@
     <Content Include="wwwroot\css\home\pages\landing.css" />
     <Content Include="wwwroot\css\home\pages\updates.css" />
     <Content Include="wwwroot\js\auth\login.js" />
-    <Content Include="wwwroot\js\errors\404.js" />
+    <Content Include="wwwroot\js\errors\default.js" />
     <Content Include="wwwroot\js\home\pages\landing.js" />
     <Content Include="wwwroot\js\home\pages\main.js" />
     <Content Include="wwwroot\vendors\css\bootstrap\bootstrap.css" />
