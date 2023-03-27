@@ -15,6 +15,8 @@ export default class StaticService implements IHttpServiceHandler {
 
     base: HTTPServer;
 
+    cache = {};
+
     async process(context: RequestContext, url: string) {
         const path = Conf.Static.PhysicalDirectory + url.replace(Conf.Static.VirtualDirectory, "");
         let contentType: ContentType;
@@ -26,14 +28,14 @@ export default class StaticService implements IHttpServiceHandler {
         });
 
         try {
-            if (!global[path]) {
+            if (!this.cache[path]) {
                 const data = await Utils.readFile(path, ".");
 
                 if (contentType === ContentType.JS) {
-                    global[path] = (await Terser.minify(data)).code; //eslint-disable-line
+                    this.cache[path] = (await Terser.minify(data)).code; //eslint-disable-line
                 }
                 else {
-                    global[path] = data; //eslint-disable-line
+                    this.cache[path] = data; //eslint-disable-line
                 }
             }
 
@@ -41,12 +43,12 @@ export default class StaticService implements IHttpServiceHandler {
 
             context.contentType(contentType);
 
-            context.end(global[path]);
+            context.end(this.cache[path]);
         }
         catch {
             console.log(`Static resource exception from: ${context.requestId}.`);
 
-            this.base.renderActionFailure(context, Conf.Static.Integrated.ErrorFiles.SvrError);
+            this.base.renderActionFailure(context, Conf.Static.Integrated.ErrorFiles.SvrError, 500);
         }
     }
 };
