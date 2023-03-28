@@ -88,7 +88,7 @@ export default class HTTPServer {
                 }
             }
             else {
-                console.log(`Forbidden method requested from: ${context.requestId}.`);
+                _._log(`Forbidden method requested from: ${context.requestId}.`);
 
                 context.status(405).end();
             }
