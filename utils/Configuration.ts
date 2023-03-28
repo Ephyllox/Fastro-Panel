@@ -37,7 +37,7 @@ export default abstract class Configuration {
         DefaultUsers: {
             "admin": {
                 id: 1,
-                passwd: "adminadmin",
+                passwd: "admin",
                 perms: {
                     roles: [
                         UserRole.SUPER,

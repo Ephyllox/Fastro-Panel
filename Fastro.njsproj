@@ -108,6 +108,7 @@
     <TypeScriptCompile Include="system\http\routes\dir\Panel.ts" />
     <TypeScriptCompile Include="system\http\routes\index.ts" />
     <TypeScriptCompile Include="utils\Configuration.ts" />
+    <TypeScriptCompile Include="utils\Logging.ts" />
     <TypeScriptCompile Include="utils\Toolbox.ts" />
     <TypeScriptCompile Include="system\_classes\auth\AuthManager.ts" />
     <TypeScriptCompile Include="system\_classes\auth\objects\SessionObject.ts" />
