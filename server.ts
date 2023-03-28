@@ -17,16 +17,25 @@ import WebsocketService from "./handlers/WebsocketService";
 import Conf from "./utils/Configuration";
 import Utils from "./utils/Toolbox";
 
-export default class HTTPServer {
-    constructor() {
-        if (Conf.Websocket.EnableWebsocket) this.initWS();
+type LogDelegate = (msg: string, color?: string) => void;
 
+export default class HTTPServer {
+    constructor(log: LogDelegate) {
+        this._log = log;
+
+        if (Conf.Websocket.EnableWebsocket) this.initWS();
         this.initHTTP();
+
+        log("Server loaded!", "blue");
     }
 
     private staticHandler: IHttpServiceHandler;
     private dynamicHandler: IHttpServiceHandler;
     private websocketHandler: WebsocketService;
+
+    private _cacheKey = Utils.nonce();
+
+    public _log: LogDelegate;
 
     private initHTTP() {
         for (const route of Routes) {
@@ -45,9 +54,11 @@ export default class HTTPServer {
     }
 
     private initWS() {
-        this.websocketHandler = new WebsocketService(new WS.Server({ noServer: true }));
+        this.websocketHandler = new WebsocketService(new WS.Server({ noServer: true }), this);
 
         this.listenWS();
+
+        this._log("###   WebSocket service is active!   ###", "green");
     }
 
     private listenHTTP() {
@@ -94,8 +105,6 @@ export default class HTTPServer {
                 });
             });
         }
-
-        if (!global["CABU-PERSIST"]) global["CABU-PERSIST"] = Utils.nonce();
     }
 
     private listenWS() {
@@ -114,8 +123,8 @@ export default class HTTPServer {
 
     renderSharedTemplate(content: string) {
         return EJS.render(content, {
-            copyright: `${new Date().getFullYear()} - Universe`,
-            cabu: global["CABU-PERSIST"],
+            copyright: `${new Date().getUTCFullYear()} - Universe`,
+            version: this._cacheKey,
         });
     }
 
