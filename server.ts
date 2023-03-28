@@ -5,6 +5,7 @@ import * as WS from "ws";
 
 import { randomUUID } from "crypto";
 
+
 import { RequestContext, AuthManager, DirectoryRoute, InterfaceRoute, Session } from "./system/_classes";
 import { IHttpServiceHandler } from "./system/_interfaces";
 import { ContentType } from "./system/_types";
@@ -14,10 +15,9 @@ import StaticService from "./handlers/http-service/StaticService";
 import DynamicService from "./handlers/http-service/DynamicService";
 import WebsocketService from "./handlers/WebsocketService";
 
+import LogDelegate from "./utils/Logging";
 import Conf from "./utils/Configuration";
 import Utils from "./utils/Toolbox";
-
-type LogDelegate = (msg: string, color?: string) => void;
 
 export default class HTTPServer {
     constructor(log: LogDelegate) {
@@ -88,7 +88,7 @@ export default class HTTPServer {
                 }
             }
             else {
-                _._log(`Forbidden method requested from: ${context.requestId}.`);
+                _._log(`Forbidden method [${context.req.method}] requested from: ${context.requestId}.`);
 
                 context.status(405).end();
             }
@@ -122,7 +122,7 @@ export default class HTTPServer {
     }
 
     renderSharedTemplate(content: string) {
-        return EJS.render(content, {
+        return EJS.render(XSS.stripCommentTag(content), {
             copyright: `${new Date().getUTCFullYear()} - Universe`,
             version: this._cacheKey,
         });

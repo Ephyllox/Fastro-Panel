@@ -2,9 +2,9 @@ import Chalk from "chalk";
 
 import HTTPServer from "./server";
 
-function clog(msg, color = "white") {
+function clog(msg, func = "white") {
     try {
-        console.log(Chalk[color](msg));
+        console.log(Chalk[func](msg));
     }
     catch {
         console.log(msg);
