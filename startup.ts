@@ -1,12 +1,22 @@
+import Chalk from "chalk";
+
 import HTTPServer from "./server";
 
+function clog(msg, color = "white") {
+    try {
+        console.log(Chalk[color](msg));
+    }
+    catch {
+        console.log(msg);
+    }
+};
+
 process.on("uncaughtException", function (error) {
-    console.log(error);
+    clog(error, "red");
 });
 
 process.on("unhandledRejection", function (error) {
-    console.log(error);
+    clog(error, "red");
 });
 
-console.log("Server loaded!");
-new HTTPServer();
+new HTTPServer(clog);

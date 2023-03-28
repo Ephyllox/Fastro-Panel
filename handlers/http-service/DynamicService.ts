@@ -40,7 +40,7 @@ export default class DynamicService implements IHttpServiceHandler {
                         context.end(result ? this.base.renderSharedTemplate(result) : "");
                     }
                     catch {
-                        console.log(`Directory/Interface resource exception from: ${context.requestId}.`);
+                        this.base._log(`Directory/Interface resource exception from: ${context.requestId}.`, "yellow");
 
                         this.base.renderActionFailure(context, Conf.Static.Integrated.ErrorFiles.SvrError, 500);
                     }

@@ -46,7 +46,7 @@ export default class StaticService implements IHttpServiceHandler {
             context.end(this.cache[path]);
         }
         catch {
-            console.log(`Static resource exception from: ${context.requestId}.`);
+            this.base._log(`Static resource exception from: ${context.requestId}.`, "yellow");
 
             this.base.renderActionFailure(context, Conf.Static.Integrated.ErrorFiles.SvrError, 500);
         }
