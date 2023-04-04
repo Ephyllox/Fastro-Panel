@@ -3,7 +3,7 @@ import { IRequestResult } from "../../../../_interfaces";
 import RequestContext from "../../RequestContext";
 
 export class StatusResult implements IRequestResult {
-    constructor(status: number, content = "") {
+    constructor(status: number, content: string = "") {
         this.status = status;
         this.content = content;
     }

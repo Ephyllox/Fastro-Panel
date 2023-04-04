@@ -5,11 +5,10 @@ import * as WS from "ws";
 
 import { randomUUID } from "crypto";
 
-
 import { RequestContext, AuthManager, DirectoryRoute, InterfaceRoute, Session } from "./system/_classes";
 import { IHttpServiceHandler } from "./system/_interfaces";
 import { ContentType } from "./system/_types";
-import { Routes } from "./system/http/routes";
+import { Routes } from "@routes";
 
 import StaticService from "./handlers/http-service/StaticService";
 import DynamicService from "./handlers/http-service/DynamicService";
@@ -29,9 +28,9 @@ export default class HTTPServer {
         log("Server loaded!", "blue");
     }
 
-    private staticHandler: IHttpServiceHandler;
-    private dynamicHandler: IHttpServiceHandler;
-    private websocketHandler: WebsocketService;
+    private staticHandler!: IHttpServiceHandler;
+    private dynamicHandler!: IHttpServiceHandler;
+    private websocketHandler!: WebsocketService;
 
     private _cacheKey = Utils.nonce();
 
@@ -62,62 +61,62 @@ export default class HTTPServer {
     }
 
     private listenHTTP() {
-        const _ = this; //eslint-disable-line
-
-        const server = HTTP.createServer(function (req, res) {
+        const server = HTTP.createServer((req, res) => {
             const context = new RequestContext({ req: req, res: res }, randomUUID(),
                 AuthManager.getSession(Utils.getCookies(req)[Conf.Session.CookieName]),
             );
 
-            const url = context.req.url.split("?")[0];
+            // Ensure that both the URL and method are not undefined
+            if (!context.req.url || !context.req.method) context.status(400).end();
 
-            if (_.methods[context.req.method]) {
-                if (Conf.Security.AddSecurityHeaders) _.applySecurityHeaders(context);
-                _.applyCustomHeaders(context);
+            const url = new URL(context.req.url!, `http://${context.req.headers.host}`);
+            const method = context.req.method!;
 
-                if (url === "/" && Conf.Router.EnableDefaultRedirect) {
+            if (this.methods[method]) { // Check if the method is valid globally
+                if (Conf.Security.AddSecurityHeaders) this.applySecurityHeaders(context);
+                this.applyCustomHeaders(context);
+
+                if (url.pathname === "/" && Conf.Router.EnableDefaultRedirect) {
                     context.redirect(Conf.Router.DefaultRoute);
                 }
-                else if (!url.startsWith(Conf.Static.VirtualDirectory) || !Conf.Static.EnableStaticFileServer) {
-                    _.dynamicHandler.process(context, url);
+                else if (!url.pathname.startsWith(Conf.Static.VirtualDirectory) || !Conf.Static.EnableStaticFileServer) {
+                    this.dynamicHandler.process(context, url);
                 }
                 else {
-                    if (context.req.method !== "GET") return context.status(405).end();
+                    if (method !== "GET") return context.status(405).end();
 
-                    _.staticHandler.process(context, url);
+                    this.staticHandler.process(context, url);
                 }
             }
             else {
-                _._log(`Forbidden method [${context.req.method}] requested from: ${context.requestId}.`);
+                this._log(`Forbidden method [${method}] requested from: ${context.requestId}.`);
 
                 context.status(405).end();
             }
         }).listen(process.env.PORT || 1337);
 
         if (Conf.Websocket.EnableWebsocket) {
-            server.on("upgrade", function (req, socket, head) {
+            server.on("upgrade", (req, socket, head) => {
                 const session = AuthManager.getSession(Utils.getCookies(req)[Conf.Session.CookieName]);
 
                 if (!session.isValid()) return req.destroy();
 
-                _.websocketHandler.server.handleUpgrade(req, socket, head, function (ws) {
-                    _.websocketHandler.server.emit("connection", ws, session);
+                this.websocketHandler.server.handleUpgrade(req, socket, head, (ws) => {
+                    this.websocketHandler.server.emit("connection", ws, session);
                 });
             });
         }
     }
 
     private listenWS() {
-        const _ = this; //eslint-disable-line
+        this.websocketHandler.server.on("connection", (ws, session: Session) => {
+            this.websocketHandler.socketAttached(ws, session);
 
-        this.websocketHandler.server.on("connection", function (ws, session: Session) {
-            _.websocketHandler.socketAttached(ws, session);
-
-            ws.on("message", function (data: string) {
-                _.websocketHandler.incomingMessage(data, session);
+            ws.on("message", (data: string) => {
+                this.websocketHandler.incomingMessage(data, session);
             });
 
-            ws.on("close", _.websocketHandler.socketDetached);
+            ws.on("close", this.websocketHandler.socketDetached);
         });
     }
 
@@ -156,5 +155,5 @@ export default class HTTPServer {
         context.header("X-XSS-Protection", "0");
     }
 
-    private methods = {};
+    private methods: { [method: string]: boolean } = {};
 };

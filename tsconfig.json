@@ -1,10 +1,22 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
-    "target": "es6",
-    "lib": [ "es6" ],
-    "sourceMap": false
+    "module": "CommonJS",
+    "target": "ES2022",
+    "lib": [ "ES2022" ],
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "sourceMap": false,
+    "noEmitOnError": true,
+    "noImplicitAny": true,
+    "removeComments": true,
+    "strictNullChecks": true,
+    "forceConsistentCasingInFileNames": true,
+    "baseUrl": ".",
+    "paths": {
+      "@routes": [ "./system/http/routes/" ]
+    }
   },
+  "compileOnSave": true,
   "exclude": [
     "node_modules"
   ]

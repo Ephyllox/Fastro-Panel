@@ -6,10 +6,10 @@ import { CookieOptions, CookieFlags, CookieSitePolicy } from "../../_types";
 import Conf from "../../../utils/Configuration";
 import Utils from "../../../utils/Toolbox";
 
-const sessions: Session[] = [];
+const sessions: { [token: string]: Session } = {};
 
 export default class AuthManager {
-    static checkLogin(name, input) {
+    static checkLogin(name: string, input: string) {
         const user = Conf.Security.DefaultUsers[name] ?? null;
 
         if (user !== null && user.passwd === input) {
@@ -37,7 +37,7 @@ export default class AuthManager {
         }
     }
 
-    static getSession(input): Session {
+    static getSession(input: string): Session {
         try {
             return sessions[Utils.sha256(input)] || new Session();
         }

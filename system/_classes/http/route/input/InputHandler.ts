@@ -6,15 +6,10 @@ import Route from "../Route";
 export default abstract class InputHandler {
     static async handle(context: RequestContext, route: Route): Promise<boolean> {
         try {
-            context.input = {
-                body: null,
-                query: {},
-            };
-
             if (route.query) {
                 for (const item of route.query) {
-                    const query = URL.parse(context.req.url, true).query;
-                    if (item.required && (!query || !query[item.name])) return false;
+                    const query = URL.parse(context.req.url as string, true).query;
+                    if (item.required && !query[item.name]) return false; // possibility of a null 'query'
                     context.input.query[item.name] = query[item.name];
                 }
             }
@@ -52,7 +47,7 @@ export default abstract class InputHandler {
                 });
 
                 if (!Object.keys(body).length) return false;
-                context.input.body = body; //eslint-disable-line
+                context.input.body = body;
             }
 
             return true;

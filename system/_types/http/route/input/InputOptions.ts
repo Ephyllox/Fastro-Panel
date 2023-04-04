@@ -1,7 +1,7 @@
 export type InputTypes = {
-    body: object;
+    body?: any;
 
-    query: object;
+    query: { [key: string]: string | string[] | undefined };
 };
 
 export type QueryOptions = {

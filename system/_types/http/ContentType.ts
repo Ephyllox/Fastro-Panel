@@ -1,5 +1,5 @@
 export enum ContentType {
-    PLAIN = "text/plain",
+    TXT = "text/plain",
     JSON = "application/json",
     HTML = "text/html",
     JS = "text/javascript",

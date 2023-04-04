@@ -1,22 +1,23 @@
 import Chalk from "chalk";
 
+import { LogColor, LogColorBright } from "./utils/Logging";
+
 import HTTPServer from "./server";
 
-function clog(msg, func = "white") {
+function clog(msg: string, color: LogColor | LogColorBright = "white") {
     try {
-        console.log(Chalk[func](msg));
+        console.log(Chalk[color](msg));
     }
     catch {
         console.log(msg);
     }
 };
 
-process.on("uncaughtException", function (error) {
-    clog(error, "red");
-});
+function errlog(error: Error) {
+    clog(error.message + error.stack, "red");
+}
 
-process.on("unhandledRejection", function (error) {
-    clog(error, "red");
-});
+process.on("uncaughtException", errlog);
+process.on("unhandledRejection", errlog);
 
 new HTTPServer(clog);

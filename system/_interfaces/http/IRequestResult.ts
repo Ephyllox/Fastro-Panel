@@ -1,5 +1,5 @@
 import { RequestContext } from "../../_classes";
 
-export default interface IRequestResult { //eslint-disable-line
+export default interface IRequestResult {
     execute(context: RequestContext): Promise<string> | void;
 };

@@ -15,13 +15,13 @@ export default class StaticService implements IHttpServiceHandler {
 
     base: HTTPServer;
 
-    cache = {};
+    cache: { [file: string]: string } = {};
 
-    async process(context: RequestContext, url: string) {
-        const path = Conf.Static.PhysicalDirectory + url.replace(Conf.Static.VirtualDirectory, "");
-        let contentType: ContentType;
+    async process(context: RequestContext, url: URL) {
+        const path = Conf.Static.PhysicalDirectory + url.pathname.replace(Conf.Static.VirtualDirectory, "");
+        let contentType!: ContentType;
 
-        Object.keys(ContentType).forEach(item => {
+        Object.keys(ContentType).forEach((item: keyof typeof ContentType) => {
             if (path.endsWith(`.${item.toLowerCase()}`)) {
                 contentType = ContentType[item];
             }
@@ -32,10 +32,11 @@ export default class StaticService implements IHttpServiceHandler {
                 const data = await Utils.readFile(path, ".");
 
                 if (contentType === ContentType.JS) {
-                    this.cache[path] = (await Terser.minify(data)).code; //eslint-disable-line
+                    const minified = await Terser.minify(data);
+                    this.cache[path] = minified.code ?? data;
                 }
                 else {
-                    this.cache[path] = data; //eslint-disable-line
+                    this.cache[path] = data;
                 }
             }
 

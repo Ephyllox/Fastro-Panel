@@ -1,4 +1,4 @@
-type LogColor =
+export type LogColor =
     | "white"
     | "red"
     | "green"
@@ -8,7 +8,7 @@ type LogColor =
     | "cyan"
     | "gray";
 
-type LogColorBright =
+export type LogColorBright =
     | "whiteBright"
     | "redBright"
     | "greenBright"

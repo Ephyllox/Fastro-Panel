@@ -1,12 +1,14 @@
 import * as FS from "fs";
 import * as Crypto from "crypto";
 
+import { IncomingMessage } from "http";
+
 export default abstract class Toolbox {
-    static sha256(input) {
+    static sha256(input: string) {
         return Crypto.createHash("sha256").update(input).digest("hex");
     }
 
-    static random(length, special = true) {
+    static random(length: number, special = true) {
         const characters = `abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789${special ? "!@#$%()_+-/~\\" : ""}`, charactersLength = characters.length;
         let result = "";
 
@@ -28,23 +30,23 @@ export default abstract class Toolbox {
         return result;
     }
 
-    static getCookies(request) {
-        const cookies = {};
+    static getCookies(request: IncomingMessage) {
+        const cookies: { [key: string]: string } = {};
 
         if (!request.headers.cookie) return cookies;
 
         request.headers.cookie.split(";").forEach(function (cookie) {
-            const parts = cookie.match(/(.*?)=(.*)$/);
-            cookies[parts[1].trim()] = (parts[2] || "").trim();
+            const parts = cookie.match(/(.*?)=(.*)$/) || [];
+            cookies[parts[1].trim()] = (parts[2] ?? "").trim();
         });
 
         return cookies;
     }
 
-    static readFile(path, root = "system") {
+    static readFile(path: string, root: string = "system") {
         return new Promise<string>((resolve, reject) => {
             FS.readFile(`${root}/${path}`, "utf8", function (error, data) {
-                !error ? resolve(data as string) : reject();
+                !error ? resolve(data) : reject();
             });
         });
     }

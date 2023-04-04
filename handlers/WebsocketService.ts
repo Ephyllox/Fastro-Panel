@@ -18,7 +18,7 @@ export default class WebsocketService {
     }
 
     socketAttached(ws: WS.WebSocket, session: Session) {
-        this.base._log(`WebSocket client attached from user: ${session.user.id}`);
+        this.base._log(`WebSocket client attached from user: ${session.user?.id}`);
     }
 
     socketDetached(ws: WS.WebSocket) {

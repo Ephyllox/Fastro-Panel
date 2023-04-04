@@ -5,12 +5,22 @@ import { CookieOptions, ContentType, InputTypes } from "../../_types";
 import Session from "../auth/objects/SessionObject";
 import CookieBuilder from "./CookieBuilder";
 
+type ContextBinding = {
+    req: HTTP.IncomingMessage;
+    res: HTTP.ServerResponse;
+}
+
 export default class RequestContext {
-    constructor({ req, res }, reqId: string, session: Session) {
+    constructor({ req, res }: ContextBinding, reqId: string, session: Session) {
         this.session = session;
         this.requestId = reqId;
         this.req = req;
         this.res = res;
+
+        this.input = {
+            body: undefined,
+            query: {},
+        };
     }
 
     public requestId: string;
@@ -57,7 +67,7 @@ export default class RequestContext {
         return this;
     }
 
-    end(content?) {
+    end(content?: string) {
         this.res.end(content);
     }
 };
