@@ -8,7 +8,7 @@ import { randomUUID } from "crypto";
 import { RequestContext, AuthManager, DirectoryRoute, InterfaceRoute, Session } from "./system/_classes";
 import { IHttpServiceHandler } from "./system/_interfaces";
 import { ContentType } from "./system/_types";
-import { Routes } from "@routes";
+import { Routes } from "./system/http/routes";
 
 import StaticService from "./handlers/http-service/StaticService";
 import DynamicService from "./handlers/http-service/DynamicService";
@@ -26,6 +26,7 @@ export default class HTTPServer {
         this.initHTTP();
 
         log("Server loaded!", "blue");
+        log(`Global content cache key: ${this._cacheKey}`, "cyan");
     }
 
     private staticHandler!: IHttpServiceHandler;
@@ -62,38 +63,46 @@ export default class HTTPServer {
 
     private listenHTTP() {
         const server = HTTP.createServer((req, res) => {
-            const context = new RequestContext({ req: req, res: res }, randomUUID(),
-                AuthManager.getSession(Utils.getCookies(req)[Conf.Session.CookieName]),
-            );
+            try {
+                const context = new RequestContext({ req: req, res: res }, randomUUID(),
+                    AuthManager.getSession(Utils.getCookies(req)[Conf.Session.CookieName]),
+                );
 
-            // Ensure that both the URL and method are not undefined
-            if (!context.req.url || !context.req.method) context.status(400).end();
+                // Ensure that both the URL and method are not undefined
+                if (!context.req.url || !context.req.method) return context.status(400).end();
 
-            const url = new URL(context.req.url!, `http://${context.req.headers.host}`);
-            const method = context.req.method!;
+                const url = context.req.url.split("?")[0];
+                const method = context.req.method;
 
-            if (this.methods[method]) { // Check if the method is valid globally
-                if (Conf.Security.AddSecurityHeaders) this.applySecurityHeaders(context);
-                this.applyCustomHeaders(context);
+                if (this.methods[method]) { // Check if the method is valid globally
+                    if (Conf.Security.AddSecurityHeaders) this.applySecurityHeaders(context);
+                    this.applyCustomHeaders(context);
 
-                if (url.pathname === "/" && Conf.Router.EnableDefaultRedirect) {
-                    context.redirect(Conf.Router.DefaultRoute);
-                }
-                else if (!url.pathname.startsWith(Conf.Static.VirtualDirectory) || !Conf.Static.EnableStaticFileServer) {
-                    this.dynamicHandler.process(context, url);
+                    if (url === "/" && Conf.Router.EnableDefaultRedirect) {
+                        context.redirect(Conf.Router.DefaultRoute);
+                    }
+                    else if (!url.startsWith(Conf.Static.VirtualDirectory) || !Conf.Static.EnableStaticFileServer) {
+                        this.dynamicHandler.process(context, url);
+                    }
+                    else {
+                        if (method !== "GET") return context.status(405).end();
+
+                        this.staticHandler.process(context, url);
+                    }
                 }
                 else {
-                    if (method !== "GET") return context.status(405).end();
+                    this._log(`Forbidden method [${method}] requested from: ${context.requestId}.`);
 
-                    this.staticHandler.process(context, url);
+                    context.status(405).end();
                 }
             }
-            else {
-                this._log(`Forbidden method [${method}] requested from: ${context.requestId}.`);
+            catch (e) {
+                this._log(e.message + e.stack, "redBright");
 
-                context.status(405).end();
+                res.statusCode = 500;
+                res.end();
             }
-        }).listen(process.env.PORT || 1337);
+        }).listen(process.env.PORT || Conf.Server.DefaultPort);
 
         if (Conf.Websocket.EnableWebsocket) {
             server.on("upgrade", (req, socket, head) => {
@@ -141,7 +150,7 @@ export default class HTTPServer {
     }
 
     private applyCustomHeaders(context: RequestContext) {
-        context.header("Server", "Abstractor 2000");
+        context.header("Server", "Fastron"); // Class-Orientated, union of words
     }
 
     private applySecurityHeaders(context: RequestContext) {
