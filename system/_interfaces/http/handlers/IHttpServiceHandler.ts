@@ -5,5 +5,5 @@ import HTTPServer from "../../../../server";
 export default interface IHttpServiceHandler {
     base: HTTPServer;
 
-    process(context: RequestContext, url: URL): Promise<void>;
+    process(context: RequestContext, url: string): Promise<void>;
 };

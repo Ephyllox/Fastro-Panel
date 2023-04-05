@@ -1,7 +1,7 @@
 import { DirectoryRoute, InputHandler, InterfaceRoute, RequestContext } from "../../system/_classes";
 import { IHttpServiceHandler } from "../../system/_interfaces";
 import { ContentType } from "../../system/_types";
-import { Routes } from "@routes";
+import { Routes } from "../../system/http/routes";
 
 import HTTPServer from "../../server";
 import Conf from "../../utils/Configuration";
@@ -13,8 +13,8 @@ export default class DynamicService implements IHttpServiceHandler {
 
     base: HTTPServer;
 
-    async process(context: RequestContext, url: URL) {
-        const route = Routes.find(item => item.path === url.pathname);
+    async process(context: RequestContext, url: string) {
+        const route = Routes.find(item => item.path === url);
 
         if (route) {
             if (route instanceof DirectoryRoute && context.req.method !== "GET") {
@@ -59,7 +59,7 @@ export default class DynamicService implements IHttpServiceHandler {
             }
         }
         else {
-            if (url.pathname.startsWith(Conf.Router.APIDirectory)) return context.text(`Not Found: ${url}`, 404);
+            if (url.startsWith(Conf.Router.APIDirectory)) return context.text(`Not Found: ${url}`, 404);
 
             this.base.renderActionFailure(context, Conf.Static.Integrated.ErrorFiles.NotFound, 404);
         }

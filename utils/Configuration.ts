@@ -1,6 +1,10 @@
 import { UserLogin, UserRole } from "../system/_types";
 
 export default abstract class Configuration {
+    static Server = {
+        DefaultPort: 1337,
+    }
+
     static Router = {
         EnableDefaultRedirect: true,
         DefaultRoute: "login",
@@ -33,11 +37,13 @@ export default abstract class Configuration {
         SpecialCharacters: false,
     }
 
+    // Changing the ID or NAME of accounts will invalidate the preset password
     static Security = {
         DefaultUsers: {
             "admin": {
                 id: 1,
-                passwd: "admin",
+                // Password is 'admin'
+                passwd: "0a37b33d81e4e7f80ea89dd32e8ee12a939c154e6767cd035c467f8de1eadedc",
                 perms: {
                     roles: [
                         UserRole.SUPER,

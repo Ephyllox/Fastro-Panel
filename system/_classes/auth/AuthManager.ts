@@ -1,7 +1,7 @@
-import { randomUUID } from "crypto";
+import { randomUUID, pbkdf2Sync } from "crypto";
 
 import { User, Session } from "../";
-import { CookieOptions, CookieFlags, CookieSitePolicy } from "../../_types";
+import { CookieOptions, CookieFlags, CookieSitePolicy, UserLogin } from "../../_types";
 
 import Conf from "../../../utils/Configuration";
 import Utils from "../../../utils/Toolbox";
@@ -9,10 +9,14 @@ import Utils from "../../../utils/Toolbox";
 const sessions: { [token: string]: Session } = {};
 
 export default class AuthManager {
+    private static hashCredentials(passwd: string, salt: string) {
+        return pbkdf2Sync(passwd, salt, 10000, 32, "sha256").toString("hex");
+    }
+
     static checkLogin(name: string, input: string) {
         const user = Conf.Security.DefaultUsers[name] ?? null;
 
-        if (user !== null && user.passwd === input) {
+        if (user !== null && this.hashCredentials(input, name + user.id) === user.passwd) {
             const token = Utils.random(Conf.Session.CookieLength, Conf.Session.SpecialCharacters);
 
             const date = new Date();

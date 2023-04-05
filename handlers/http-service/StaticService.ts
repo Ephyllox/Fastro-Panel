@@ -17,8 +17,8 @@ export default class StaticService implements IHttpServiceHandler {
 
     cache: { [file: string]: string } = {};
 
-    async process(context: RequestContext, url: URL) {
-        const path = Conf.Static.PhysicalDirectory + url.pathname.replace(Conf.Static.VirtualDirectory, "");
+    async process(context: RequestContext, url: string) {
+        const path = Conf.Static.PhysicalDirectory + url.replace(Conf.Static.VirtualDirectory, "");
         let contentType!: ContentType;
 
         Object.keys(ContentType).forEach((item: keyof typeof ContentType) => {

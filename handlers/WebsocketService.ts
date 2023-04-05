@@ -13,15 +13,15 @@ export default class WebsocketService {
     server: WS.Server;
     base: HTTPServer;
 
-    incomingMessage(data: string, session: Session) {
-        
-    }
-
     socketAttached(ws: WS.WebSocket, session: Session) {
         this.base._log(`WebSocket client attached from user: ${session.user?.id}`);
     }
 
     socketDetached(ws: WS.WebSocket) {
+
+    }
+
+    incomingMessage(data: string, session: Session) {
 
     }
 };
