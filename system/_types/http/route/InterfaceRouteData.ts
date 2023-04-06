@@ -7,6 +7,8 @@ export type InterfaceRouteData = {
 
     requiresLogin?: boolean;
 
+    blocked?: boolean;
+
     query?: QueryOptions[];
 
     body?: boolean;

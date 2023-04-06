@@ -145,12 +145,13 @@ export default class HTTPServer {
         context.end(
             EJS.render(XSS.stripCommentTag(data), {
                 reqId: context.requestId,
+                url: context.req.url,
             })
         );
     }
 
     private applyCustomHeaders(context: RequestContext) {
-        context.header("Server", "Fastron"); // Class-Orientated, union of words
+        context.header("Server", "Abstractor");
     }
 
     private applySecurityHeaders(context: RequestContext) {

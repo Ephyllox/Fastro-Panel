@@ -6,12 +6,15 @@ $("#logout").click(function () {
 
     document.querySelector("#logout-toast").MaterialSnackbar.showSnackbar({ message: "Logging out..." });
 
-    $.post("/api/logout", function () {
+    $.post("/api/auth/logout", function () {
         window.location.reload();
     });
 });
 
-$.post("/api/identity", function (data) {
-    $("#username-load").hide();
-    $("#username").html(data.Name).show();
+$.post("/api/user/identity", function (data) {
+    $("#username-load").fadeOut();
+
+    setTimeout(function () {
+        $("#username").html(data.Name).fadeIn();
+    }, 250);
 });

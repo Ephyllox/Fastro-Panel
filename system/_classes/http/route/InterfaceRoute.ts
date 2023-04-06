@@ -8,6 +8,7 @@ export default class InterfaceRoute extends Route implements InterfaceRouteData 
         super({
             path: Conf.Router.APIDirectory + options.path,
             requiresLogin: options.requiresLogin,
+            blocked: options.blocked,
             body: options.body,
             query: options.query,
         });

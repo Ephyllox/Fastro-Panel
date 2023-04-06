@@ -1,24 +1,35 @@
+import assert from "assert";
+
 import { AuthManager, BadRequestResult, InterfaceRoute, OkResult, RequestContext, UnauthorizedResult } from "../../../_classes";
 import { IRequestResult } from "../../../_interfaces";
 
-export class LoginAPI extends InterfaceRoute {
+import Conf from "../../../../utils/Configuration";
+import Utils from "../../../../utils/Toolbox";
+
+type LoginDetails = {
+    username: string, password: string,
+};
+
+export class Login extends InterfaceRoute {
     constructor() {
         super({
-            path: "validate-login",
+            path: "auth/validate-login",
             method: "POST",
             body: true,
         });
     }
 
     async onRequest(context: RequestContext): Promise<IRequestResult> {
-        if (context.input.body["username"]) {
-            const validation = AuthManager.checkLogin(context.input.body["username"], context.input.body["password"]);
+        const data = context.input.body as LoginDetails;
+
+        if (data.username && data.password) {
+            const validation = AuthManager.checkLogin(data.username, data.password);
 
             if (validation) {
                 context.cookie(validation);
             }
             else {
-                return new UnauthorizedResult("Incorrect credentials submitted.");
+                return new UnauthorizedResult("Please check your credentials.");
             }
 
             return new OkResult();
@@ -29,10 +40,10 @@ export class LoginAPI extends InterfaceRoute {
     }
 };
 
-export class LogoutAPI extends InterfaceRoute {
+export class Logout extends InterfaceRoute {
     constructor() {
         super({
-            path: "logout",
+            path: "auth/logout",
             method: "POST",
             requiresLogin: true,
         });
@@ -41,5 +52,42 @@ export class LogoutAPI extends InterfaceRoute {
     async onRequest(context: RequestContext): Promise<IRequestResult> {
         context.session.invalidate();
         return new OkResult();
+    }
+};
+
+type SignupDetails = {
+    username: string, password: string, password_confirm: string,
+};
+
+export class Register extends InterfaceRoute {
+    constructor() {
+        super({
+            path: "auth/register",
+            method: "POST",
+            body: true,
+        });
+    }
+
+    async onRequest(context: RequestContext): Promise<IRequestResult> {
+        const data = context.input.body as SignupDetails;
+
+        if (Object.values(data).length === 3) {
+            assert(data.username.length <= 16, "Your username is too long.");
+            assert(Utils.checkAlphanumeric(data.username), "Your username can only contain letters and numbers.");
+            assert(data.password === data.password_confirm, "The passwords do not match.");
+            assert(!Conf.Security.DefaultUsers[data.username], "That user already exists.");
+
+            const user_index = ++Object.keys(Conf.Security.DefaultUsers).length;
+
+            Conf.Security.DefaultUsers[data.username] = {
+                id: user_index,
+                passwd: AuthManager.hashCredentials(data.password, data.username + user_index),
+            };
+
+            return new OkResult();
+        }
+        else {
+            return new BadRequestResult("You must provide a username, password, and password confirmation.");
+        }
     }
 };

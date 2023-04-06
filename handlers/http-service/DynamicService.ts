@@ -1,3 +1,5 @@
+import { AssertionError } from "assert";
+
 import { DirectoryRoute, InputHandler, InterfaceRoute, RequestContext } from "../../system/_classes";
 import { IHttpServiceHandler } from "../../system/_interfaces";
 import { ContentType } from "../../system/_types";
@@ -17,11 +19,13 @@ export default class DynamicService implements IHttpServiceHandler {
         const route = Routes.find(item => item.path === url);
 
         if (route) {
-            if (route instanceof DirectoryRoute && context.req.method !== "GET") {
-                return context.status(405).end();
+            if (route instanceof DirectoryRoute) {
+                if (route.blocked) return this.base.renderActionFailure(context, Conf.Static.Integrated.ErrorFiles.Unauthorized, 403);
+                if (context.req.method !== "GET") return context.status(405).end();
             }
-            else if (route instanceof InterfaceRoute && context.req.method !== route.method) {
-                return context.status(405).end();
+            else if (route instanceof InterfaceRoute) {
+                if (route.blocked) return context.status(403).end();
+                if (context.req.method !== route.method) return context.status(405).end();
             }
 
             if (context.session?.isValid() || !route.requiresLogin) {
@@ -39,8 +43,15 @@ export default class DynamicService implements IHttpServiceHandler {
 
                         context.end(result ? this.base.renderSharedTemplate(result) : "");
                     }
-                    catch {
-                        this.base._log(`Directory/Interface resource exception from: ${context.requestId}.`, "yellow");
+                    catch (e) {
+                        // AssertionError is thrown when invalid input data types are detected
+                        switch (e?.constructor) {
+                            case AssertionError:
+                                return context.status(400).end(e.message);
+                        }
+
+                        // Other exceptions lead to a general service error
+                        this.base._log(`Directory/Interface resource exception from: ${context.requestId} -> ${e?.stack + e?.message}`, "yellow");
 
                         this.base.renderActionFailure(context, Conf.Static.Integrated.ErrorFiles.SvrError, 500);
                     }

@@ -5,6 +5,8 @@ export type RouteData = {
 
     requiresLogin?: boolean;
 
+    blocked?: boolean;
+
     query?: QueryOptions[];
 
     body?: boolean;

@@ -10,11 +10,14 @@ export default class Route implements RouteData, IRequestHandler {
         this.body = options.body;
         this.query = options.query;
         this.requiresLogin = options.requiresLogin;
+        this.blocked = options.blocked;
     }
 
     path: string;
 
     requiresLogin?: boolean;
+
+    blocked?: boolean;
 
     query?: QueryOptions[];
 

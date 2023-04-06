@@ -8,6 +8,10 @@ export default abstract class Toolbox {
         return Crypto.createHash("sha256").update(input).digest("hex");
     }
 
+    static checkAlphanumeric(input: string) {
+        return /^[a-zA-Z0-9]+$/.test(input);
+    }
+
     static random(length: number, special = true) {
         const characters = `abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789${special ? "!@#$%()_+-/~\\" : ""}`, charactersLength = characters.length;
         let result = "";

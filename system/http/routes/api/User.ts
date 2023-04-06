@@ -1,10 +1,10 @@
 import { InterfaceRoute, JsonResult, RequestContext } from "../../../_classes";
 import { IRequestResult } from "../../../_interfaces";
 
-export default class UserAPI extends InterfaceRoute {
+export class UserInfo extends InterfaceRoute {
     constructor() {
         super({
-            path: "identity",
+            path: "user/identity",
             method: "POST",
             requiresLogin: true,
         });

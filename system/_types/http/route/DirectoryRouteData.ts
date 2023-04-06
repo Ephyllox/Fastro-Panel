@@ -7,6 +7,8 @@ export type DirectoryRouteData = {
 
     requiresLogin?: boolean;
 
+    blocked?: boolean;
+
     redirectIfAuthorized?: string;
 
     query?: QueryOptions[];

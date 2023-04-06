@@ -1,12 +1,12 @@
 import { DirectoryRoute, RequestContext, ViewResult } from "../../../_classes";
 import { IRequestResult } from "../../../_interfaces";
 
-export class PanelHome extends DirectoryRoute {
+export class Login extends DirectoryRoute {
     constructor() {
         super({
-            path: "/panel",
-            directory: "pages/panel.html",
-            requiresLogin: true,
+            path: "/login",
+            directory: "pages/login/login.html",
+            redirectIfAuthorized: "/panel",
         });
     }
 
@@ -15,12 +15,11 @@ export class PanelHome extends DirectoryRoute {
     }
 };
 
-export class PanelUpdates extends DirectoryRoute {
+export class Register extends DirectoryRoute {
     constructor() {
         super({
-            path: "/updates",
-            directory: "pages/updates.html",
-            requiresLogin: true,
+            path: "/login/register",
+            directory: "pages/login/register.html",
         });
     }
 

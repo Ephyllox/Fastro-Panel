@@ -9,7 +9,7 @@ import Utils from "../../../utils/Toolbox";
 const sessions: { [token: string]: Session } = {};
 
 export default class AuthManager {
-    private static hashCredentials(passwd: string, salt: string) {
+    static hashCredentials(passwd: string, salt: string) {
         return pbkdf2Sync(passwd, salt, 10000, 32, "sha256").toString("hex");
     }
 

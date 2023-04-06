@@ -34,10 +34,11 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="system\http\pages\login\register.html" />
     <Content Include="system\http\pages\errors\not-found.html" />
     <Content Include="system\http\pages\errors\unauthorized.html" />
     <Content Include="system\http\pages\errors\server-error.html" />
-    <Content Include="system\http\pages\login.html" />
+    <Content Include="system\http\pages\login\login.html" />
     <Content Include="system\http\pages\panel.html" />
     <Content Include="system\http\pages\updates.html" />
     <Content Include="wwwroot\css\home\pages\landing.css" />
@@ -58,6 +59,7 @@
   <ItemGroup>
     <Folder Include="handlers\" />
     <Folder Include="handlers\http-service\" />
+    <Folder Include="system\http\pages\login\" />
     <Folder Include="utils\" />
     <Folder Include="wwwroot\" />
     <Folder Include="system\http\pages\" />
@@ -104,7 +106,7 @@
     <TypeScriptCompile Include="startup.ts" />
     <TypeScriptCompile Include="system\http\routes\api\Auth.ts" />
     <TypeScriptCompile Include="system\http\routes\api\User.ts" />
-    <TypeScriptCompile Include="system\http\routes\dir\Login.ts" />
+    <TypeScriptCompile Include="system\http\routes\dir\Auth.ts" />
     <TypeScriptCompile Include="system\http\routes\dir\Panel.ts" />
     <TypeScriptCompile Include="system\http\routes\index.ts" />
     <TypeScriptCompile Include="utils\Configuration.ts" />
