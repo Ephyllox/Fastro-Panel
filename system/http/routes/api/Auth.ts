@@ -65,6 +65,7 @@ export class Register extends InterfaceRoute {
             path: "auth/register",
             method: "POST",
             body: true,
+            blocked: true,
         });
     }
 

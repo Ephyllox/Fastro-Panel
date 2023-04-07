@@ -8,7 +8,7 @@ import { randomUUID } from "crypto";
 import { RequestContext, AuthManager, DirectoryRoute, InterfaceRoute, Session } from "./system/_classes";
 import { IHttpServiceHandler } from "./system/_interfaces";
 import { ContentType } from "./system/_types";
-import { Routes } from "./system/http/routes";
+import { Routes, loadRoutes } from "./system/http/routes";
 
 import StaticService from "./handlers/http-service/StaticService";
 import DynamicService from "./handlers/http-service/DynamicService";
@@ -38,14 +38,16 @@ export default class HTTPServer {
     public _log: LogDelegate;
 
     private initHTTP() {
-        for (const route of Routes) {
-            if (route instanceof InterfaceRoute) {
-                this.methods[route.method] = true;
+        loadRoutes().then(() => {
+            for (const route of Routes) {
+                if (route instanceof InterfaceRoute) {
+                    this.methods[route.method] = true;
+                }
+                else if (route instanceof DirectoryRoute) {
+                    this.methods["GET"] = true;
+                }
             }
-            else if (route instanceof DirectoryRoute) {
-                this.methods["GET"] = true;
-            }
-        }
+        });
 
         this.staticHandler = new StaticService(this);
         this.dynamicHandler = new DynamicService(this);
@@ -91,7 +93,7 @@ export default class HTTPServer {
                     }
                 }
                 else {
-                    this._log(`Forbidden method [${method}] requested from: ${context.requestId}.`);
+                    this._log(`Forbidden method [${method}] requested by: ${context.requestId}.`);
 
                     context.status(405).end();
                 }

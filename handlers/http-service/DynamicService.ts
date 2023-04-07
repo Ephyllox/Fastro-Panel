@@ -37,10 +37,12 @@ export default class DynamicService implements IHttpServiceHandler {
                     }
                 }
 
+                // Check that all inputted data is valid
                 if (await InputHandler.handle(context, route)) {
                     try {
                         const action = await route.onRequest(context), result = await action.execute(context);
 
+                        // ISSUE?: Regardless of route type, this still applies templating
                         context.end(result ? this.base.renderSharedTemplate(result) : "");
                     }
                     catch (e) {

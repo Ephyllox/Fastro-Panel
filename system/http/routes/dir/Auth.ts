@@ -20,6 +20,7 @@ export class Register extends DirectoryRoute {
         super({
             path: "/login/register",
             directory: "pages/login/register.html",
+            blocked: true,
         });
     }
 

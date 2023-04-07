@@ -1,21 +1,28 @@
 import { Route } from "../../_classes";
 
-// API Imports
-import * as AuthAPI from "./api/Auth";
-import * as UserAPI from "./api/User";
-// View Imports
-import * as AuthDIR from "./dir/Auth";
-import * as PanelDIR from "./dir/Panel";
+import FileUtils from "../../../utils/FileToolbox";
+import Conf from "../../../utils/Configuration";
 
-export const Routes: Route[] = [
-    // APIs
-    new AuthAPI.Login(),
-    new AuthAPI.Logout(),
-    new AuthAPI.Register(),
-    new UserAPI.UserInfo(),
-    // Views
-    new AuthDIR.Login(),
-    new AuthDIR.Register(),
-    new PanelDIR.PanelHome(),
-    new PanelDIR.PanelUpdates(),
-];
+export const Routes: Route[] = [];
+
+export async function loadRoutes() {
+    // The activator is required to instantiate route classes
+    function activator<T extends Route>(type: { new(): T }): T {
+        return new type();
+    }
+
+    await FileUtils.requireDirectory(Conf.Server.RouteDirectory).then(function (files) {
+        files.forEach(module => {
+            // Instantiate all routes and store them in memory
+            Object.values(module).forEach(route => {
+                try {
+                    const activated = activator(route as never);
+                    activated instanceof Route && Routes.push(activated);
+                }
+                catch {
+                    return;
+                }
+            });
+        });
+    });
+}

@@ -3,6 +3,7 @@ import { UserLogin, UserRole } from "../system/_types";
 export default abstract class Configuration {
     static Server = {
         DefaultPort: 1337,
+        RouteDirectory: "system/http/routes",
     }
 
     static Router = {
