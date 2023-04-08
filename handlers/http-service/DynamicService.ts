@@ -42,8 +42,10 @@ export default class DynamicService implements IHttpServiceHandler {
                     try {
                         const action = await route.onRequest(context), result = await action.execute(context);
 
-                        // ISSUE?: Regardless of route type, this still applies templating
-                        context.end(result ? this.base.renderSharedTemplate(result) : "");
+                        // If the route is an API, do not apply templating
+                        if (route instanceof InterfaceRoute) return context.end(result ?? undefined);
+
+                        context.end(result ? this.base.renderSharedTemplate(result) : undefined);
                     }
                     catch (e) {
                         // AssertionError is thrown when invalid input data types are detected

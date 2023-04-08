@@ -13,10 +13,10 @@ export default class AuthManager {
         return pbkdf2Sync(passwd, salt, 10000, 32, "sha256").toString("hex");
     }
 
-    static checkLogin(name: string, input: string) {
+    static checkLogin(name: string, passwd: string) {
         const user = Conf.Security.DefaultUsers[name] ?? null;
 
-        if (user !== null && this.hashCredentials(input, name + user.id) === user.passwd) {
+        if (user !== null && this.hashCredentials(passwd, name + user.id) === user.passwd) {
             const token = Utils.random(Conf.Session.CookieLength, Conf.Session.SpecialCharacters);
 
             const date = new Date();
@@ -41,12 +41,12 @@ export default class AuthManager {
         }
     }
 
-    static getSession(input: string): Session {
+    static getSession(token: string): Session | undefined {
         try {
-            return sessions[Utils.sha256(input)] || new Session();
+            return sessions[Utils.sha256(token)];
         }
         catch {
-            return new Session();
+            return;
         }
     }
 };

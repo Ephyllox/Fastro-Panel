@@ -20,6 +20,7 @@ export async function loadRoutes() {
                     activated instanceof Route && Routes.push(activated);
                 }
                 catch {
+                    // The module did not contain a class/constructor
                     return;
                 }
             });

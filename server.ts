@@ -110,7 +110,7 @@ export default class HTTPServer {
             server.on("upgrade", (req, socket, head) => {
                 const session = AuthManager.getSession(Utils.getCookies(req)[Conf.Session.CookieName]);
 
-                if (!session.isValid()) return req.destroy();
+                if (!session?.isValid()) return req.destroy();
 
                 this.websocketHandler.server.handleUpgrade(req, socket, head, (ws) => {
                     this.websocketHandler.server.emit("connection", ws, session);

@@ -50,7 +50,7 @@ export class Logout extends InterfaceRoute {
     }
 
     async onRequest(context: RequestContext): Promise<IRequestResult> {
-        context.session.invalidate();
+        context.session!.invalidate();
         return new OkResult();
     }
 };
@@ -65,7 +65,7 @@ export class Register extends InterfaceRoute {
             path: "auth/register",
             method: "POST",
             body: true,
-            blocked: true,
+            //blocked: true,
         });
     }
 

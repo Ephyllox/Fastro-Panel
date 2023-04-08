@@ -11,6 +11,6 @@ export class UserInfo extends InterfaceRoute {
     }
 
     async onRequest(context: RequestContext): Promise<IRequestResult> {
-        return new JsonResult(context.session.parse());
+        return new JsonResult(context.session!.parse());
     }
 };

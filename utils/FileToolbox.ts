@@ -12,8 +12,7 @@ export default abstract class FileToolbox {
             Promise.all(files.map(async file => {
                 const fullPath = Path.resolve(dir, file);
 
-                // Make sure that TypeScript does not pick up stale files
-                if (file.match(/\.(js)$/)) {
+                if (file.match(/\.(js)$/)) { // Require all .js files
                     const required = require(fullPath) as object;
                     filesArray.push(required);
                 }
