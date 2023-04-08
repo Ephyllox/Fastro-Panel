@@ -5,6 +5,7 @@ export default class CookieBuilder {
         this.name = options.name;
         this.value = options.value;
         this.expires = options.expires;
+        this.domain = options.domain;
         this.path = options.path;
         this.samesite = options.samesite;
         this.flags = options.flags;
@@ -13,6 +14,8 @@ export default class CookieBuilder {
     name: string;
 
     value: string;
+
+    domain: string;
 
     path: string;
 
@@ -26,6 +29,7 @@ export default class CookieBuilder {
         let built = `${this.name}=${this.value};`;
 
         if (this.expires) built += `expires=${this.expires.toUTCString()};`;
+        if (this.domain) built += `domain=${this.domain};`;
         if (this.path) built += `path=${this.path};`;
 
         if (this.flags) {

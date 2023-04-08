@@ -3,6 +3,8 @@ export type CookieOptions = {
 
     value: string;
 
+    domain: string;
+
     path: string;
 
     expires?: Date;
