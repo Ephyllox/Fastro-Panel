@@ -1,5 +1,5 @@
 import { IRequestHandler, IRequestResult } from "../../../_interfaces";
-import { QueryOptions, RouteData } from "../../../_types";
+import { QueryOptions, RouteData, UserRole } from "../../../_types";
 import { OkResult } from "../result/status/2xxResult";
 
 import RequestContext from "../RequestContext";
@@ -10,6 +10,7 @@ export default class Route implements RouteData, IRequestHandler {
         this.body = options.body;
         this.query = options.query;
         this.requiresLogin = options.requiresLogin;
+        this.requiredRoles = options.requiredRoles;
         this.blocked = options.blocked;
     }
 
@@ -17,11 +18,19 @@ export default class Route implements RouteData, IRequestHandler {
 
     requiresLogin?: boolean;
 
+    requiredRoles?: UserRole[];
+
     blocked?: boolean;
 
     query?: QueryOptions[];
 
     body?: boolean;
+
+    isUserAuthorized(context: RequestContext) {
+        if (!this.requiredRoles || !context.session) return true;
+
+        return context.session.user.perms?.roles.some(r => this.requiredRoles!.includes(r)) ?? false;
+    }
 
     async onRequest(context: RequestContext): Promise<IRequestResult> {
         return new OkResult();

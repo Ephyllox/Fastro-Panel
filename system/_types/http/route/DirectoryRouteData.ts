@@ -1,3 +1,4 @@
+import { UserRole } from "../../auth/UserData";
 import { QueryOptions } from "./input/InputOptions";
 
 export type DirectoryRouteData = {
@@ -6,6 +7,8 @@ export type DirectoryRouteData = {
     directory: string;
 
     requiresLogin?: boolean;
+
+    requiredRoles?: UserRole[];
 
     blocked?: boolean;
 

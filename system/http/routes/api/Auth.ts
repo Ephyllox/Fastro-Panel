@@ -14,7 +14,7 @@ export class Login extends InterfaceRoute {
     constructor() {
         super({
             path: "auth/validate-login",
-            method: "POST",
+            methods: ["POST"],
             body: true,
         });
     }
@@ -34,9 +34,8 @@ export class Login extends InterfaceRoute {
 
             return new OkResult();
         }
-        else {
-            return new BadRequestResult("You must provide valid credentials.");
-        }
+
+        return new BadRequestResult("You must provide valid credentials.");
     }
 };
 
@@ -44,7 +43,7 @@ export class Logout extends InterfaceRoute {
     constructor() {
         super({
             path: "auth/logout",
-            method: "POST",
+            methods: ["POST"],
             requiresLogin: true,
         });
     }
@@ -63,7 +62,7 @@ export class Register extends InterfaceRoute {
     constructor() {
         super({
             path: "auth/register",
-            method: "POST",
+            methods: ["POST"],
             body: true,
             //blocked: true,
         });
@@ -78,7 +77,7 @@ export class Register extends InterfaceRoute {
             assert(data.password === data.password_confirm, "The passwords do not match.");
             assert(!Conf.Security.DefaultUsers[data.username], "That user already exists.");
 
-            const user_index = ++Object.keys(Conf.Security.DefaultUsers).length;
+            const user_index = Conf.Security.DefaultUsers[Object.keys(Conf.Security.DefaultUsers).pop()!].id + 1;
 
             Conf.Security.DefaultUsers[data.username] = {
                 id: user_index,
@@ -87,8 +86,7 @@ export class Register extends InterfaceRoute {
 
             return new OkResult();
         }
-        else {
-            return new BadRequestResult("You must provide a username, password, and password confirmation.");
-        }
+
+        return new BadRequestResult("You must provide a username, password, and password confirmation.");
     }
 };

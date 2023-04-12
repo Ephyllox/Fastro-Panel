@@ -1,6 +1,6 @@
 import * as HTTP from "http";
 
-import { CookieOptions, ContentType, InputTypes } from "../../_types";
+import { CookieOptions, ContentType, InputTypes, HttpMethod } from "../../_types";
 
 import Session from "../auth/objects/SessionObject";
 import CookieBuilder from "./CookieBuilder";
@@ -17,6 +17,8 @@ export default class RequestContext {
         this.req = req;
         this.res = res;
 
+        this.method = req.method as HttpMethod;
+
         this.input = {
             body: undefined,
             query: {},
@@ -28,6 +30,8 @@ export default class RequestContext {
     public session?: Session;
 
     public input: InputTypes;
+
+    public method: HttpMethod;
 
     public req: HTTP.IncomingMessage;
 

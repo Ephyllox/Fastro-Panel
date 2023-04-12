@@ -9,13 +9,13 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="/content/vendors/css/bootstrap/bootstrap.css">
     <link rel="stylesheet" href="/content/vendors/css/material/material.css">
-    <link rel="stylesheet" href="/content/css/home/pages/updates.css">
+    <link rel="stylesheet" href="/content/css/home/main.css">
 </head>
 <body>
     <div class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
         <header class="demo-header mdl-layout__header mdl-color--grey-100 mdl-color-text--grey-600">
             <div class="mdl-layout__header-row">
-                <span class="mdl-layout-title">System Updates</span>
+                <span class="mdl-layout-title">Panel Management</span>
                 <div class="mdl-layout-spacer"></div>
             </div>
         </header>
@@ -42,8 +42,8 @@
             </header>
             <nav class="demo-navigation mdl-navigation mdl-color--blue-grey-800">
                 <a class="mdl-navigation__link" href="panel"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">home</i>Home</a>
-                <a class="mdl-navigation__link" style="background-color: darkcyan;" href="updates"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">fact_check</i>Updates</a>
-                <a class="mdl-navigation__link" href="management"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">settings</i>Management</a>
+                <a class="mdl-navigation__link" href="updates"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">fact_check</i>Updates</a>
+                <a class="mdl-navigation__link" style="background-color: darkcyan;" href="management"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">settings</i>Management</a>
                 <div class="mdl-layout-spacer"></div>
                 <p style="padding-left: 15px;">Copyright &copy; <%= copyright %></p>
             </nav>
@@ -51,39 +51,21 @@
         <main class="mdl-layout__content mdl-color--grey-100">
             <div class="demo-content">
                 <div class="demo-cards mdl-cell mdl-cell--4-col mdl-cell--8-col-tablet mdl-grid mdl-grid--no-spacing">
-                    <div class="demo-card-wide mdl-card mdl-shadow--2dp" style="background-color: aliceblue;">
-                        <i class="material-icons" style="position: absolute; top: 20px; left: 20px; font-size: 50px; opacity: 0.4;">security</i>
-                        <div class="mdl-card__title">
-                            <h2 class="mdl-card__title-text" style="color: darkcyan;">Release <code style="padding-left: 10px; font-size: 25px;">0.2</code></h2>
-                        </div>
-                        <div class="mdl-card__supporting-text">
-                            &mdash; Increased security with login which now validates all input to ensure there are no vulnerabilities.
-                            <br />
-                            &mdash; Data stored on the client side is secured by obfuscated names and multiple token chunks.
-                            <br />
-                            &mdash; Server protection against invalid name generation by strict comparisons with system login information.
-                        </div>
-                        <div class="mdl-card__actions mdl-card--border">
-                            <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" disabled>
-                                Security Update
-                            </a>
-                        </div>
-                    </div>
-                    <div class="demo-separator mdl-cell--1-col"></div>
-                    <div class="demo-card-wide mdl-card mdl-shadow--2dp" style="background-color: aliceblue;">
-                        <i class="material-icons" style="position: absolute; top: 20px; left: 20px; font-size: 50px; opacity: 0.4;">backup</i>
-                        <div class="mdl-card__title">
-                            <h2 class="mdl-card__title-text" style="color: darkcyan;">Release <code style="padding-left: 10px; font-size: 25px;">0.1</code></h2>
-                        </div>
-                        <div class="mdl-card__supporting-text">
-                            &mdash; Released and published the system.
-                            <br />
-                            &mdash; Added multiple pages for information.
-                        </div>
-                        <div class="mdl-card__actions mdl-card--border">
-                            <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" disabled>
-                                Major Release
-                            </a>
+                    <div id="user-list-card" class="demo-card-wide mdl-card mdl-shadow--2dp" style="background-color: aliceblue;">
+                        <div class="ml-3">
+                            <h4>Users</h4>
+                            <hr />
+                            <ul id="user-list" class="mdl-list">
+                                <li id="ul-user" class="mdl-list__item mdl-list__item--one-line" style="display: none;">
+                                    <span class="mdl-list__item-primary-content">
+                                        <i class="material-icons mdl-list__item-avatar">person</i>
+                                        <span id="ul-user-name">...</span>
+                                    </span>
+                                    <span class="mdl-list__item-secondary-content">
+                                        <button id="ul-user-btn-delete" class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored"><i class="material-icons">delete</i></button>
+                                    </span>
+                                </li>
+                            </ul>
                         </div>
                     </div>
                 </div>
@@ -94,5 +76,6 @@
     <script src="/content/vendors/js/bootstrap.bundle.js"></script>
     <script src="/content/vendors/js/material.js"></script>
     <script src="/content/js/home/main.js?v=<%= version %>"></script>
+    <script src="/content/js/home/pages/management.js?v=<%= version %>"></script>
 </body>
 </html>

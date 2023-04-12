@@ -41,7 +41,7 @@ export default class HTTPServer {
         loadRoutes().then(() => {
             for (const route of Routes) {
                 if (route instanceof InterfaceRoute) {
-                    this.methods[route.method] = true;
+                    route.methods.forEach(method => this.methods[method] = true);
                 }
                 else if (route instanceof DirectoryRoute) {
                     this.methods["GET"] = true;
@@ -74,7 +74,7 @@ export default class HTTPServer {
                 if (!context.req.url || !context.req.method) return context.status(400).end();
 
                 const url = context.req.url.split("?")[0];
-                const method = context.req.method;
+                const method = context.method;
 
                 if (this.methods[method]) { // Check if the method is valid globally
                     if (Conf.Security.AddSecurityHeaders) this.applySecurityHeaders(context);
@@ -98,7 +98,9 @@ export default class HTTPServer {
                     context.status(405).end();
                 }
             }
-            catch (e) {
+            catch (error) {
+                let e = error as Error;
+
                 this._log(e.message + e.stack, "redBright");
 
                 res.statusCode = 500;

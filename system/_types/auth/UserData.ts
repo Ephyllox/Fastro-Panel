@@ -13,6 +13,6 @@ export type UserPerms = {
 };
 
 export enum UserRole {
-    SUPER,
+    ADMIN,
     DEFAULT,
 };

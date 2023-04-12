@@ -49,4 +49,8 @@ export default class AuthManager {
             return;
         }
     }
+
+    static getSessions(user_id: number): Session[] {
+        return Object.values(sessions).filter(session => session.user.id === user_id);
+    }
 };

@@ -40,13 +40,16 @@
     <Content Include="system\http\pages\errors\server-error.html" />
     <Content Include="system\http\pages\login\login.html" />
     <Content Include="system\http\pages\panel.html" />
+    <Content Include="system\http\pages\management.html" />
     <Content Include="system\http\pages\updates.html" />
     <Content Include="wwwroot\css\home\pages\landing.css" />
+    <Content Include="wwwroot\css\home\main.css" />
     <Content Include="wwwroot\css\home\pages\updates.css" />
     <Content Include="wwwroot\js\auth\login.js" />
     <Content Include="wwwroot\js\errors\default.js" />
     <Content Include="wwwroot\js\home\pages\landing.js" />
-    <Content Include="wwwroot\js\home\pages\main.js" />
+    <Content Include="wwwroot\js\home\main.js" />
+    <Content Include="wwwroot\js\home\pages\management.js" />
     <Content Include="wwwroot\vendors\css\bootstrap\bootstrap.css" />
     <Content Include="wwwroot\vendors\css\material\material.css" />
     <Content Include="wwwroot\vendors\js\bootstrap.bundle.js" />

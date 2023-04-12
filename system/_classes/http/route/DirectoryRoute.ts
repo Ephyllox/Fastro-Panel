@@ -8,6 +8,7 @@ export default class DirectoryRoute extends Route implements DirectoryRouteData 
         super({
             path: options.path,
             requiresLogin: options.requiresLogin,
+            requiredRoles: options.requiredRoles,
             blocked: options.blocked,
             body: options.body,
             query: options.query,

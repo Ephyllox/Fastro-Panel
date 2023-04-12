@@ -21,9 +21,9 @@ export default class StaticService implements IHttpServiceHandler {
         const path = Conf.Static.PhysicalDirectory + url.replace(Conf.Static.VirtualDirectory, "");
         let contentType!: ContentType;
 
-        Object.keys(ContentType).forEach((item: keyof typeof ContentType) => {
+        Object.keys(ContentType).forEach((item) => {
             if (path.endsWith(`.${item.toLowerCase()}`)) {
-                contentType = ContentType[item];
+                contentType = ContentType[item as keyof typeof ContentType];
             }
         });
 
@@ -46,7 +46,9 @@ export default class StaticService implements IHttpServiceHandler {
 
             context.end(this.cache[path]);
         }
-        catch (e) {
+        catch (error) {
+            let e = error as Error;
+
             this.base._log(`Static resource exception from: ${context.requestId} -> ${e?.stack + e?.message}`, "yellow");
 
             this.base.renderActionFailure(context, Conf.Static.Integrated.ErrorFiles.SvrError, 500);

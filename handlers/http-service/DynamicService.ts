@@ -2,7 +2,7 @@ import { AssertionError } from "assert";
 
 import { DirectoryRoute, InputHandler, InterfaceRoute, RequestContext } from "../../system/_classes";
 import { IHttpServiceHandler } from "../../system/_interfaces";
-import { ContentType } from "../../system/_types";
+import { ContentType, HttpMethod } from "../../system/_types";
 import { Routes } from "../../system/http/routes";
 
 import HTTPServer from "../../server";
@@ -20,12 +20,12 @@ export default class DynamicService implements IHttpServiceHandler {
 
         if (route) {
             if (route instanceof DirectoryRoute) {
-                if (route.blocked) return this.base.renderActionFailure(context, Conf.Static.Integrated.ErrorFiles.Unauthorized, 403);
-                if (context.req.method !== "GET") return context.status(405).end();
+                if (route.blocked || !route.isUserAuthorized(context)) return this.base.renderActionFailure(context, Conf.Static.Integrated.ErrorFiles.Unauthorized, 403);
+                if (context.method !== "GET") return context.status(405).end();
             }
             else if (route instanceof InterfaceRoute) {
-                if (route.blocked) return context.status(403).end();
-                if (context.req.method !== route.method) return context.status(405).end();
+                if (route.blocked || !route.isUserAuthorized(context)) return context.status(403).end();
+                if (!route.methods.includes(context.method)) return context.status(405).end();
             }
 
             if (context.session?.isValid() || !route.requiresLogin) {
@@ -43,11 +43,15 @@ export default class DynamicService implements IHttpServiceHandler {
                         const action = await route.onRequest(context), result = await action.execute(context);
 
                         // If the route is an API, do not apply templating
-                        if (route instanceof InterfaceRoute) return context.end(result ?? undefined);
+                        if (route instanceof InterfaceRoute) {
+                            return context.end(result ?? undefined);
+                        }
 
                         context.end(result ? this.base.renderSharedTemplate(result) : undefined);
                     }
-                    catch (e) {
+                    catch (error) {
+                        let e = error as Error;
+
                         // AssertionError is thrown when invalid input data types are detected
                         switch (e?.constructor) {
                             case AssertionError:
