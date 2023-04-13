@@ -5,3 +5,9 @@ export class OkResult extends StatusResult {
         super(200, content);
     }
 };
+
+export class NoContentResult extends StatusResult {
+    constructor() {
+        super(204);
+    }
+}

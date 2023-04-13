@@ -1,6 +1,6 @@
 import assert from "assert";
 
-import { AuthManager, BadRequestResult, InterfaceRoute, OkResult, RequestContext, UnauthorizedResult } from "../../../_classes";
+import { AuthManager, BadRequestResult, InterfaceRoute, NoContentResult, RequestContext, UnauthorizedResult } from "../../../_classes";
 import { IRequestResult } from "../../../_interfaces";
 
 import Conf from "../../../../utils/Configuration";
@@ -32,7 +32,7 @@ export class Login extends InterfaceRoute {
                 return new UnauthorizedResult("Please check your credentials.");
             }
 
-            return new OkResult();
+            return new NoContentResult();
         }
 
         return new BadRequestResult("You must provide valid credentials.");
@@ -50,7 +50,7 @@ export class Logout extends InterfaceRoute {
 
     async onRequest(context: RequestContext): Promise<IRequestResult> {
         context.session!.invalidate();
-        return new OkResult();
+        return new NoContentResult();
     }
 };
 
@@ -77,14 +77,16 @@ export class Register extends InterfaceRoute {
             assert(data.password === data.password_confirm, "The passwords do not match.");
             assert(!Conf.Security.DefaultUsers[data.username], "That user already exists.");
 
-            const user_index = Conf.Security.DefaultUsers[Object.keys(Conf.Security.DefaultUsers).pop()!].id + 1;
+            const user_index = Math.max(...Object.values(Conf.Security.DefaultUsers).map(
+                item => item.id
+            )) + 1;
 
             Conf.Security.DefaultUsers[data.username] = {
                 id: user_index,
                 passwd: AuthManager.hashCredentials(data.password, data.username + user_index),
             };
 
-            return new OkResult();
+            return new NoContentResult();
         }
 
         return new BadRequestResult("You must provide a username, password, and password confirmation.");

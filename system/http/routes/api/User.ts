@@ -1,6 +1,6 @@
 import assert from "assert";
 
-import { AuthManager, BadRequestResult, InterfaceRoute, JsonResult, OkResult, RequestContext } from "../../../_classes";
+import { AuthManager, BadRequestResult, InterfaceRoute, JsonResult, NoContentResult, RequestContext } from "../../../_classes";
 import { IRequestResult } from "../../../_interfaces";
 import { UserRole } from "../../../_types";
 
@@ -76,18 +76,9 @@ export class UserUpdate extends InterfaceRoute {
             AuthManager.getSessions(data.user_id).forEach(session => session.invalidate());
             delete Conf.Security.DefaultUsers[username];
 
-            return new OkResult();
+            return new NoContentResult();
         }
 
         return new BadRequestResult("You must provide the user identifier.");
-    }
-
-    async onRequest(context: RequestContext): Promise<IRequestResult> {
-        switch (context.method) {
-            case "DELETE":
-                return this.DELETE(context);
-        }
-
-        return new BadRequestResult();
     }
 };

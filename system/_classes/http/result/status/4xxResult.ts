@@ -11,3 +11,9 @@ export class UnauthorizedResult extends StatusResult {
         super(401, content);
     }
 };
+
+export class MethodNotAllowedResult extends StatusResult {
+    constructor(content?: string) {
+        super(405, content);
+    }
+}
