@@ -1,6 +1,6 @@
 import { IRequestHandler, IRequestResult } from "../../../_interfaces";
 import { QueryOptions, RouteData, UserRole } from "../../../_types";
-import { OkResult } from "../result/status/2xxResult";
+import { NoContentResult } from "../result/status/2xxResult";
 
 import RequestContext from "../RequestContext";
 
@@ -33,6 +33,6 @@ export default class Route implements RouteData, IRequestHandler {
     }
 
     async onRequest(context: RequestContext): Promise<IRequestResult> {
-        return new OkResult();
+        return new NoContentResult();
     }
 };
