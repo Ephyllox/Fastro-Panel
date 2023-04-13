@@ -2,6 +2,7 @@ showLoading("#user-list-card", true);
 
 function deleteUser(id, name) {
     snackbar(`Deleting user: ${name}, please wait...`);
+    showLoading("#user-list-card", true);
 
     $.ajax({
         url: "/api/user/update",
@@ -13,6 +14,9 @@ function deleteUser(id, name) {
         },
         error: function (xhr) {
             snackbar(xhr.responseText, 1500);
+        },
+        complete: function () {
+            hideLoading();
         },
     });
 }

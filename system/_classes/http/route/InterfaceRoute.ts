@@ -1,7 +1,10 @@
+import { BadRequestResult, MethodNotAllowedResult } from "../result/status/4xxResult";
 import { InterfaceRouteData, HttpMethod } from "../../../_types";
+import { IRequestResult } from "../../../_interfaces";
 
 import Conf from "../../../../utils/Configuration";
 import Route from "./Route";
+import RequestContext from "../RequestContext";
 
 export default class InterfaceRoute extends Route implements InterfaceRouteData {
     constructor(options: InterfaceRouteData) {
@@ -18,4 +21,37 @@ export default class InterfaceRoute extends Route implements InterfaceRouteData 
     }
 
     methods: HttpMethod[];
+
+    async GET(context: RequestContext): Promise<IRequestResult> {
+        return new MethodNotAllowedResult();
+    }
+
+    async POST(context: RequestContext): Promise<IRequestResult> {
+        return new MethodNotAllowedResult();
+    }
+
+    async PUT(context: RequestContext): Promise<IRequestResult> {
+        return new MethodNotAllowedResult();
+    }
+
+    async PATCH(context: RequestContext): Promise<IRequestResult> {
+        return new MethodNotAllowedResult();
+    }
+
+    async DELETE(context: RequestContext): Promise<IRequestResult> {
+        return new MethodNotAllowedResult();
+    }
+
+    async OPTIONS(context: RequestContext): Promise<IRequestResult> {
+        return new MethodNotAllowedResult();
+    }
+
+    // When the 'onRequest' function is not defined on an API, this gets called by the handler instead
+    // What this implies is that the API accepts multiple methods, so the respective function is called
+    async onRequest(context: RequestContext): Promise<IRequestResult> {
+        const method = this[context.method as keyof typeof this];
+        if (typeof method === "function") return method(context);
+
+        return new BadRequestResult();
+    }
 };
