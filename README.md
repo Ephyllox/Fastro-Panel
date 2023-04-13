@@ -22,9 +22,12 @@ To take Fastro and run it for yourself, you'll need **NodeJS v16** or later.
 _Ensure that you've also got **TypeScript** installed._
 ```css
 In the root directory of the project, run the following commands:
+
+> npm install
 > npm run build
 
 Wait for completion, then...
+
 > npm start
 ```
 If there are any errors present during the build phase, create a new issue on Fastro's GitHub.
