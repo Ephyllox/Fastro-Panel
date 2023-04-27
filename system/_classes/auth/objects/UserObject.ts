@@ -11,5 +11,5 @@ export default class User {
 
     public name: string;
 
-    public perms?: UserPerms;
+    public perms: UserPerms;
 };

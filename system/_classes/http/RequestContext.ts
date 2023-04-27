@@ -11,9 +11,10 @@ type ContextBinding = {
 }
 
 export default class RequestContext {
-    constructor({ req, res }: ContextBinding, reqId: string, session?: Session) {
+    constructor({ req, res }: ContextBinding, reqId: string, template: object, session?: Session) {
         this.session = session;
         this.requestId = reqId;
+        this.template = template;
         this.req = req;
         this.res = res;
 
@@ -26,6 +27,8 @@ export default class RequestContext {
     }
 
     public requestId: string;
+
+    public template: object;
 
     public session?: Session;
 

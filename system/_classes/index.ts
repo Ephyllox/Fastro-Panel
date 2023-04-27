@@ -4,7 +4,7 @@ export { default as Session } from "./auth/objects/SessionObject";
 export { default as User } from "./auth/objects/UserObject";
 
 export { OkResult, NoContentResult } from "./http/result/status/2xxResult";
-export { BadRequestResult, UnauthorizedResult, MethodNotAllowedResult } from "./http/result/status/4xxResult";
+export { BadRequestResult, UnauthorizedResult, ForbiddenResult, MethodNotAllowedResult } from "./http/result/status/4xxResult";
 
 export { default as JsonResult } from "./http/result/JsonResult";
 export { default as ViewResult } from "./http/result/ViewResult";

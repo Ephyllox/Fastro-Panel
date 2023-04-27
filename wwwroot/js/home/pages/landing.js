@@ -3,5 +3,5 @@ const greetings = ["Hey, $$!", "Welcome, $$!", "Nice to see you, $$!", "What's g
 $.post("/api/user/identity", function (data) {
     const msg = greetings[Math.floor(Math.random() * greetings.length)];
 
-    $("#welcome").html(msg.replace("$$", `<b>${data.Name}</b>`)).fadeIn();
+    $("#welcome").html(msg.replace("$$", `<b>${data.Username}</b>`)).fadeIn();
 });

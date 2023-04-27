@@ -67,7 +67,7 @@ export default class HTTPServer {
         const server = HTTP.createServer((req, res) => {
             try {
                 const context = new RequestContext({ req: req, res: res }, randomUUID(), this.getSharedTemplate,
-                    AuthManager.getSession(Utils.getCookies(req)[Conf.Session.CookieName]),
+                    AuthManager.getUserSession(Utils.getCookies(req)[Conf.Session.CookieName]),
                 );
 
                 // All responses (except for top-level server exceptions) should apply headers
@@ -111,7 +111,7 @@ export default class HTTPServer {
 
         if (Conf.Websocket.EnableWebsocket) {
             server.on("upgrade", (req, socket, head) => {
-                const session = AuthManager.getSession(Utils.getCookies(req)[Conf.Session.CookieName]);
+                const session = AuthManager.getUserSession(Utils.getCookies(req)[Conf.Session.CookieName]);
 
                 if (!session?.isValid()) return req.destroy();
 

@@ -42,12 +42,7 @@ export default class DynamicService implements IHttpServiceHandler {
                     try {
                         const action = await route.onRequest(context), result = await action.execute(context);
 
-                        // If the route is an API, do not apply templating
-                        if (route instanceof InterfaceRoute) {
-                            return context.end(result ?? undefined);
-                        }
-
-                        context.end(result ? this.base.renderSharedTemplate(result) : undefined);
+                        context.end(result ?? undefined);
                     }
                     catch (error) {
                         let e = error as Error;
@@ -60,6 +55,8 @@ export default class DynamicService implements IHttpServiceHandler {
 
                         // Other exceptions lead to a general service error
                         this.base._log(`Directory/Interface resource exception from: ${context.requestId} -> ${e?.stack + e?.message}`, "yellow");
+
+                        if (route instanceof InterfaceRoute) return context.text("Internal Server Error", 500);
 
                         this.base.renderActionFailure(context, Conf.Static.Integrated.ErrorFiles.SvrError, 500);
                     }

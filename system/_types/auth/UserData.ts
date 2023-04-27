@@ -3,13 +3,13 @@ export type UserLogin = {
 
     passwd: string;
 
-    perms?: UserPerms;
+    perms: UserPerms;
 };
 
 export type UserPerms = {
-    roles: UserRole[];
+    disabled: boolean;
 
-    disabled?: boolean;
+    roles?: UserRole[];
 };
 
 export enum UserRole {

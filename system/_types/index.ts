@@ -1,4 +1,5 @@
 export { UserLogin, UserPerms, UserRole } from "./auth/UserData";
+export { ValidationData } from "./auth/ValidationData";
 
 export { InputTypes, QueryOptions } from "./http/route/input/InputOptions";
 

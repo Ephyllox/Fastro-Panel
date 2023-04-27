@@ -49,7 +49,7 @@
             </nav>
         </div>
         <main class="mdl-layout__content mdl-color--grey-100">
-            <div class="demo-content">
+            <div class="mdl-grid">
                 <div class="demo-cards mdl-cell mdl-cell--4-col mdl-cell--8-col-tablet mdl-grid mdl-grid--no-spacing">
                     <div id="user-list-card" class="demo-card-wide mdl-card mdl-shadow--2dp" style="background-color: aliceblue;">
                         <div class="ml-3">
@@ -62,7 +62,30 @@
                                         <span id="ul-user-name">...</span>
                                     </span>
                                     <span class="mdl-list__item-secondary-content">
-                                        <button id="ul-user-btn-delete" class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored"><i class="material-icons">delete</i></button>
+                                        <button id="ul-user-btn-block" class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored" title="Block/Unblock Account"><i id="ul-user-btn-block-icon" class="material-icons">radio_button_unchecked</i></button>
+                                    </span>
+                                    <span class="mdl-list__item-secondary-content">
+                                        <button id="ul-user-btn-delete" class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored" title="Delete Account"><i class="material-icons">delete</i></button>
+                                    </span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="demo-cards mdl-cell mdl-cell--4-col mdl-cell--8-col-tablet mdl-grid mdl-grid--no-spacing">
+                    <div id="session-list-card" class="demo-card-wide mdl-card mdl-shadow--2dp" style="background-color: aliceblue;">
+                        <div class="ml-3">
+                            <h4>Sessions</h4>
+                            <hr />
+                            <ul id="session-list" class="mdl-list">
+                                <li id="ul-session" class="mdl-list__item mdl-list__item--three-line" style="display: none;">
+                                    <span class="mdl-list__item-primary-content">
+                                        <i class="material-icons mdl-list__item-avatar">key</i>
+                                        <span id="ul-session-name">...</span>
+                                        <span id="ul-session-creation" class="mdl-list__item-text-body">...</span>
+                                    </span>
+                                    <span class="mdl-list__item-secondary-content">
+                                        <button id="ul-session-btn-revoke" class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored" title="Revoke Session"><i class="material-icons">cancel</i></button>
                                     </span>
                                 </li>
                             </ul>

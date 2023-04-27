@@ -108,10 +108,12 @@
     <TypeScriptCompile Include="handlers\WebsocketService.ts" />
     <TypeScriptCompile Include="startup.ts" />
     <TypeScriptCompile Include="system\http\routes\api\Auth.ts" />
+    <TypeScriptCompile Include="system\http\routes\api\Session.ts" />
     <TypeScriptCompile Include="system\http\routes\api\User.ts" />
     <TypeScriptCompile Include="system\http\routes\dir\Auth.ts" />
     <TypeScriptCompile Include="system\http\routes\dir\Panel.ts" />
     <TypeScriptCompile Include="system\http\routes\index.ts" />
+    <TypeScriptCompile Include="system\_types\auth\ValidationData.ts" />
     <TypeScriptCompile Include="utils\Configuration.ts" />
     <TypeScriptCompile Include="utils\FileToolbox.ts" />
     <TypeScriptCompile Include="utils\Logging.ts" />

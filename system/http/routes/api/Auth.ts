@@ -1,6 +1,6 @@
 import assert from "assert";
 
-import { AuthManager, BadRequestResult, InterfaceRoute, NoContentResult, RequestContext, UnauthorizedResult } from "../../../_classes";
+import { AuthManager, BadRequestResult, ForbiddenResult, InterfaceRoute, NoContentResult, RequestContext, UnauthorizedResult } from "../../../_classes";
 import { IRequestResult } from "../../../_interfaces";
 
 import Conf from "../../../../utils/Configuration";
@@ -23,13 +23,15 @@ export class Login extends InterfaceRoute {
         const data = context.input.body as LoginDetails;
 
         if (data.username && data.password) {
-            const validation = AuthManager.checkLogin(data.username, data.password);
+            const result = AuthManager.checkLogin(data.username, data.password);
 
-            if (validation) {
-                context.cookie(validation);
+            if (result.success) {
+                context.cookie(result.cookie!);
             }
             else {
-                return new UnauthorizedResult("Please check your credentials.");
+                return !result.blocked
+                    ? new UnauthorizedResult("Please check your credentials.")
+                    : new ForbiddenResult("Your account is blocked.");
             }
 
             return new NoContentResult();
@@ -72,6 +74,7 @@ export class Register extends InterfaceRoute {
         const data = context.input.body as SignupDetails;
 
         if (Object.values(data).length === 3) {
+            assert(data.username.length > 3, "Your username is too short.");
             assert(data.username.length <= 16, "Your username is too long.");
             assert(Utils.checkAlphanumeric(data.username), "Your username can only contain letters and numbers.");
             assert(data.password === data.password_confirm, "The passwords do not match.");
@@ -84,6 +87,7 @@ export class Register extends InterfaceRoute {
             Conf.Security.DefaultUsers[data.username] = {
                 id: user_index,
                 passwd: AuthManager.hashCredentials(data.password, data.username + user_index),
+                perms: { disabled: false },
             };
 
             return new NoContentResult();

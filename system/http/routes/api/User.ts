@@ -35,16 +35,20 @@ export class UserList extends InterfaceRoute {
         const mapped_users: object[] = [];
 
         user_array.forEach(item => mapped_users.push({
-            Name: item[0],
+            Username: item[0],
             UserId: item[1].id,
-            Disabled: item[1].perms?.disabled ?? false,
-            Permissions: item[1].perms?.roles.map(
+            Disabled: item[1].perms.disabled,
+            Permissions: item[1].perms.roles?.map(
                 item => UserRole[item] as string
             )
         }));
 
         return new JsonResult(mapped_users);
     }
+};
+
+type UserBlockDetails = {
+    user_id: number, blocked: boolean,
 };
 
 type UserDeletionDetails = {
@@ -55,30 +59,41 @@ export class UserUpdate extends InterfaceRoute {
     constructor() {
         super({
             path: "user/update",
-            methods: ["DELETE"],
+            methods: ["PATCH", "DELETE"],
             body: true,
             requiresLogin: true,
             requiredRoles: [UserRole.ADMIN],
         });
     }
 
+    private checkUser(userId: number) {
+        assert(userId !== undefined, "You must provide a user identifier.");
+
+        const username = Object.keys(Conf.Security.DefaultUsers).find(
+            user => Conf.Security.DefaultUsers[user].id === userId
+        );
+
+        assert(username !== undefined, "The specified user does not exist.");
+        assert(Conf.Security.DefaultUsers[username].id !== 1, "You cannot modify the initial user.");
+        return username;
+    }
+
+    async PATCH(context: RequestContext): Promise<IRequestResult> {
+        const data = context.input.body as UserBlockDetails;
+        const username = this.checkUser(data.user_id);
+
+        Conf.Security.DefaultUsers[username].perms.disabled = data.blocked;
+
+        return new NoContentResult();
+    }
+
     async DELETE(context: RequestContext): Promise<IRequestResult> {
         const data = context.input.body as UserDeletionDetails;
+        const username = this.checkUser(data.user_id);
 
-        if (data.user_id) {
-            const username = Object.keys(Conf.Security.DefaultUsers).find(
-                user => Conf.Security.DefaultUsers[user].id === data.user_id
-            );
+        AuthManager.getUserSessions(data.user_id).forEach(session => session.invalidate());
+        delete Conf.Security.DefaultUsers[username];
 
-            assert(username !== undefined, "The specified user does not exist.");
-            assert(Conf.Security.DefaultUsers[username].id !== 1, "You cannot delete the initial user.");
-
-            AuthManager.getSessions(data.user_id).forEach(session => session.invalidate());
-            delete Conf.Security.DefaultUsers[username];
-
-            return new NoContentResult();
-        }
-
-        return new BadRequestResult("You must provide the user identifier.");
+        return new NoContentResult();
     }
 };

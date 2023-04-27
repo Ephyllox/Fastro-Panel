@@ -12,6 +12,12 @@ export class UnauthorizedResult extends StatusResult {
     }
 };
 
+export class ForbiddenResult extends StatusResult {
+    constructor(content?: string) {
+        super(403, content);
+    }
+};
+
 export class MethodNotAllowedResult extends StatusResult {
     constructor(content?: string) {
         super(405, content);

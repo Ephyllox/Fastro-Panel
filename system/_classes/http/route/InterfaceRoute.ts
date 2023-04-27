@@ -50,7 +50,7 @@ export default class InterfaceRoute extends Route implements InterfaceRouteData 
     // What this implies is that the API accepts multiple methods, so the respective function is called
     async onRequest(context: RequestContext): Promise<IRequestResult> {
         const method = this[context.method as keyof typeof this];
-        if (typeof method === "function") return method(context);
+        if (typeof method === "function") return method.call(this, context); // Manually assign 'this', or it will be undefined
 
         return new BadRequestResult();
     }

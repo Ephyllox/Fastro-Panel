@@ -46,6 +46,7 @@ export default abstract class Configuration {
                 // Password is 'admin'
                 passwd: "0a37b33d81e4e7f80ea89dd32e8ee12a939c154e6767cd035c467f8de1eadedc",
                 perms: {
+                    disabled: false,
                     roles: [
                         UserRole.ADMIN,
                     ],

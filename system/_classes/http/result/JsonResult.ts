@@ -4,7 +4,7 @@ import { ContentType } from "../../../_types";
 import RequestContext from "../RequestContext";
 
 export default class JsonResult implements IRequestResult {
-    constructor(object: object) {
+    constructor(object: object | boolean) {
         this.object = JSON.stringify(object);
     }
 

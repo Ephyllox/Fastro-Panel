@@ -3,9 +3,9 @@ export type CookieOptions = {
 
     value: string;
 
-    domain: string;
-
     path: string;
+
+    domain?: string;
 
     expires?: Date;
 

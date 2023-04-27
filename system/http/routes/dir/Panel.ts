@@ -12,7 +12,9 @@ export class Home extends DirectoryRoute {
     }
 
     async onRequest(context: RequestContext): Promise<IRequestResult> {
-        return new ViewResult(this.directory);
+        return new ViewResult(this.directory, {
+            nav_mgmt_access: new Management().isUserAuthorized(context),
+        });
     }
 };
 
@@ -26,7 +28,9 @@ export class Updates extends DirectoryRoute {
     }
 
     async onRequest(context: RequestContext): Promise<IRequestResult> {
-        return new ViewResult(this.directory);
+        return new ViewResult(this.directory, {
+            nav_mgmt_access: new Management().isUserAuthorized(context),
+        });
     }
 };
 
