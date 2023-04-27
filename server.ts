@@ -1,5 +1,5 @@
+import * as Mustache from "mustache";
 import * as HTTP from "http";
-import * as EJS from "ejs";
 import * as XSS from "xss";
 import * as WS from "ws";
 
@@ -66,9 +66,13 @@ export default class HTTPServer {
     private listenHTTP() {
         const server = HTTP.createServer((req, res) => {
             try {
-                const context = new RequestContext({ req: req, res: res }, randomUUID(),
+                const context = new RequestContext({ req: req, res: res }, randomUUID(), this.getSharedTemplate,
                     AuthManager.getSession(Utils.getCookies(req)[Conf.Session.CookieName]),
                 );
+
+                // All responses (except for top-level server exceptions) should apply headers
+                if (Conf.Security.AddSecurityHeaders) this.applySecurityHeaders(context);
+                this.applyCustomHeaders(context);
 
                 // Ensure that both the URL and method are not undefined
                 if (!context.req.url || !context.req.method) return context.status(400).end();
@@ -77,9 +81,6 @@ export default class HTTPServer {
                 const method = context.method;
 
                 if (this.methods[method]) { // Check if the method is valid globally
-                    if (Conf.Security.AddSecurityHeaders) this.applySecurityHeaders(context);
-                    this.applyCustomHeaders(context);
-
                     if (url === "/" && Conf.Router.EnableDefaultRedirect) {
                         context.redirect(Conf.Router.DefaultRoute);
                     }
@@ -98,7 +99,7 @@ export default class HTTPServer {
                     context.status(405).end();
                 }
             }
-            catch (error) {
+            catch (error) { // Catch top-level exceptions - serious errors that could cause crashes
                 let e = error as Error;
 
                 this._log(e.message + e.stack, "redBright");
@@ -133,11 +134,11 @@ export default class HTTPServer {
         });
     }
 
-    renderSharedTemplate(content: string) {
-        return EJS.render(XSS.stripCommentTag(content), {
+    private get getSharedTemplate() {
+        return {
             copyright: `${new Date().getUTCFullYear()} - Universe`,
             version: this._cacheKey,
-        });
+        };
     }
 
     async renderActionFailure(context: RequestContext, path: string, status: number = 200) {
@@ -147,7 +148,7 @@ export default class HTTPServer {
         context.status(status);
 
         context.end(
-            EJS.render(XSS.stripCommentTag(data), {
+            Mustache.render(XSS.stripCommentTag(data), {
                 reqId: context.requestId,
                 url: context.req.url,
             })

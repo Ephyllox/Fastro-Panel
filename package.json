@@ -19,15 +19,15 @@
     "clean": "tsc --build --clean"
   },
   "devDependencies": {
-    "@types/ejs": "^3.1.2",
-    "@types/node": "^18.15.13",
+    "@types/mustache": "^4.2.2",
+    "@types/node": "^18.16.1",
     "@types/strip-comments": "^2.0.1",
     "@types/ws": "^8.5.4",
     "typescript": "^5.0.4"
   },
   "dependencies": {
     "chalk": "2.4.2",
-    "ejs": "3.1.9",
+    "mustache": "4.2.0",
     "strip-comments": "2.0.1",
     "terser": "5.17.1",
     "ws": "8.13.0",

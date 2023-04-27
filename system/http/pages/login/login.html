@@ -44,7 +44,7 @@
                                 The default login is: <b>admin</b>, password: <b>admin</b>.
                             </div>
                             <hr />
-                            <p class="text-center" style="opacity: 0.5;">Copyright &copy; <%= copyright %></p>
+                            <p class="text-center" style="opacity: 0.5;">Copyright &copy; {{copyright}}</p>
                         </form>
                     </article>
                 </div>
@@ -53,6 +53,6 @@
     </div>
     <script src="/content/vendors/js/jquery.js"></script>
     <script src="/content/vendors/js/bootstrap.bundle.js"></script>
-    <script src="/content/js/auth/login.js?v=<%= version %>"></script>
+    <script src="/content/js/auth/login.js?v={{version}}"></script>
 </body>
 </html>
