@@ -54,7 +54,8 @@ export class RevokeSession extends InterfaceRoute {
             const session = AuthManager.getSessionById(data.session_id);
 
             assert(session !== undefined, "The specified session is invalid.");
-            assert(session.user.id !== 1 || context.session!.user.id === 1, "You cannot modify the initial user.");
+            // Deny if the target is the 'initial' user, but always allow action against the current user
+            assert(session.user.id !== 1 || session.user.id === context.session!.user.id, "You cannot modify the initial user.");
 
             session.invalidate();
 

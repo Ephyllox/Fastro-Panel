@@ -60,6 +60,7 @@ export default class AuthManager {
     }
 
     static getAllSessions(): Session[] {
+        // Return only valid sessions
         return Object.values(sessions).filter(session => session.isValid());
     }
 
