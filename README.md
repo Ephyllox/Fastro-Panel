@@ -7,7 +7,7 @@ Fastro consists of 3 core features:
 - Static resource serving
 - Authentication
 
-It's meant to be a very stripped-down, almost template-like system to build on top of. Just not a 
+It's meant to be a very stripped-down, almost template-like system to build on top of.
 The main reason for it is so you can add your own features to it easily; configuring/adding webpages and routes + more!
 
 ### Object Orientation
