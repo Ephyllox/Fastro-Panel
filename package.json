@@ -20,7 +20,7 @@
   },
   "devDependencies": {
     "@types/mustache": "^4.2.2",
-    "@types/node": "^18.16.2",
+    "@types/node": "^18.16.3",
     "@types/strip-comments": "^2.0.1",
     "@types/ws": "^8.5.4",
     "typescript": "^5.0.4"
