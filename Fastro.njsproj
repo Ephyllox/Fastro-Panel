@@ -50,6 +50,7 @@
     <Content Include="wwwroot\js\home\pages\landing.js" />
     <Content Include="wwwroot\js\home\main.js" />
     <Content Include="wwwroot\js\home\pages\management.js" />
+    <Content Include="wwwroot\js\site.js" />
     <Content Include="wwwroot\vendors\css\bootstrap\bootstrap.css" />
     <Content Include="wwwroot\vendors\css\material\material.css" />
     <Content Include="wwwroot\vendors\js\bootstrap.bundle.js" />

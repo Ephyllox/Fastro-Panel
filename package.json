@@ -20,7 +20,7 @@
   },
   "devDependencies": {
     "@types/mustache": "^4.2.2",
-    "@types/node": "^18.16.3",
+    "@types/node": "^20.2.0",
     "@types/strip-comments": "^2.0.1",
     "@types/ws": "^8.5.4",
     "typescript": "^5.0.4"
@@ -29,7 +29,7 @@
     "chalk": "2.4.2",
     "mustache": "4.2.0",
     "strip-comments": "2.0.1",
-    "terser": "5.17.1",
+    "terser": "5.17.4",
     "ws": "8.13.0",
     "xss": "1.0.14"
   }
