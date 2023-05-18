@@ -1,6 +1,6 @@
 import assert from "assert";
 
-import { AuthManager, BadRequestResult, InterfaceRoute, JsonResult, NoContentResult, RequestContext } from "../../../_classes";
+import { AuthManager, InterfaceRoute, JsonResult, NoContentResult, RequestContext } from "../../../_classes";
 import { IRequestResult } from "../../../_interfaces";
 import { UserRole } from "../../../_types";
 
@@ -9,8 +9,8 @@ import Conf from "../../../../utils/Configuration";
 export class UserInfo extends InterfaceRoute {
     constructor() {
         super({
-            path: "user/identity",
-            methods: ["POST"],
+            path: "users/identity",
+            methods: ["GET"],
             requiresLogin: true,
         });
     }
@@ -23,8 +23,8 @@ export class UserInfo extends InterfaceRoute {
 export class UserList extends InterfaceRoute {
     constructor() {
         super({
-            path: "user/list",
-            methods: ["POST"],
+            path: "users/list",
+            methods: ["GET"],
             requiresLogin: true,
             requiredRoles: [UserRole.ADMIN],
         });
@@ -58,7 +58,7 @@ type UserDeletionDetails = {
 export class UserUpdate extends InterfaceRoute {
     constructor() {
         super({
-            path: "user/update",
+            path: "users/update",
             methods: ["PATCH", "DELETE"],
             body: true,
             requiresLogin: true,

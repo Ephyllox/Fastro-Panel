@@ -8,8 +8,8 @@ export default abstract class InputHandler {
         try {
             if (route.query) {
                 for (const item of route.query) {
-                    const query = URL.parse(context.req.url as string, true).query;
-                    if (item.required && !query[item.name]) return false; // possibility of a null 'query'
+                    const query = URL.parse(context.req.url!, true).query;
+                    if (item.required && !query[item.name]) return false; // Possibility of a null 'query'
                     context.input.query[item.name] = query[item.name];
                 }
             }

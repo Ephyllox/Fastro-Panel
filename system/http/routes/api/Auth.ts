@@ -41,21 +41,6 @@ export class Login extends InterfaceRoute {
     }
 };
 
-export class Logout extends InterfaceRoute {
-    constructor() {
-        super({
-            path: "auth/logout",
-            methods: ["POST"],
-            requiresLogin: true,
-        });
-    }
-
-    async onRequest(context: RequestContext): Promise<IRequestResult> {
-        context.session!.invalidate();
-        return new NoContentResult();
-    }
-};
-
 type SignupDetails = {
     username: string, password: string, password_confirm: string,
 };
@@ -94,5 +79,20 @@ export class Register extends InterfaceRoute {
         }
 
         return new BadRequestResult("You must provide a username, password, and password confirmation.");
+    }
+};
+
+export class Logout extends InterfaceRoute {
+    constructor() {
+        super({
+            path: "auth/logout",
+            methods: ["POST"],
+            requiresLogin: true,
+        });
+    }
+
+    async onRequest(context: RequestContext): Promise<IRequestResult> {
+        context.session!.invalidate();
+        return new NoContentResult();
     }
 };

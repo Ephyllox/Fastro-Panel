@@ -71,7 +71,10 @@ export default class DynamicService implements IHttpServiceHandler {
                 }
 
                 //this.base.renderActionFailure(context, Conf.Static.Integrated.ErrorFiles.Unauthorized, 401);
-                context.redirect(Conf.Router.DefaultRoute);
+
+                context.redirect(Conf.Router.DefaultRoute, {
+                    "redir_after": context.req.url!.split("?")[0], // Redirect to the requested page after login, ignore the query
+                });
             }
         }
         else {

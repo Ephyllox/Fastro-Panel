@@ -8,7 +8,7 @@ import CookieBuilder from "./CookieBuilder";
 type ContextBinding = {
     req: HTTP.IncomingMessage;
     res: HTTP.ServerResponse;
-}
+};
 
 export default class RequestContext {
     constructor({ req, res }: ContextBinding, reqId: string, template: object, session?: Session) {
@@ -60,7 +60,15 @@ export default class RequestContext {
         return this;
     }
 
-    redirect(path: string) {
+    redirect(path: string, params?: { [key: string]: string }) {
+        if (params) {
+            Object.entries(params).forEach((param, index) => {
+                // With the first parameter, '?' should be the delimiter, otherwise '&' is used
+                const delimiter = index === 0 ? "?" : "&";
+                path += `${delimiter}${param[0]}=${param[1]}`;
+            });
+        }
+
         this.status(302).header("Location", path).end();
     }
 

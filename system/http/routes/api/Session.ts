@@ -4,14 +4,11 @@ import { AuthManager, BadRequestResult, InterfaceRoute, JsonResult, NoContentRes
 import { IRequestResult } from "../../../_interfaces";
 import { UserRole } from "../../../_types";
 
-import Conf from "../../../../utils/Configuration";
-import Utils from "../../../../utils/Toolbox";
-
 export class SessionList extends InterfaceRoute {
     constructor() {
         super({
-            path: "session/list",
-            methods: ["POST"],
+            path: "sessions/list",
+            methods: ["GET"],
             requiresLogin: true,
             requiredRoles: [UserRole.ADMIN],
         });
@@ -39,7 +36,7 @@ type SessionRevocationDetails = {
 export class RevokeSession extends InterfaceRoute {
     constructor() {
         super({
-            path: "session/revoke",
+            path: "sessions/revoke",
             methods: ["POST"],
             body: true,
             requiresLogin: true,

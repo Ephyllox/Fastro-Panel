@@ -32,8 +32,13 @@ export default class StaticService implements IHttpServiceHandler {
                 const data = await Utils.readFile(path, ".");
 
                 if (contentType === ContentType.JS) {
-                    const minified = await Terser.minify(data);
-                    this.cache[path] = minified.code ?? data;
+                    try {
+                        const minified = await Terser.minify(data);
+                        this.cache[path] = minified.code ?? data;
+                    }
+                    catch {
+                        this.cache[path] = data;
+                    }
                 }
                 else {
                     this.cache[path] = data;

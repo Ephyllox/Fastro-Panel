@@ -149,6 +149,7 @@ export default class HTTPServer {
 
         context.end(
             Mustache.render(XSS.stripCommentTag(data), {
+                version: this._cacheKey,
                 reqId: context.requestId,
                 url: context.req.url,
             })
