@@ -47,6 +47,8 @@ export default class HTTPServer {
                     this.methods["GET"] = true;
                 }
             }
+
+            this._log(`Activated ${Routes.length} route(s)`, "green");
         });
 
         this.staticHandler = new StaticService(this);
