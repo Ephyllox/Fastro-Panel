@@ -35,27 +35,26 @@ function snackbar(message, timeout = 2000) {
     const toast = document.querySelector("#action-toast");
     toast.MaterialSnackbar.cleanup_();
 
-    setTimeout(function () {
+    setTimeout(() => {
         toast.MaterialSnackbar.skipClearing++;
         toast.MaterialSnackbar.showSnackbar({ message: message, timeout: timeout });
     }, toast.MaterialSnackbar.Constant_.ANIMATION_LENGTH);
 }
 
-$("#logout").click(function () {
+$("#logout").click(async () => {
     if (logout) return;
     logout = true;
 
     snackbar("Logging out...");
 
-    $.post("/api/auth/logout", function () {
-        window.location.reload();
-    });
+    await resource.api.auth.logout();
+    window.location.replace(resource.login);
 });
 
-$.post("/api/user/identity", function (data) {
+resource.api.user.identity().then((data) => {
     $("#username-load").fadeOut();
 
-    setTimeout(function () {
+    setTimeout(() => {
         $("#username").html(data.Username).fadeIn();
     }, 250);
 });

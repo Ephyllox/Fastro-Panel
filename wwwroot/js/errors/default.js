@@ -1,3 +1,3 @@
 $("#return").click(function () {
-    window.location.href = "/login";
+    window.location.href = resource.login;
 });
