@@ -13,7 +13,6 @@
     "forceConsistentCasingInFileNames": true,
     "baseUrl": "."
   },
-  "compileOnSave": true,
   "exclude": [
     "node_modules"
   ]

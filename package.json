@@ -1,5 +1,5 @@
 {
-  "name": "fastro",
+  "name": "fastro-panel",
   "version": "1.0.0",
   "description": "Fastro Panel",
   "main": "startup.js",
@@ -20,16 +20,17 @@
   },
   "devDependencies": {
     "@types/mustache": "^4.2.2",
-    "@types/node": "^20.2.0",
+    "@types/node": "^20.4.4",
     "@types/strip-comments": "^2.0.1",
-    "@types/ws": "^8.5.4",
-    "typescript": "^5.0.4"
+    "@types/ws": "^8.5.5",
+    "eslint": "^8.45.0",
+    "typescript": "^5.1.6"
   },
   "dependencies": {
     "chalk": "2.4.2",
     "mustache": "4.2.0",
     "strip-comments": "2.0.1",
-    "terser": "5.17.4",
+    "terser": "5.19.2",
     "ws": "8.13.0",
     "xss": "1.0.14"
   }
