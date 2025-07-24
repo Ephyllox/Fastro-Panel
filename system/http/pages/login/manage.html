@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <title>Fastro Panel | Manage User</title>
+    <link rel="stylesheet" href="//pro.fontawesome.com/releases/v5.15.4/css/all.css">
+    <link rel="stylesheet" href="/content/vendors/css/bootstrap/bootstrap.css">
+</head>
+<body>
+    <div class="container">
+        <div class="row justify-content-center align-items-center" style="height: 100vh;">
+            <div class="col-5" style="min-width: 300px;">
+                <div class="card">
+                    <article class="card-body">
+                        <a href="/management" class="btn btn-primary float-right">Go back</a>
+                        <h4 class="card-title mb-4 mt-1">Manage user [{{target_user}}]</h4>
+                        <hr />
+                        <div id="update-success" class="alert alert-info collapse">Successfully updated {{target_user}}!</div>
+                        <div id="error" class="alert alert-danger collapse"></div>
+                        <form id="update" action="">
+                            <div class="form-group">
+                                <select id="user-permissions" class="custom-select" multiple>
+                                    <option disabled>Select or remove permission roles:</option>
+                                    {{#available_roles}}
+                                    <option value="{{role}}" {{selected}}>{{display_name}}</option>
+                                    {{/available_roles}}
+                                </select>
+                                {{#msa_enabled}}
+                                <button id="remove-msa" type="button" class="btn btn-secondary btn-block mt-2">Remove two-factor login</button>
+                                {{/msa_enabled}}
+                            </div>
+                            <div class="form-group">
+                                <select id="user-locations" class="custom-select" multiple>
+                                    <option disabled>Select or remove whitelisted locations:</option>
+                                    {{#known_locations}}
+                                    <option value="{{address}}" {{selected}}>{{address}}</option>
+                                    {{/known_locations}}
+                                </select>
+                                <button id="clear-locations" type="button" class="btn btn-secondary btn-block mt-2" disabled>Clear all known locations</button>
+                            </div>
+                            <div class="form-group">
+                                <button id="sendupdate" type="submit" class="btn btn-primary btn-block" disabled>Update account</button>
+                            </div>
+                            <hr />
+                            <p class="text-center mb-0" style="opacity: 0.5;">Copyright &copy; {{copyright}}</p>
+                        </form>
+                    </article>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/content/vendors/js/jquery.js"></script>
+    <script src="/content/vendors/js/bootstrap.bundle.js"></script>
+    <script src="/content/js/site.js?v={{version}}"></script>
+    <script src="/content/js/auth/manage.js?v={{version}}"></script>
+</body>
+</html>

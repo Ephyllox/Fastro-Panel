@@ -1,8 +1,10 @@
 import * as HTTP from "http";
 
+import { SessionModel } from "../../../database/models";
+
 import { CookieOptions, ContentType, InputTypes, HttpMethod } from "../../_types";
 
-import Session from "../auth/objects/SessionObject";
+import LogDelegate from "../../../utils/Logging";
 import CookieBuilder from "./CookieBuilder";
 
 type ContextBinding = {
@@ -10,10 +12,13 @@ type ContextBinding = {
     res: HTTP.ServerResponse;
 };
 
+export type RedirectParameters = { [key: string]: string };
+
 export default class RequestContext {
-    constructor({ req, res }: ContextBinding, reqId: string, template: object, session?: Session) {
+    constructor({ req, res }: ContextBinding, log: LogDelegate, reqId: string, ip: string, template: object, session?: SessionModel) {
         this.session = session;
         this.requestId = reqId;
+        this.remoteAddress = ip;
         this.template = template;
         this.req = req;
         this.res = res;
@@ -24,13 +29,18 @@ export default class RequestContext {
             body: undefined,
             query: {},
         };
+
+        this._log = log;
     }
+
 
     public requestId: string;
 
+    public remoteAddress: string;
+
     public template: object;
 
-    public session?: Session;
+    public session?: SessionModel;
 
     public input: InputTypes;
 
@@ -40,13 +50,17 @@ export default class RequestContext {
 
     private res: HTTP.ServerResponse;
 
+    public _log: LogDelegate;
+
     text(data: string, status?: number) {
         if (status) this.status(status);
+        this.contentType(ContentType.TXT);
         this.res.end(data, "utf-8");
     }
 
     json(json: object, status?: number) {
         if (status) this.status(status);
+        this.contentType(ContentType.JSON);
         this.res.end(JSON.stringify(json), "utf-8");
     }
 
@@ -60,7 +74,7 @@ export default class RequestContext {
         return this;
     }
 
-    redirect(path: string, params?: { [key: string]: string }) {
+    redirect(path: string, params?: RedirectParameters) {
         if (params) {
             Object.entries(params).forEach((param, index) => {
                 // With the first parameter, '?' should be the delimiter, otherwise '&' is used

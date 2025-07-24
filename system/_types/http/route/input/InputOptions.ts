@@ -1,5 +1,5 @@
 export type InputTypes = {
-    body?: any;
+    body?: object;
 
     query: { [key: string]: string | string[] | undefined };
 };

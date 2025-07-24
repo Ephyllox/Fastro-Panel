@@ -15,11 +15,11 @@ export type CookieOptions = {
 };
 
 export enum CookieFlags {
-    HTTPONLY,
-    SECURE,
+    HttpOnly,
+    Secure,
 };
 
 export enum CookieSitePolicy {
-    STRICT,
-    LAX,
+    Strict,
+    Lax,
 };

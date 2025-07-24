@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="/content/vendors/css/bootstrap/bootstrap.css">
     <link rel="stylesheet" href="/content/vendors/css/material/material.css">
+    <link rel="stylesheet" href="/content/vendors/css/swal.css">
     <link rel="stylesheet" href="/content/css/home/pages/updates.css">
 </head>
 <body>
@@ -27,12 +28,14 @@
             <header class="demo-drawer-header">
                 <div class="demo-avatar-dropdown">
                     <div id="username-load" class="mdl-spinner mdl-spinner--single-color mdl-js-spinner is-active"></div>
-                    <span id="username" style="display: none; position: absolute;">...</span>
+                    <span id="username" class="position-absolute text-truncate" style="display: none; max-width: 80%;">...</span>
                     <div class="mdl-layout-spacer"></div>
                     <button id="accbtn" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
                         <i class="material-icons" role="presentation">arrow_drop_down</i>
                     </button>
                     <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="accbtn">
+                        <li class="mdl-menu__item" id="toggle-msa">Enable 2FA</li>
+                        <li class="mdl-menu__item" id="change-pwd">Change Password</li>
                         <li class="mdl-menu__item" id="logout">Sign Out</li>
                     </ul>
                     <div class="mdl-tooltip" data-mdl-for="accbtn">
@@ -51,6 +54,27 @@
         <main class="mdl-layout__content mdl-color--grey-100">
             <div class="demo-content">
                 <div class="demo-cards mdl-cell mdl-cell--4-col mdl-cell--8-col-tablet mdl-grid mdl-grid--no-spacing">
+                    <div class="demo-card-wide mdl-card mdl-shadow--2dp" style="background-color: aliceblue;">
+                        <i class="material-icons" style="position: absolute; top: 20px; left: 20px; font-size: 50px; opacity: 0.4;">publish</i>
+                        <div class="mdl-card__title">
+                            <h2 class="mdl-card__title-text" style="color: darkcyan;">Release <code style="padding-left: 10px; font-size: 25px;">1.0</code></h2>
+                        </div>
+                        <div class="mdl-card__supporting-text">
+                            &mdash; Improved advanced database system that supports dynamic users and settings.
+                            <br />
+                            &mdash; Multi-Stage Authentication (MSA) and more security features implemented!
+                            <br />
+                            &mdash; Configurable user accounts and user permissions are now in the system.
+                            <br />
+                            &mdash; System security and general overhaul to improve server performance and reliability.
+                        </div>
+                        <div class="mdl-card__actions mdl-card--border">
+                            <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" disabled>
+                                Major Release
+                            </a>
+                        </div>
+                    </div>
+                    <div class="demo-separator mdl-cell--1-col"></div>
                     <div class="demo-card-wide mdl-card mdl-shadow--2dp" style="background-color: aliceblue;">
                         <i class="material-icons" style="position: absolute; top: 20px; left: 20px; font-size: 50px; opacity: 0.4;">security</i>
                         <div class="mdl-card__title">
@@ -93,6 +117,7 @@
     <script src="/content/vendors/js/jquery.js"></script>
     <script src="/content/vendors/js/bootstrap.bundle.js"></script>
     <script src="/content/vendors/js/material.js"></script>
+    <script src="/content/vendors/js/swal.js"></script>
     <script src="/content/js/site.js?v={{version}}"></script>
     <script src="/content/js/home/main.js?v={{version}}"></script>
 </body>

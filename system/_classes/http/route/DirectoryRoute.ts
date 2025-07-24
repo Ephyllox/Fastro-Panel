@@ -9,6 +9,7 @@ export default class DirectoryRoute extends Route implements DirectoryRouteData 
             path: options.path,
             requiresLogin: options.requiresLogin,
             requiredRoles: options.requiredRoles,
+            accessibleDuringMsa: options.accessibleDuringMsa,
             blocked: options.blocked,
             body: options.body,
             query: options.query,

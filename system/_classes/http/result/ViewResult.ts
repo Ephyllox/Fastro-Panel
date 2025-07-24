@@ -2,6 +2,7 @@ import * as Mustache from "mustache";
 import * as XSS from "xss";
 
 import { IRequestResult } from "../../../_interfaces";
+import { ContentType } from "../../../_types";
 
 import RequestContext from "../RequestContext";
 import Utils from "../../../../utils/Toolbox";
@@ -19,6 +20,8 @@ export default class ViewResult implements IRequestResult {
     async execute(context: RequestContext): Promise<string> {
         // Remove all comments and render the shared template
         const data = XSS.stripCommentTag(await Utils.readFile(this.path));
+
+        context.contentType(ContentType.HTML);
 
         // Merge default template data with custom template data from the route, then render it
         return Mustache.render(data, Object.assign(context.template, this.template));

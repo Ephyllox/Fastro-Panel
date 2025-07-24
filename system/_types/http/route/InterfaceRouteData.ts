@@ -1,4 +1,5 @@
 import { UserRole } from "../../auth/UserData";
+import { RateLimitOptions } from "../RateLimiter";
 import { QueryOptions } from "./input/InputOptions";
 
 export type HttpMethod =
@@ -14,9 +15,13 @@ export type InterfaceRouteData = {
 
     methods: HttpMethod[];
 
+    ratelimit?: RateLimitOptions;
+
     requiresLogin?: boolean;
 
     requiredRoles?: UserRole[];
+
+    accessibleDuringMsa?: boolean;
 
     blocked?: boolean;
 

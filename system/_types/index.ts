@@ -1,5 +1,6 @@
-export { UserLogin, UserPerms, UserRole } from "./auth/UserData";
+export { UserRole } from "./auth/UserData";
 export { ValidationData } from "./auth/ValidationData";
+export { VerificationSetupData } from "./auth/VerificationSetupData";
 
 export { InputTypes, QueryOptions } from "./http/route/input/InputOptions";
 
@@ -9,3 +10,4 @@ export { RouteData } from "./http/route/RouteData";
 
 export { ContentType } from "./http/ContentType";
 export { CookieOptions, CookieFlags, CookieSitePolicy } from "./http/CookieOptions";
+export { RateLimitEvent, RateLimitOptions } from "./http/RateLimiter";

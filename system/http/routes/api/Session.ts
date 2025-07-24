@@ -10,19 +10,20 @@ export class SessionList extends InterfaceRoute {
             path: "sessions/list",
             methods: ["GET"],
             requiresLogin: true,
-            requiredRoles: [UserRole.ADMIN],
+            requiredRoles: [UserRole["Session Manager"]],
         });
     }
 
     async onRequest(context: RequestContext): Promise<IRequestResult> {
-        const session_array = AuthManager.getAllSessions();
+        const session_array = await AuthManager.getAllSessions();
         const mapped_sessions: object[] = [];
 
         session_array.forEach(item => mapped_sessions.push({
-            Username: item.user.name,
-            UserId: item.user.id,
+            Username: item.user!.name,
+            UserId: item.userId,
             SessionId: item.id,
-            CreationDate: item.creation,
+            CreationDate: item.issue,
+            RemoteAddress: item.remoteAddress,
         }));
 
         return new JsonResult(mapped_sessions);
@@ -40,7 +41,7 @@ export class RevokeSession extends InterfaceRoute {
             methods: ["POST"],
             body: true,
             requiresLogin: true,
-            requiredRoles: [UserRole.ADMIN],
+            requiredRoles: [UserRole["Session Manager"]],
         });
     }
 
@@ -48,14 +49,14 @@ export class RevokeSession extends InterfaceRoute {
         const data = context.input.body as SessionRevocationDetails;
 
         if (data.session_id) {
-            const session = AuthManager.getSessionById(data.session_id);
+            const session = await AuthManager.getSessionById(data.session_id);
 
-            assert(session !== undefined, "The specified session is invalid.");
+            assert(session, "The specified session is invalid.");
             // Deny if the target is the 'initial' user, but always allow action against the current user
-            assert(session.user.id !== 1 || session.user.id === context.session!.user.id, "You cannot modify the initial user.");
+            assert(session.userId !== 1 || session.userId === context.session!.userId, "You cannot modify the initial user.");
 
-            session.invalidate();
-
+            context._log(`${context.session!.user!.name} has revoked ${session.user!.name}'s session: ${session.id}`, "cyan", "audit");
+            await session.destroy();
             return new NoContentResult();
         }
 

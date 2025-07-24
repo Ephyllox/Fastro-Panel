@@ -10,6 +10,8 @@ export type DirectoryRouteData = {
 
     requiredRoles?: UserRole[];
 
+    accessibleDuringMsa?: boolean;
+
     blocked?: boolean;
 
     redirectIfAuthorized?: string;

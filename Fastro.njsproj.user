@@ -4,4 +4,7 @@
     <LastActiveSolutionConfig>Debug|Any CPU</LastActiveSolutionConfig>
     <ProjectView>ProjectFiles</ProjectView>
   </PropertyGroup>
+  <PropertyGroup>
+    <PromptedToMigrateToJsps />
+  </PropertyGroup>
 </Project>

@@ -1,8 +1,7 @@
 import { AssertionError } from "assert";
 
-import { DirectoryRoute, InputHandler, InterfaceRoute, RequestContext } from "../../system/_classes";
+import { AuthorizationError, DirectoryRoute, InputHandler, InterfaceRoute, RateLimiter, RequestContext } from "../../system/_classes";
 import { IHttpServiceHandler } from "../../system/_interfaces";
-import { ContentType, HttpMethod } from "../../system/_types";
 import { Routes } from "../../system/http/routes";
 
 import HTTPServer from "../../server";
@@ -15,26 +14,31 @@ export default class DynamicService implements IHttpServiceHandler {
 
     base: HTTPServer;
 
+    limiter: RateLimiter = new RateLimiter();
+
     async process(context: RequestContext, url: string) {
         const route = Routes.find(item => item.path === url);
 
         if (route) {
+            const key = route.path + context.remoteAddress;
+
             if (route instanceof DirectoryRoute) {
-                if (route.blocked || !route.isUserAuthorized(context)) return this.base.renderActionFailure(context, Conf.Static.Integrated.ErrorFiles.Unauthorized, 403);
                 if (context.method !== "GET") return context.status(405).end();
+                if (route.blocked || !route.isUserAuthorized(context)) return this.base.renderActionFailure(context, Conf.Static.Integrated.ErrorFiles.Unauthorized, 403);
             }
             else if (route instanceof InterfaceRoute) {
-                if (route.blocked || !route.isUserAuthorized(context)) return context.status(403).end();
                 if (!route.methods.includes(context.method)) return context.status(405).end();
+                if (route.blocked || !route.isUserAuthorized(context)) return context.status(403).end();
+
+                if (route.ratelimit && this.limiter.checkTimeout(key, route.ratelimit.maxRequests, route.ratelimit.preserveRate) > 0) {
+                    this.base._log(`Rate limit triggered at: [${route.path}], from: [${context.remoteAddress}, ${context.session?.user?.name ?? "*"}].`, "yellow");
+                    return context.text(route.ratelimit.message ?? "Too Many Requests", 429);
+                }
             }
 
-            if (context.session?.isValid() || !route.requiresLogin) {
-                if (route instanceof DirectoryRoute) {
-                    context.contentType(ContentType.HTML);
-
-                    if (context.session?.isValid() && route.redirectIfAuthorized) {
-                        return context.redirect(route.redirectIfAuthorized);
-                    }
+            if (context.session?.isValid || !route.requiresLogin) {
+                if (route instanceof DirectoryRoute && context.session?.isValid && !context.session.pendingMsa && route.redirectIfAuthorized) {
+                    return context.redirect(route.redirectIfAuthorized);
                 }
 
                 // Check that all inputted data is valid
@@ -42,19 +46,29 @@ export default class DynamicService implements IHttpServiceHandler {
                     try {
                         const action = await route.onRequest(context), result = await action.execute(context);
 
+                        // When the action execution is successful, the rate counter is increased
+                        if (route instanceof InterfaceRoute && route.ratelimit) {
+                            this.limiter.checkRate(key, route.ratelimit.maxRequests, route.ratelimit.timeout, route.ratelimit.preserveRate);
+                        }
+
                         context.end(result ?? undefined);
                     }
                     catch (error) {
-                        let e = error as Error;
+                        const e = error as Error;
 
                         // AssertionError is thrown when invalid input data types are detected
+                        // AuthorizationError is thrown when there are insufficient permissions
                         switch (e?.constructor) {
-                            case AssertionError:
-                                return context.status(400).end(e.message);
+                            case route instanceof InterfaceRoute && AssertionError:
+                                // Intended for interface routes only
+                                return context.text(e.message, 400);
+                            case route instanceof DirectoryRoute && AuthorizationError:
+                                // Intended for directory routes only
+                                return this.base.renderActionFailure(context, Conf.Static.Integrated.ErrorFiles.Unauthorized, 403);
                         }
 
                         // Other exceptions lead to a general service error
-                        this.base._log(`Directory/Interface resource exception from: ${context.requestId} -> ${e?.stack + e?.message}`, "yellow");
+                        this.base._log(`Directory/Interface resource exception from: ${context.requestId} -> ${e?.stack + e?.message}`, "redBright");
 
                         if (route instanceof InterfaceRoute) return context.text("Internal Server Error", 500);
 
@@ -62,18 +76,17 @@ export default class DynamicService implements IHttpServiceHandler {
                     }
                 }
                 else {
-                    context.status(400).end("Invalid data submitted.");
+                    // TODO: Return a verbose description of missing JSON/query parameters
+                    context.text("Invalid data submitted.", 400);
                 }
             }
-            else if (!context.session?.isValid()) {
+            else if (!context.session?.isValid) {
                 if (route instanceof InterfaceRoute) {
-                    return context.status(401).end();
+                    return context.text("Session expired or invalid.", 401);
                 }
 
-                //this.base.renderActionFailure(context, Conf.Static.Integrated.ErrorFiles.Unauthorized, 401);
-
                 context.redirect(Conf.Router.DefaultRoute, {
-                    "redir_after": context.req.url!.split("?")[0], // Redirect to the requested page after login, ignore the query
+                    "redir_after": context.req.url!, // Redirect to the requested page after login
                 });
             }
         }

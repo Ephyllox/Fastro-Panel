@@ -10,13 +10,20 @@ $("#login").submit(async (e) => {
         $("#error").hide();
 
         try {
-            await resource.api.auth.validateLogin("POST", {
-                username: username,
-                password: password,
+            const res = await resource.api.auth.validateLogin("POST", {
+                "username": username,
+                "password": password,
             });
 
             const redirect = query.get("redir_after");
-            redirect ? window.location.replace(redirect) : window.location.reload();
+
+            if (res.IncompleteLogin) {
+                if (redirect) window.location.replace(resource.verification + `?redir_after=${redirect}`);
+                else window.location.replace(resource.verification);
+            }
+            else {
+                redirect ? window.location.replace(redirect) : window.location.reload();
+            }
         }
         catch (e) {
             $("#password").val("");
@@ -28,37 +35,45 @@ $("#login").submit(async (e) => {
     }
 });
 
-$("#register").submit(async (e) => {
-    const username = $("#new-username").val();
-    const password = $("#new-password").val();
-    const password_confirm = $("#new-password-confirm").val();
+$("#verification").submit(async (e) => {
+    const code = $("#code").val();
+    const bypass = $("#bypass").is(":checked");
 
     e.preventDefault();
 
-    if (username && password && password_confirm && !$("#sendregister").attr("disabled")) {
-        $("#sendregister").attr("disabled", true);
-        $("#sendregister").addClass("progress-bar-striped progress-bar-animated");
+    if (code && !$("#sendverify").attr("disabled")) {
+        $("#sendverify").attr("disabled", true);
+        $("#sendverify").addClass("progress-bar-striped progress-bar-animated");
         $("#error").hide();
 
         try {
-            await resource.api.auth.register("POST", {
-                username: username,
-                password: password,
-                password_confirm: password_confirm,
+            await resource.api.auth.validateMsa("POST", {
+                "code": code,
+                "temporary_bypass": bypass,
             });
 
-            $("#new-username").prop("disabled", true);
-            $("#new-password").prop("disabled", true);
-            $("#new-password-confirm").prop("disabled", true);
-            $("#registration-success").fadeIn();
+            const redirect = query.get("redir_after");
+            redirect ? window.location.replace(redirect) : window.location.reload();
         }
         catch (e) {
-            $("#password").val("");
-            $("#sendregister").removeAttr("disabled");
+            if (e.status === 400 || e.responseText.match(/session expired/i)) return window.location.reload();
+            $("#code").val("");
+            $("#sendverify").removeAttr("disabled");
+            $("#sendverify").removeClass("progress-bar-striped progress-bar-animated");
             $("#error").html(`Error - ${e.responseText}`);
             $("#error").hide().fadeIn();
         }
+    }
+});
 
-        $("#sendregister").removeClass("progress-bar-striped progress-bar-animated");
+$("#logout").click(async () => {
+    $("#logout").attr("disabled", true);
+
+    try {
+        await resource.api.auth.logout();
+        window.location.replace(resource.login);
+    }
+    catch {
+        $("#logout").attr("disabled", false);
     }
 });

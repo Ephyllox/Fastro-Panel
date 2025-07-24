@@ -1,5 +1,3 @@
-import { UserLogin, UserRole } from "../system/_types";
-
 export default abstract class Configuration {
     static Server = {
         DefaultPort: 1337,
@@ -8,12 +6,13 @@ export default abstract class Configuration {
 
     static Router = {
         EnableDefaultRedirect: true,
-        DefaultRoute: "login",
+        DefaultRoute: "/login",
         APIDirectory: "/api/",
     }
 
     static Static = {
         EnableStaticFileServer: true,
+        EnableServerCaching: true,
         EnableClientCaching: true,
         VirtualDirectory: "/content/",
         PhysicalDirectory: "/wwwroot/",
@@ -27,32 +26,21 @@ export default abstract class Configuration {
         },
     }
 
-    static Websocket = {
-        EnableWebsocket: false,
-    }
-
     static Session = {
-        CookieName: "__|SITE::SECURITY",
-        CookieLength: 256,
-        ValidityTime: 54e6,
-        SpecialCharacters: false,
+        CookieName: "__FASTRO_SESSION",
+        CookieValidityTime: 604800000, // 1 week
+        ValidityTime: 259200000, // 3 days
+        MSAValidityTime: 300000, // 5 minutes
+        SpecialCharacters: true,
     }
 
-    // Changing the ID or NAME of accounts will invalidate the preset password
     static Security = {
-        DefaultUsers: {
-            "admin": {
-                id: 1,
-                // Password is 'admin'
-                passwd: "0a37b33d81e4e7f80ea89dd32e8ee12a939c154e6767cd035c467f8de1eadedc",
-                perms: {
-                    disabled: false,
-                    roles: [
-                        UserRole.ADMIN,
-                    ],
-                },
-            },
-        } as { [name: string]: UserLogin },
         AddSecurityHeaders: true,
+        MSA: {
+            CookieName: "MSA::BYPASS",
+            CookiePath: "/api/auth/validate-login",
+            Issuer: "Fastro-Panel",
+            KeyLength: 16,
+        },
     }
 };

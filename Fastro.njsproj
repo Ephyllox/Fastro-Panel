@@ -34,18 +34,23 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="system\http\pages\login\verification.html" />
+    <Content Include="system\http\pages\login\manage.html" />
     <Content Include="system\http\pages\login\register.html" />
     <Content Include="system\http\pages\errors\not-found.html" />
     <Content Include="system\http\pages\errors\unauthorized.html" />
     <Content Include="system\http\pages\errors\server-error.html" />
     <Content Include="system\http\pages\login\login.html" />
+    <Content Include="system\http\pages\updates.html" />
     <Content Include="system\http\pages\panel.html" />
     <Content Include="system\http\pages\management.html" />
-    <Content Include="system\http\pages\updates.html" />
+    <Content Include="system\_types\http\RateLimiter.ts" />
+    <Content Include="wwwroot\css\home\pages\updates.css" />
     <Content Include="wwwroot\css\home\pages\landing.css" />
     <Content Include="wwwroot\css\home\main.css" />
-    <Content Include="wwwroot\css\home\pages\updates.css" />
+    <Content Include="wwwroot\css\home\pages\management.css" />
     <Content Include="wwwroot\js\auth\login.js" />
+    <Content Include="wwwroot\js\auth\manage.js" />
     <Content Include="wwwroot\js\errors\default.js" />
     <Content Include="wwwroot\js\home\pages\landing.js" />
     <Content Include="wwwroot\js\home\main.js" />
@@ -53,9 +58,12 @@
     <Content Include="wwwroot\js\site.js" />
     <Content Include="wwwroot\vendors\css\bootstrap\bootstrap.css" />
     <Content Include="wwwroot\vendors\css\material\material.css" />
+    <Content Include="wwwroot\vendors\css\swal.css" />
     <Content Include="wwwroot\vendors\js\bootstrap.bundle.js" />
+    <Content Include="wwwroot\vendors\js\chart.js" />
     <Content Include="wwwroot\vendors\js\jquery.js" />
     <Content Include="wwwroot\vendors\js\material.js" />
+    <Content Include="wwwroot\vendors\js\swal.js" />
     <None Include="server.ts" />
     <Content Include="tsconfig.json" />
     <Content Include="package.json" />
@@ -63,7 +71,9 @@
   <ItemGroup>
     <Folder Include="handlers\" />
     <Folder Include="handlers\http-service\" />
+    <Folder Include="database\" />
     <Folder Include="system\http\pages\login\" />
+    <Folder Include="system\_classes\http\errors\" />
     <Folder Include="utils\" />
     <Folder Include="wwwroot\" />
     <Folder Include="system\http\pages\" />
@@ -74,7 +84,6 @@
     <Folder Include="system\" />
     <Folder Include="system\http\" />
     <Folder Include="system\_classes\auth\" />
-    <Folder Include="system\_classes\auth\objects\" />
     <Folder Include="system\_classes\http\" />
     <Folder Include="system\_classes\http\result\" />
     <Folder Include="system\_classes\http\result\status\" />
@@ -104,24 +113,28 @@
     <Folder Include="wwwroot\vendors\js\" />
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="database\models.ts" />
+    <TypeScriptCompile Include="database\provider.ts" />
     <TypeScriptCompile Include="handlers\http-service\DynamicService.ts" />
     <TypeScriptCompile Include="handlers\http-service\StaticService.ts" />
-    <TypeScriptCompile Include="handlers\WebsocketService.ts" />
+    <TypeScriptCompile Include="settings.ts" />
     <TypeScriptCompile Include="startup.ts" />
+    <TypeScriptCompile Include="system\http\routes\api\System.ts" />
     <TypeScriptCompile Include="system\http\routes\api\Auth.ts" />
     <TypeScriptCompile Include="system\http\routes\api\Session.ts" />
     <TypeScriptCompile Include="system\http\routes\api\User.ts" />
     <TypeScriptCompile Include="system\http\routes\dir\Auth.ts" />
     <TypeScriptCompile Include="system\http\routes\dir\Panel.ts" />
     <TypeScriptCompile Include="system\http\routes\index.ts" />
+    <TypeScriptCompile Include="system\_classes\http\errors\AuthorizationError.ts" />
+    <TypeScriptCompile Include="system\_classes\http\RateLimiter.ts" />
+    <TypeScriptCompile Include="system\_types\auth\VerificationSetupData.ts" />
     <TypeScriptCompile Include="system\_types\auth\ValidationData.ts" />
     <TypeScriptCompile Include="utils\Configuration.ts" />
     <TypeScriptCompile Include="utils\FileToolbox.ts" />
     <TypeScriptCompile Include="utils\Logging.ts" />
     <TypeScriptCompile Include="utils\Toolbox.ts" />
     <TypeScriptCompile Include="system\_classes\auth\AuthManager.ts" />
-    <TypeScriptCompile Include="system\_classes\auth\objects\SessionObject.ts" />
-    <TypeScriptCompile Include="system\_classes\auth\objects\UserObject.ts" />
     <TypeScriptCompile Include="system\_classes\http\CookieBuilder.ts" />
     <TypeScriptCompile Include="system\_classes\http\RequestContext.ts" />
     <TypeScriptCompile Include="system\_classes\http\result\JsonResult.ts" />

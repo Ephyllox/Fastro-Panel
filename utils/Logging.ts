@@ -1,3 +1,13 @@
+export type LogEventType =
+    | "system"
+    | "security"
+    | "audit";
+
+export type LogEventSeverity =
+    | "debug"
+    | "warning"
+    | "error";
+
 export type LogColor =
     | "white"
     | "red"
@@ -17,6 +27,6 @@ export type LogColorBright =
     | "magentaBright"
     | "cyanBright";
 
-type LogDelegate = (msg: string, color?: LogColor | LogColorBright) => void;
+type LogDelegate = (msg: string, color?: LogColor | LogColorBright, type?: LogEventType) => void;
 
 export default LogDelegate;

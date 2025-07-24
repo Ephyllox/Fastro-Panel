@@ -1,15 +1,19 @@
+import { DirectoryRoute, RedirectParameters } from "../../../_classes";
 import { IRequestResult } from "../../../_interfaces";
 
 import RequestContext from "../RequestContext";
 
 export default class RedirectResult implements IRequestResult {
-    constructor(path: string) {
-        this.path = path;
+    constructor(route: new () => DirectoryRoute, params?: RedirectParameters) {
+        this.path = new route().path;
+        this.params = params;
     }
 
     path: string;
 
-    execute(context: RequestContext) {
-        context.redirect(this.path);
+    params?: RedirectParameters;
+
+    execute(context: RequestContext): void {
+        context.redirect(this.path, this.params);
     }
 };

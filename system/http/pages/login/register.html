@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
-    <title>Sign up to Fastro Panel</title>
+    <title>Fastro Panel | Register</title>
     <link rel="stylesheet" href="//pro.fontawesome.com/releases/v5.15.4/css/all.css">
     <link rel="stylesheet" href="/content/vendors/css/bootstrap/bootstrap.css">
 </head>
@@ -14,11 +14,11 @@
             <div class="col-5" style="min-width: 300px;">
                 <div class="card">
                     <article class="card-body">
-                        <a href="/login" class="btn btn-primary float-right">Sign in</a>
-                        <h4 class="card-title mb-4 mt-1">Welcome to Fastro</h4>
+                        <a href="/management" class="btn btn-primary float-right">Go back</a>
+                        <h4 class="card-title mb-4 mt-1">Create an account</h4>
                         <hr />
-                        <p class="text-center">Enter a username and password, confirm the password, and create your account.</p>
-                        <div id="registration-success" class="alert alert-info collapse">Created your account! <a href="/login" class="alert-link">Go to the login page</a> and use your details.</div>
+                        <p class="text-center">Enter a username and password, confirm the password, and select permission roles.</p>
+                        <div id="registration-success" class="alert alert-info collapse">Successfully created the account! <a href="/management" class="alert-link">Go back home</a></div>
                         <div id="error" class="alert alert-danger collapse"></div>
                         <form id="register" action="">
                             <div class="form-group">
@@ -26,26 +26,32 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="fa fa-user"></i></span>
                                     </div>
-                                    <input id="new-username" class="form-control" placeholder="Username" type="text" required>
+                                    <input id="new-username" class="form-control" placeholder="Username" type="text" autocomplete="off" required>
                                 </div>
                                 <div class="input-group mb-3">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="fa fa-lock-alt"></i></span>
                                     </div>
-                                    <input id="new-password" class="form-control" placeholder="Password" type="password" required>
+                                    <input id="new-password" class="form-control" placeholder="Password" type="password" autocomplete="off" required>
                                 </div>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="fa fa-lock-alt"></i></span>
                                     </div>
-                                    <input id="new-password-confirm" class="form-control" placeholder="Confirm password" type="password" required>
+                                    <input id="new-password-confirm" class="form-control" placeholder="Confirm password" type="password" autocomplete="off" required>
                                 </div>
+                                <select id="user-permissions" class="custom-select mt-3" multiple>
+                                    <option disabled>Select or remove permission roles:</option>
+                                    {{#available_roles}}
+                                    <option value="{{role}}" {{selected}}>{{display_name}}</option>
+                                    {{/available_roles}}
+                                </select>
                             </div>
                             <div class="form-group">
                                 <button id="sendregister" type="submit" class="btn btn-primary btn-block">Create account</button>
                             </div>
                             <hr />
-                            <p class="text-center" style="opacity: 0.5;">Copyright &copy; {{copyright}}</p>
+                            <p class="text-center mb-0" style="opacity: 0.5;">Copyright &copy; {{copyright}}</p>
                         </form>
                     </article>
                 </div>
@@ -55,6 +61,6 @@
     <script src="/content/vendors/js/jquery.js"></script>
     <script src="/content/vendors/js/bootstrap.bundle.js"></script>
     <script src="/content/js/site.js?v={{version}}"></script>
-    <script src="/content/js/auth/login.js?v={{version}}"></script>
+    <script src="/content/js/auth/manage.js?v={{version}}"></script>
 </body>
 </html>

@@ -11,6 +11,7 @@
     "removeComments": true,
     "noFallthroughCasesInSwitch": true,
     "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
     "baseUrl": "."
   },
   "exclude": [

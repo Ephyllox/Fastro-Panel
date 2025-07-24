@@ -11,6 +11,7 @@ export default class Route implements RouteData, IRequestHandler {
         this.query = options.query;
         this.requiresLogin = options.requiresLogin;
         this.requiredRoles = options.requiredRoles;
+        this.accessibleDuringMsa = options.accessibleDuringMsa;
         this.blocked = options.blocked;
     }
 
@@ -20,16 +21,20 @@ export default class Route implements RouteData, IRequestHandler {
 
     requiredRoles?: UserRole[];
 
+    accessibleDuringMsa?: boolean;
+
     blocked?: boolean;
 
     query?: QueryOptions[];
 
     body?: boolean;
 
-    isUserAuthorized(context: RequestContext) {
+    isUserAuthorized(context: RequestContext): boolean {
+        // Check that the user has passed verification for the session
+        if (context.session?.pendingMsa && !this.accessibleDuringMsa) return false;
         if (!this.requiredRoles || !context.session) return true;
 
-        return context.session.user.perms.roles?.some(r => this.requiredRoles!.includes(r)) ?? false;
+        return this.requiredRoles.some(role => context.session!.user?.hasRoles([role]));
     }
 
     async onRequest(context: RequestContext): Promise<IRequestResult> {

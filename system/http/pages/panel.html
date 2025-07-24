@@ -9,7 +9,8 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="/content/vendors/css/bootstrap/bootstrap.css">
     <link rel="stylesheet" href="/content/vendors/css/material/material.css">
-    <link rel="stylesheet" href="/content/css/home/pages/landing.css">
+    <link rel="stylesheet" href="/content/vendors/css/swal.css">
+    <link rel="stylesheet" href="/content/css/home/main.css">
 </head>
 <body>
     <div class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
@@ -27,12 +28,14 @@
             <header class="demo-drawer-header">
                 <div class="demo-avatar-dropdown">
                     <div id="username-load" class="mdl-spinner mdl-spinner--single-color mdl-js-spinner is-active"></div>
-                    <span id="username" style="display: none; position: absolute;">...</span>
+                    <span id="username" class="position-absolute text-truncate" style="display: none; max-width: 80%;">...</span>
                     <div class="mdl-layout-spacer"></div>
                     <button id="accbtn" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
                         <i class="material-icons" role="presentation">arrow_drop_down</i>
                     </button>
                     <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="accbtn">
+                        <li class="mdl-menu__item" id="toggle-msa">Enable 2FA</li>
+                        <li class="mdl-menu__item" id="change-pwd">Change Password</li>
                         <li class="mdl-menu__item" id="logout">Sign Out</li>
                     </ul>
                     <div class="mdl-tooltip" data-mdl-for="accbtn">
@@ -53,26 +56,45 @@
                 <h3 id="welcome" style="display: none; padding-left: 15px;">...</h3>
                 <div class="mdl-grid">
                     <div class="demo-cards mdl-cell mdl-cell--4-col mdl-cell--8-col-tablet mdl-grid mdl-grid--no-spacing">
-                        <div class="demo-updates mdl-card mdl-shadow--2dp mdl-cell mdl-cell--4-col mdl-cell--4-col-tablet mdl-cell--12-col-desktop">
-                            <div class="mdl-card__title mdl-card--expand mdl-color--teal-300">
-                                <h2 class="mdl-card__title-text">System Updates</h2>
+                        <div id="host-info-card" class="mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col">
+                            <div class="mdl-card__title">
+                                <h2 class="mdl-card__title-text font-weight-normal" style="color: darkcyan;">Service Host Information</h2>
                             </div>
-                            <div class="mdl-card__supporting-text mdl-color-text--grey-600">
-                                View the previous updates made to Fastro Panel, including security fixes and features!
+                            <div class="d-inline-flex">
+                                <div id="svc-host-ip" class="mdl-card__supporting-text">
+                                    Getting the public address...
+                                </div>
+                                <button id="svc-host-copy-ip" class="mdl-button mdl-button--icon mdl-button--colored mdl-js-button mdl-js-ripple-effect my-auto mr-2">
+                                    <i class="material-icons" style="font-size: medium;">content_copy</i>
+                                </button>
+                            </div>
+                            <div id="svc-host-hostname" class="mdl-card__supporting-text">
+                                Getting the hostname...
+                            </div>
+                            <div id="svc-host-os" class="mdl-card__supporting-text">
+                                Getting the OS information...
+                            </div>
+                            <div id="svc-host-uptime" class="mdl-card__supporting-text">
+                                Getting the OS uptime...
+                            </div>
+                            <div id="svc-host-date" class="mdl-card__supporting-text">
+                                Getting the date...
                             </div>
                             <div class="mdl-card__actions mdl-card--border">
-                                <a href="updates" class="mdl-button mdl-js-button mdl-js-ripple-effect">Learn More</a>
+                                <button id="svc-host-info-reload" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+                                    Reload Data
+                                </button>
                             </div>
                         </div>
                     </div>
                     {{#nav_mgmt_access}}
                     <div class="demo-cards mdl-cell mdl-cell--4-col mdl-cell--8-col-tablet mdl-grid mdl-grid--no-spacing">
-                        <div class="demo-updates mdl-card mdl-shadow--2dp mdl-cell mdl-cell--4-col mdl-cell--4-col-tablet mdl-cell--12-col-desktop">
-                            <div class="mdl-card__title mdl-card--expand mdl-color--blue-grey-300">
-                                <h2 class="mdl-card__title-text mdl-color-text--yellow-100">Panel Management</h2>
+                        <div class="demo-updates mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col">
+                            <div class="mdl-card__title mdl-card--expand mdl-color--teal-300">
+                                <h2 class="mdl-card__title-text">Panel Management</h2>
                             </div>
                             <div class="mdl-card__supporting-text mdl-color-text--grey-600">
-                                Manage all of the users and sessions that are in Fastro Panel.
+                                Manage all of the users, sessions, and settings, in the system.
                             </div>
                             <div class="mdl-card__actions mdl-card--border">
                                 <a href="management" class="mdl-button mdl-js-button mdl-js-ripple-effect">Visit Management</a>
@@ -80,6 +102,7 @@
                         </div>
                     </div>
                     {{/nav_mgmt_access}}
+                    <div class="mdl-tooltip" for="svc-host-copy-ip">Copy IP address</div>
                 </div>
             </div>
         </main>
@@ -87,6 +110,7 @@
     <script src="/content/vendors/js/jquery.js"></script>
     <script src="/content/vendors/js/bootstrap.bundle.js"></script>
     <script src="/content/vendors/js/material.js"></script>
+    <script src="/content/vendors/js/swal.js"></script>
     <script src="/content/js/site.js?v={{version}}"></script>
     <script src="/content/js/home/main.js?v={{version}}"></script>
     <script src="/content/js/home/pages/landing.js?v={{version}}"></script>

@@ -1,7 +1,6 @@
 export { default as AuthManager } from "./auth/AuthManager";
 
-export { default as Session } from "./auth/objects/SessionObject";
-export { default as User } from "./auth/objects/UserObject";
+export { default as AuthorizationError } from "./http/errors/AuthorizationError";
 
 export { OkResult, NoContentResult } from "./http/result/status/2xxResult";
 export { BadRequestResult, UnauthorizedResult, ForbiddenResult, MethodNotAllowedResult } from "./http/result/status/4xxResult";
@@ -17,4 +16,5 @@ export { default as DirectoryRoute } from "./http/route/DirectoryRoute";
 export { default as Route } from "./http/route/Route";
 
 export { default as CookieBuilder } from "./http/CookieBuilder";
-export { default as RequestContext } from "./http/RequestContext";
+export { default as RateLimiter } from "./http/RateLimiter";
+export { default as RequestContext, RedirectParameters } from "./http/RequestContext";

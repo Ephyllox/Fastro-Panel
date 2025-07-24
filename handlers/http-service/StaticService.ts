@@ -28,7 +28,9 @@ export default class StaticService implements IHttpServiceHandler {
         });
 
         try {
-            if (!this.cache[path]) {
+            if (!contentType) return context.status(404).end();
+
+            if (Conf.Static.EnableServerCaching && !this.cache[path]) {
                 const data = await Utils.readFile(path, ".");
 
                 if (contentType === ContentType.JS) {
@@ -49,12 +51,12 @@ export default class StaticService implements IHttpServiceHandler {
 
             context.contentType(contentType);
 
-            context.end(this.cache[path]);
+            context.end(Conf.Static.EnableServerCaching ? this.cache[path] : await Utils.readFile(path, "."));
         }
         catch (error) {
-            let e = error as Error;
+            const e = error as Error;
 
-            this.base._log(`Static resource exception from: ${context.requestId} -> ${e?.stack + e?.message}`, "yellow");
+            this.base._log(`Static resource exception from: ${context.requestId} -> ${e?.stack + e?.message}`, "redBright");
 
             this.base.renderActionFailure(context, Conf.Static.Integrated.ErrorFiles.SvrError, 500);
         }

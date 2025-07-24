@@ -8,6 +8,8 @@ export type RouteData = {
 
     requiredRoles?: UserRole[];
 
+    accessibleDuringMsa?: boolean;
+
     blocked?: boolean;
 
     query?: QueryOptions[];

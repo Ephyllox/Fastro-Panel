@@ -31,14 +31,9 @@ export default class CookieBuilder {
         if (this.expires) built += `expires=${this.expires.toUTCString()};`;
         if (this.domain) built += `domain=${this.domain};`;
         if (this.path) built += `path=${this.path};`;
-
-        if (this.flags) {
-            built += `${this.flags.map(
-                item => `${CookieFlags[item].toLowerCase()}; `
-            )}`;
-        }
-
+        this.flags?.forEach(item => built += `${CookieFlags[item].toLowerCase()};`);
         if (this.samesite !== undefined) built += `samesite=${CookieSitePolicy[this.samesite].toLowerCase()};`;
+
         return built;
     }
 };

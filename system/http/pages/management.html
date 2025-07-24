@@ -9,7 +9,8 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="/content/vendors/css/bootstrap/bootstrap.css">
     <link rel="stylesheet" href="/content/vendors/css/material/material.css">
-    <link rel="stylesheet" href="/content/css/home/main.css">
+    <link rel="stylesheet" href="/content/vendors/css/swal.css">
+    <link rel="stylesheet" href="/content/css/home/pages/management.css">
 </head>
 <body>
     <div class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
@@ -27,12 +28,14 @@
             <header class="demo-drawer-header">
                 <div class="demo-avatar-dropdown">
                     <div id="username-load" class="mdl-spinner mdl-spinner--single-color mdl-js-spinner is-active"></div>
-                    <span id="username" style="display: none; position: absolute;">...</span>
+                    <span id="username" class="position-absolute text-truncate" style="display: none; max-width: 80%;">...</span>
                     <div class="mdl-layout-spacer"></div>
                     <button id="accbtn" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
                         <i class="material-icons" role="presentation">arrow_drop_down</i>
                     </button>
                     <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="accbtn">
+                        <li class="mdl-menu__item" id="toggle-msa">Enable 2FA</li>
+                        <li class="mdl-menu__item" id="change-pwd">Change Password</li>
                         <li class="mdl-menu__item" id="logout">Sign Out</li>
                     </ul>
                     <div class="mdl-tooltip" data-mdl-for="accbtn">
@@ -52,14 +55,20 @@
             <div class="mdl-grid">
                 <div class="demo-cards mdl-cell mdl-cell--4-col mdl-cell--8-col-tablet mdl-grid mdl-grid--no-spacing">
                     <div id="user-list-card" class="demo-card-wide mdl-card mdl-shadow--2dp" style="background-color: aliceblue;">
+                        <button id="create-account" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect w-100">
+                            Create account <i class="material-icons ml-2">person_add</i>
+                        </button>
                         <div class="ml-3">
                             <h4>Users</h4>
                             <hr />
                             <ul id="user-list" class="mdl-list">
                                 <li id="ul-user" class="mdl-list__item mdl-list__item--one-line" style="display: none;">
-                                    <span class="mdl-list__item-primary-content">
+                                    <span class="mdl-list__item-primary-content overflow-hidden">
                                         <i class="material-icons mdl-list__item-avatar">person</i>
-                                        <span id="ul-user-name">...</span>
+                                        <span id="ul-user-name" class="text-truncate">...</span>
+                                    </span>
+                                    <span class="mdl-list__item-secondary-content">
+                                        <button id="ul-user-btn-manage" class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored" title="Manage Account"><i id="ul-user-btn-manage-icon" class="material-icons">manage_accounts</i></button>
                                     </span>
                                     <span class="mdl-list__item-secondary-content">
                                         <button id="ul-user-btn-block" class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored" title="Block/Unblock Account"><i id="ul-user-btn-block-icon" class="material-icons">radio_button_unchecked</i></button>
@@ -79,7 +88,7 @@
                             <hr />
                             <ul id="session-list" class="mdl-list">
                                 <li id="ul-session" class="mdl-list__item mdl-list__item--three-line" style="display: none;">
-                                    <span class="mdl-list__item-primary-content">
+                                    <span class="mdl-list__item-primary-content text-truncate">
                                         <i class="material-icons mdl-list__item-avatar">key</i>
                                         <span id="ul-session-name">...</span>
                                         <span id="ul-session-creation" class="mdl-list__item-text-body">...</span>
@@ -92,12 +101,40 @@
                         </div>
                     </div>
                 </div>
+                <div class="demo-cards mdl-cell mdl-cell--4-col mdl-cell--8-col-tablet mdl-grid mdl-grid--no-spacing">
+                    <div id="setting-list-card" class="demo-card-wide mdl-card mdl-shadow--2dp" style="background-color: aliceblue;">
+                        <div class="ml-3">
+                            <h4>Settings</h4>
+                            <hr />
+                            <ul id="setting-list" class="mdl-list">
+                                <li id="ul-setting" class="mdl-list__item mdl-list__item--three-line" style="display: none;">
+                                    <span class="mdl-list__item-primary-content text-truncate">
+                                        <span id="ul-setting-key">...</span>
+                                        <span id="ul-setting-value" class="mdl-list__item-text-body text-truncate">...</span>
+                                    </span>
+                                    <span class="mdl-list__item-secondary-content">
+                                        <button id="ul-setting-btn-reset" class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored" title="Reset to Default" style="display: none;"><i class="material-icons">settings_backup_restore</i></button>
+                                    </span>
+                                    <span class="mdl-list__item-secondary-content">
+                                        <button id="ul-setting-btn-edit" class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored" title="Edit Setting"><i class="material-icons">edit</i></button>
+                                    </span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="mdl-card__actions mdl-card--border">
+                            <button id="setting-list-apply" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" disabled>
+                                Apply Changes
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </main>
     </div>
     <script src="/content/vendors/js/jquery.js"></script>
     <script src="/content/vendors/js/bootstrap.bundle.js"></script>
     <script src="/content/vendors/js/material.js"></script>
+    <script src="/content/vendors/js/swal.js"></script>
     <script src="/content/js/site.js?v={{version}}"></script>
     <script src="/content/js/home/main.js?v={{version}}"></script>
     <script src="/content/js/home/pages/management.js?v={{version}}"></script>

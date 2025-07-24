@@ -205,3 +205,13 @@ html, body {
 .demo-card-wide.mdl-card {
     width: 512px;
 }
+
+.demo-card-wide > .mdl-card__title {
+    height: 176px;
+}
+
+.mdl-list__item {
+    height: auto !important;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}

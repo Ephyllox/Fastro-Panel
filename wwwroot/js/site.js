@@ -32,11 +32,15 @@ class Router {
             $.ajax({
                 url: this.name + path,
                 type: method,
-                data: data && JSON.stringify(data),
+                data: data && (method === "GET" ? data : JSON.stringify(data)),
                 success: function (res) {
                     resolve(res);
                 },
                 error: function (xhr) {
+                    if (xhr.status === 401 && xhr.responseText.match(/session expired/i)) {
+                        if (typeof Swal !== "undefined") return sessionAlert();
+                    }
+
                     reject(xhr);
                 },
             });
@@ -46,11 +50,15 @@ class Router {
 
 const auth = new Router("auth", "POST")
     .route("validate-login", "validateLogin")
-    .route("register", "register")
+    .route("validate-login/msa", "validateMsa")
+    .route("msa/setup", "setupMsa")
+    .route("msa/remove", "removeMsa")
+    .route("change-password", "changePassword")
     .route("logout", "logout");
 
 const user = new Router("users")
     .route("list", "list")
+    .route("create", "create")
     .route("update", "update")
     .route("identity", "identity");
 
@@ -58,7 +66,14 @@ const session = new Router("sessions")
     .route("list", "list")
     .route("revoke", "revoke");
 
+const system = new Router("system")
+    .route("svc-host/info", "svcHostInfo")
+    .route("settings/get", "getSettings")
+    .route("settings/set", "updateSettings")
+
 window.resource = {
     login: "/login",
-    api: { auth, user, session },
+    verification: "/login/verification",
+    home: "/panel",
+    api: { auth, user, session, system },
 };

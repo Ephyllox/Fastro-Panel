@@ -13,7 +13,7 @@ export default abstract class Toolbox {
     }
 
     static random(length: number, special = true) {
-        const characters = `abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789${special ? "!@#$%()_+-/~\\" : ""}`, charactersLength = characters.length;
+        const characters = `abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789${special ? "!@#$%_+-/\\" : ""}`, charactersLength = characters.length;
         let result = "";
 
         for (let i = 0; i < length; i++) {
